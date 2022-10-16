@@ -1,150 +1,92 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br />
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener"
-        >vue-cli documentation</a
-      >.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-babel"
-          target="_blank"
-          rel="noopener"
-          >babel</a
+  <section class="calendar">
+    <header class="calendar__header">
+      <section class="calendar__year">
+        <p>Year:</p>
+        <!-- <input type="number" id="year" name="year" v-model="year" /> -->
+        <i @click="year--" class="fa-solid fa-arrow-left"></i>
+        <span>{{ year }}</span>
+        <i @click="year++" class="fa-solid fa-arrow-right"></i>
+      </section>
+      <section>
+        <p>Year:</p>
+        <!-- <input type="number" id="year" name="year" v-model="year" /> -->
+        <i @click="month--" class="fa-solid fa-arrow-left"></i>
+        <span>{{ month }}</span>
+        <i @click="month++" class="fa-solid fa-arrow-right"></i>
+      </section>
+    </header>
+    <main class="dayCount">
+      <div class="dayCount__names">
+        <div
+          class="dayCount__name"
+          :class="{ 'dayCount__item--sunday': item === 'Sun' }"
+          v-for="item in weekDays"
+          :key="item"
         >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-pwa"
-          target="_blank"
-          rel="noopener"
-          >pwa</a
+          {{ item }}
+        </div>
+      </div>
+      <div class="dayCount__days">
+        <div
+          class="dayCount__item"
+          :class="{ 'dayCount__item--sunday': isSunday(n) }"
+          v-for="n in daysCount"
+          :key="n"
         >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router"
-          target="_blank"
-          rel="noopener"
-          >router</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-eslint"
-          target="_blank"
-          rel="noopener"
-          >eslint</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-unit-jest"
-          target="_blank"
-          rel="noopener"
-          >unit-jest</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-typescript"
-          target="_blank"
-          rel="noopener"
-          >typescript</a
-        >
-      </li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li>
-        <a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a>
-      </li>
-      <li>
-        <a href="https://forum.vuejs.org" target="_blank" rel="noopener"
-          >Forum</a
-        >
-      </li>
-      <li>
-        <a href="https://chat.vuejs.org" target="_blank" rel="noopener"
-          >Community Chat</a
-        >
-      </li>
-      <li>
-        <a href="https://twitter.com/vuejs" target="_blank" rel="noopener"
-          >Twitter</a
-        >
-      </li>
-      <li>
-        <a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a>
-      </li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li>
-        <a href="https://router.vuejs.org" target="_blank" rel="noopener"
-          >vue-router</a
-        >
-      </li>
-      <li>
-        <a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a>
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/vue-devtools#vue-devtools"
-          target="_blank"
-          rel="noopener"
-          >vue-devtools</a
-        >
-      </li>
-      <li>
-        <a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener"
-          >vue-loader</a
-        >
-      </li>
-      <li>
-        <a
-          href="https://github.com/vuejs/awesome-vue"
-          target="_blank"
-          rel="noopener"
-          >awesome-vue</a
-        >
-      </li>
-    </ul>
-  </div>
+          {{ n }}
+        </div>
+      </div>
+    </main>
+  </section>
 </template>
 
-<script lang="ts">
-import { Options, Vue } from "vue-class-component";
+<script setup lang="ts">
+import { computed, ref } from "@vue/reactivity";
 
-@Options({
-  props: {
-    msg: String,
-  },
-})
-export default class HelloWorld extends Vue {
-  msg!: string;
-}
+const year = ref(2022);
+const month = ref(10);
+const weekDays = ["Mon", "Thu", "Wed", "Thu", "Fri", "Sat", "Sun"];
+
+const daysCount = computed(() => {
+  return new Date(year.value, month.value, 0).getDate();
+});
+
+const dayOfWeek = computed(() => {
+  const day = new Date(year.value, month.value - 1, 1).getDay();
+  return day === 0 ? 7 : day;
+});
+
+const isSunday = (day: number) => {
+  const dayOfWeek = new Date(year.value, month.value - 1, day).getDay();
+  return dayOfWeek === 0;
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped lang="scss">
-h3 {
-  margin: 40px 0 0;
+<style lang="scss">
+.calendar {
+  &__header {
+    display: flex;
+    flex-direction: column;
+  }
 }
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.dayCount {
+  width: 100%;
+  &__days,
+  &__names {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+  }
+  &__item {
+    // width: calc(100vw / 8);
+    height: calc(100vw / 7);
+    border: 1px solid black;
+    &--sunday {
+      color: red;
+    }
+    &:first-child {
+      grid-column-start: v-bind(dayOfWeek);
+    }
+  }
 }
 </style>
