@@ -1,19 +1,31 @@
 <template>
   <section class="calendar">
     <header class="calendar__header">
-      <section class="calendar__year">
-        <p>Year:</p>
+      <p>Year:</p>
+      <section class="calendar__section">
         <!-- <input type="number" id="year" name="year" v-model="year" /> -->
         <i @click="year--" class="fa-solid fa-arrow-left"></i>
-        <span>{{ year }}</span>
+        <span @click="openYearDialog">{{ year }}</span>
         <i @click="year++" class="fa-solid fa-arrow-right"></i>
+        <base-dialog
+          @close="closeYearDialog"
+          :show="yearDialog"
+          mode="year"
+          :start="year"
+        />
       </section>
-      <section>
-        <p>Year:</p>
+      <p>Month:</p>
+      <section class="calendar__section">
         <!-- <input type="number" id="year" name="year" v-model="year" /> -->
         <i @click="month--" class="fa-solid fa-arrow-left"></i>
-        <span>{{ month }}</span>
+        <span @click="openMonthDialog">{{ month }}</span>
         <i @click="month++" class="fa-solid fa-arrow-right"></i>
+        <base-dialog
+          @close="closeMonthDialog"
+          :show="monthDialog"
+          mode="month"
+          :start="month"
+        />
       </section>
     </header>
     <main class="dayCount">
@@ -42,24 +54,41 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from "@vue/reactivity";
+import { computed, ref, toRefs } from "@vue/reactivity";
 
-const year = ref(2022);
-const month = ref(10);
+import { useCalendarStore } from "@/store/calendar";
+
+const calendarStore = useCalendarStore();
+
+const year = toRefs(calendarStore).year;
+const month = toRefs(calendarStore).month;
 const weekDays = ["Mon", "Thu", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const yearDialog = ref(false);
+const monthDialog = ref(false);
 
 const daysCount = computed(() => {
   return new Date(year.value, month.value, 0).getDate();
 });
 
-const dayOfWeek = computed(() => {
-  const day = new Date(year.value, month.value - 1, 1).getDay();
-  return day === 0 ? 7 : day;
+const monthStartDay = computed(() => {
+  return calendarStore.monthStartDay;
 });
-
 const isSunday = (day: number) => {
   const dayOfWeek = new Date(year.value, month.value - 1, day).getDay();
   return dayOfWeek === 0;
+};
+
+const openMonthDialog = () => {
+  monthDialog.value = true;
+};
+const openYearDialog = () => {
+  yearDialog.value = true;
+};
+const closeMonthDialog = () => {
+  monthDialog.value = false;
+};
+const closeYearDialog = () => {
+  yearDialog.value = false;
 };
 </script>
 
@@ -68,6 +97,14 @@ const isSunday = (day: number) => {
   &__header {
     display: flex;
     flex-direction: column;
+    font-size: 25px;
+    margin: 20px;
+  }
+  &__section {
+    width: 50%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
   }
 }
 .dayCount {
@@ -85,7 +122,7 @@ const isSunday = (day: number) => {
       color: red;
     }
     &:first-child {
-      grid-column-start: v-bind(dayOfWeek);
+      grid-column-start: v-bind(monthStartDay);
     }
   }
 }
