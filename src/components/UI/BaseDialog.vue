@@ -8,6 +8,9 @@
             <h2>Change {{ mode }}</h2>
           </slot>
         </header>
+        <section class="dialog__container" v-if="mode === 'day'">
+          Day: {{ date.day }} Month: {{ date.month }} Year: {{ date.year }}
+        </section>
         <section class="dialog__container" v-if="mode === 'year'">
           <i @click="startValue--" class="fa-solid fa-arrow-left"></i>
           <div @click="confirm(startValue - 1)">{{ startValue - 1 }}</div>
@@ -19,7 +22,6 @@
           class="dialog__container dialog__container--months"
           v-if="mode === 'month'"
         >
-          <!-- <i @click="startValue--" class="fa-solid fa-arrow-left"></i> -->
           <div
             class="dialog__month"
             v-for="n in 12"
@@ -28,9 +30,8 @@
           >
             {{ n }}
           </div>
-          <!-- <i @click="startValue++" class="fa-solid fa-arrow-right"></i> -->
         </section>
-        <menu class="dialog__menu" v-if="!fixed">
+        <menu class="dialog__menu">
           <slot name="actions">
             <base-button @click="tryClose">Close</base-button>
           </slot>
@@ -50,10 +51,6 @@ const props = defineProps({
     type: Boolean,
     required: true,
   },
-  // title: {
-  //   type: String,
-  //   required: false,
-  // },
   fixed: {
     type: Boolean,
     required: false,
@@ -65,7 +62,14 @@ const props = defineProps({
   },
   start: {
     type: Number,
-    required: true,
+    required: false,
+    default: 0,
+  },
+  date: {
+    type: Object,
+    default: () => {
+      return { day: 0, month: 0, year: 0 };
+    },
   },
 });
 
@@ -79,9 +83,6 @@ const confirm = (value: number) => {
   emit("close");
 };
 const tryClose = () => {
-  if (props.fixed) {
-    return;
-  }
   emit("close");
 };
 </script>

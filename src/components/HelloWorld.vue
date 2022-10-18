@@ -17,9 +17,9 @@
       <p>Month:</p>
       <section class="calendar__section">
         <!-- <input type="number" id="year" name="year" v-model="year" /> -->
-        <i @click="month--" class="fa-solid fa-arrow-left"></i>
+        <i @click="monthDecrease" class="fa-solid fa-arrow-left"></i>
         <span @click="openMonthDialog">{{ month }}</span>
-        <i @click="month++" class="fa-solid fa-arrow-right"></i>
+        <i @click="monthIncrease" class="fa-solid fa-arrow-right"></i>
         <base-dialog
           @close="closeMonthDialog"
           :show="monthDialog"
@@ -41,6 +41,7 @@
       </div>
       <div class="dayCount__days">
         <div
+          @click="openDayDialog(n)"
           class="dayCount__item"
           :class="{ 'dayCount__item--sunday': isSunday(n) }"
           v-for="n in daysCount"
@@ -48,6 +49,12 @@
         >
           {{ n }}
         </div>
+        <base-dialog
+          @close="closeDayDialog"
+          :show="dayDialog"
+          mode="day"
+          :date="checkedDate"
+        />
       </div>
     </main>
   </section>
@@ -65,6 +72,15 @@ const month = toRefs(calendarStore).month;
 const weekDays = ["Mon", "Thu", "Wed", "Thu", "Fri", "Sat", "Sun"];
 const yearDialog = ref(false);
 const monthDialog = ref(false);
+const dayDialog = ref(false);
+const checkedDay = ref(0);
+
+const checkedDate = computed(() => {
+  // const dayString =
+  //   checkedDay.value < 10 ? "0" + checkedDay.value : checkedDay.value;
+  // const monthString = month.value < 10 ? "0" + month.value : month.value;
+  return { year, month, day: checkedDay };
+});
 
 const daysCount = computed(() => {
   return new Date(year.value, month.value, 0).getDate();
@@ -78,11 +94,33 @@ const isSunday = (day: number) => {
   return dayOfWeek === 0;
 };
 
+const monthIncrease = () => {
+  month.value++;
+  if (month.value > 12) {
+    month.value = 1;
+    year.value++;
+  }
+};
+const monthDecrease = () => {
+  month.value--;
+  if (month.value <= 0) {
+    month.value = 12;
+    year.value--;
+  }
+};
+
+const openDayDialog = (day: number) => {
+  checkedDay.value = day;
+  dayDialog.value = true;
+};
 const openMonthDialog = () => {
   monthDialog.value = true;
 };
 const openYearDialog = () => {
   yearDialog.value = true;
+};
+const closeDayDialog = () => {
+  dayDialog.value = false;
 };
 const closeMonthDialog = () => {
   monthDialog.value = false;
