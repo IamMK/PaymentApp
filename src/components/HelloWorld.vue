@@ -1,26 +1,28 @@
 <template>
   <section class="calendar">
     <header class="calendar__header">
-      <p>Year:</p>
+      <p>Rok:</p>
       <section class="calendar__section">
         <!-- <input type="number" id="year" name="year" v-model="year" /> -->
         <i @click="year--" class="fa-solid fa-arrow-left"></i>
         <span @click="openYearDialog">{{ year }}</span>
         <i @click="year++" class="fa-solid fa-arrow-right"></i>
         <base-dialog
+          title="Wybór roku"
           @close="closeYearDialog"
           :show="yearDialog"
           mode="year"
           :start="year"
         />
       </section>
-      <p>Month:</p>
+      <p>Miesiąc:</p>
       <section class="calendar__section">
         <!-- <input type="number" id="year" name="year" v-model="year" /> -->
         <i @click="monthDecrease" class="fa-solid fa-arrow-left"></i>
         <span @click="openMonthDialog">{{ month }}</span>
         <i @click="monthIncrease" class="fa-solid fa-arrow-right"></i>
         <base-dialog
+          title="Wybór miesiąca"
           @close="closeMonthDialog"
           :show="monthDialog"
           mode="month"
@@ -50,6 +52,7 @@
           {{ n }}
         </div>
         <base-dialog
+          title="Informacja dzienna"
           @close="closeDayDialog"
           :show="dayDialog"
           mode="day"
@@ -69,7 +72,7 @@ const calendarStore = useCalendarStore();
 
 const year = toRefs(calendarStore).year;
 const month = toRefs(calendarStore).month;
-const weekDays = ["Mon", "Thu", "Wed", "Thu", "Fri", "Sat", "Sun"];
+const weekDays = ["Pon", "Wt", "Śr", "Czw", "Pia", "Sob", "Nied"];
 const yearDialog = ref(false);
 const monthDialog = ref(false);
 const dayDialog = ref(false);

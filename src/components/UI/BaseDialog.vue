@@ -5,11 +5,11 @@
       <dialog class="dialog" open v-if="show">
         <header class="dialog__header">
           <slot name="header">
-            <h2>Change {{ mode }}</h2>
+            <h2>{{ title }}</h2>
           </slot>
         </header>
-        <section class="dialog__container" v-if="mode === 'day'">
-          Day: {{ date.day }} Month: {{ date.month }} Year: {{ date.year }}
+        <section class="dialog__container dupa" v-if="mode === 'day'">
+          <daily-info></daily-info>
         </section>
         <section class="dialog__container" v-if="mode === 'year'">
           <i @click="startValue--" class="fa-solid fa-arrow-left"></i>
@@ -33,7 +33,7 @@
         </section>
         <menu class="dialog__menu">
           <slot name="actions">
-            <base-button @click="tryClose">Close</base-button>
+            <base-button @click="tryClose">Zamknij</base-button>
           </slot>
         </menu>
       </dialog>
@@ -44,6 +44,8 @@
 <script setup lang="ts">
 import { defineProps, defineEmits, ref } from "vue";
 import { useCalendarStore } from "@/store/calendar";
+
+import DailyInfo from "@/components/DailyInfo.vue";
 
 const calendarStore = useCalendarStore();
 const props = defineProps({
@@ -70,6 +72,10 @@ const props = defineProps({
     default: () => {
       return { day: 0, month: 0, year: 0 };
     },
+  },
+  title: {
+    type: String,
+    required: true,
   },
 });
 
