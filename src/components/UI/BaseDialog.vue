@@ -9,7 +9,7 @@
           </slot>
         </header>
         <section class="dialog__container dupa" v-if="mode === 'day'">
-          <daily-info></daily-info>
+          <daily-info :date="date"></daily-info>
         </section>
         <section class="dialog__container" v-if="mode === 'year'">
           <i @click="startValue--" class="fa-solid fa-arrow-left"></i>
