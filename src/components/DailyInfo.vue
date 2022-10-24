@@ -1,8 +1,16 @@
 <template>
-  <form @submit.prevent="setDailyInfo">
-    <fieldset v-for="field in fields" :key="field.description" class="info">
-      <legend>{{ field.description }}</legend>
-      <label v-for="item in field.items" :key="item.description">
+  <form class="form" @submit.prevent="setDailyInfo">
+    <fieldset
+      v-for="field in fields"
+      :key="field.description"
+      class="form__info"
+    >
+      <legend class="form__desc">{{ field.description }}</legend>
+      <label
+        class="form__field"
+        v-for="item in field.items"
+        :key="item.description"
+      >
         <input
           type="radio"
           name="presence"
@@ -88,11 +96,33 @@ const setDailyInfo = () => {
 </script>
 
 <style lang="scss">
-.info {
-  display: flex;
-  flex-direction: column;
-  &__input {
-    margin: 10px;
+.form {
+  width: 100%;
+  max-height: 100%;
+  overflow-y: auto;
+  &__info {
+    display: flex;
+    flex-direction: column;
+    background-color: #00000020;
+    border: none;
+    width: 100%;
+    border-radius: 12px;
+    padding: 1rem;
+  }
+  &__desc {
+    color: $text-color;
+    background-color: #d2001a80;
+    box-shadow: 0 5px 10px $main-color;
+    border-radius: 12px;
+    padding: 3px;
+    margin-bottom: 1rem;
+    width: 100%;
+    text-align: center;
+    transform: translateY(50%);
+  }
+  &__field {
+    // margin: 10px;
+    padding: 0.1em;
   }
 }
 </style>

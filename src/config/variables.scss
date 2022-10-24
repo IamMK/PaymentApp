@@ -1,10 +1,10 @@
 // Light mode - default
 :root {
     // https: //colorhunt.co/palette/867ae9fff5abffceadc449c2
-    --main-color: #867AE9;
-    --sub-color: #FFF5AB;
-    --third-color: #FFCEAD;
-    --text-color: #C449C2;
+    --main-color: #D2001A;
+    --sub-color: #FFFAE7;
+    --background-color: #FFDE00;
+    --text-color: #EFEFEF;
     
 }
 
@@ -15,5 +15,5 @@
 
 $main-color: var(--main-color);
 $sub-color: var(--sub-color);
-$third-color: var(--third-color);
+$background-color: var(--background-color);
 $text-color: var(--text-color);

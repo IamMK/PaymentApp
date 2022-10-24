@@ -8,7 +8,7 @@
             <h2>{{ title }}</h2>
           </slot>
         </header>
-        <section class="dialog__container dupa" v-if="mode === 'day'">
+        <section class="dialog__container" v-if="mode === 'day'">
           <daily-info :date="date"></daily-info>
         </section>
         <section class="dialog__container" v-if="mode === 'year'">
@@ -102,13 +102,17 @@ const tryClose = () => {
   z-index: 100;
   border-radius: 12px;
   border: none;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.26);
+  box-shadow: 0 2px 8px #ffffff;
   padding: 0;
   margin: 0;
   overflow: hidden;
-  background-color: white;
+  background-color: $sub-color;
+  height: 80%;
+  // overflow: visible;
+  // max-height: 100%;
   &__container {
     padding: 1rem;
+    max-height: 70%;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
@@ -123,8 +127,8 @@ const tryClose = () => {
     justify-self: center;
   }
   &__header {
-    background-color: #3a0061;
-    color: white;
+    background-color: $main-color;
+    color: $text-color;
     width: 100%;
     padding: 1rem;
     & h2 {
