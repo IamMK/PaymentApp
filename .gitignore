@@ -2,6 +2,14 @@
 node_modules
 /dist
 
+# appConfig
+src/config/appConfig.ts
+
+# firebase
+firebase.json
+.firebaserc
+.github/workflows
+.firebase
 
 # local env files
 .env.local

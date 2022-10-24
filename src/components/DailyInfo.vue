@@ -73,9 +73,12 @@ const checkHours = (value: number) => (value < 0 ? (value = 0) : value);
 
 const setDailyInfo = () => {
   const dailyData = {
-    year: props.date.year,
-    month: props.date.month,
-    day: props.date.day,
+    year: props.date.year.value,
+    // year: 2022,
+    month: props.date.month.value,
+    // month: 10,
+    day: props.date.day.value,
+    // day: 24,
     group: Group.Vacation,
     value: checked.value,
     hours: 4,
