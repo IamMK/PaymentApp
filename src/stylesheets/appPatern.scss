@@ -1,0 +1,19 @@
+// Light mode - default
+:root {
+    // https: //colorhunt.co/palette/867ae9fff5abffceadc449c2
+    --main-color: #867AE9;
+    --sub-color: #FFF5AB;
+    --third-color: #FFCEAD;
+    --text-color: #C449C2;
+    
+}
+
+// Dark mode - default
+// [data-theme="darkMode"] {
+
+// }
+
+$main-color: var(--main-color);
+$sub-color: var(--sub-color);
+$third-color: var(--third-color);
+$text-color: var(--text-color);
