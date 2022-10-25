@@ -1,34 +1,36 @@
 <template>
   <form class="form" @submit.prevent="setDailyInfo">
-    <fieldset
-      v-for="field in fields"
-      :key="field.description"
-      class="form__info"
-    >
-      <legend class="form__desc">{{ field.description }}</legend>
-      <label
-        class="form__field"
-        v-for="item in field.items"
-        :key="item.description"
+    <div class="form__fields">
+      <fieldset
+        v-for="field in fields"
+        :key="field.description"
+        class="form__info"
       >
-        <input
-          type="radio"
-          name="presence"
-          :value="item.value"
-          v-model="checked"
-        />
-        {{ item.description }}
-      </label>
-      <label v-if="field.numberfield"
-        ><input
-          type="text"
-          inputmode="numeric"
-          pattern="\d*"
-          @change="checkHours(field.hours)"
-          v-model="field.hours"
-        />
-      </label>
-    </fieldset>
+        <legend class="form__desc">{{ field.description }}</legend>
+        <label
+          class="form__field"
+          v-for="item in field.items"
+          :key="item.description"
+        >
+          <input
+            type="radio"
+            name="presence"
+            :value="item.value"
+            v-model="checked"
+          />
+          {{ item.description }}
+        </label>
+        <label v-if="field.numberfield"
+          ><input
+            type="text"
+            inputmode="numeric"
+            pattern="\d*"
+            @change="checkHours(field.hours)"
+            v-model="field.hours"
+          />
+        </label>
+      </fieldset>
+    </div>
     <base-button>Zapisz</base-button>
   </form>
 </template>
@@ -99,7 +101,6 @@ const setDailyInfo = () => {
 .form {
   width: 100%;
   max-height: 100%;
-  overflow-y: auto;
   &__info {
     display: flex;
     flex-direction: column;
@@ -121,8 +122,12 @@ const setDailyInfo = () => {
     transform: translateY(50%);
   }
   &__field {
-    // margin: 10px;
     padding: 0.1em;
+  }
+  &__fields {
+    max-height: 100%;
+    overflow-y: auto;
+    border-radius: 12px;
   }
 }
 </style>

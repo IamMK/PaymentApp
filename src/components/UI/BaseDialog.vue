@@ -7,6 +7,13 @@
           <slot name="header">
             <h2>{{ title }}</h2>
           </slot>
+          <menu class="dialog__menu">
+            <i
+              @click="tryClose"
+              class="fa-sharp fa-solid fa-circle-xmark dialog__close"
+            ></i>
+            <!-- <div >x</div> -->
+          </menu>
         </header>
         <section class="dialog__container" v-if="mode === 'day'">
           <daily-info :date="date"></daily-info>
@@ -31,11 +38,11 @@
             {{ n }}
           </div>
         </section>
-        <menu class="dialog__menu">
+        <!-- <menu class="dialog__menu">
           <slot name="actions">
             <base-button @click="tryClose">Zamknij</base-button>
           </slot>
-        </menu>
+        </menu> -->
       </dialog>
     </transition>
   </teleport>
@@ -108,8 +115,6 @@ const tryClose = () => {
   overflow: hidden;
   background-color: $sub-color;
   height: 80%;
-  // overflow: visible;
-  // max-height: 100%;
   &__container {
     padding: 1rem;
     max-height: 70%;
@@ -123,7 +128,6 @@ const tryClose = () => {
   }
   &__month {
     padding: 2rem;
-    // height: 2rem;
     justify-self: center;
   }
   &__header {
@@ -131,15 +135,20 @@ const tryClose = () => {
     color: $text-color;
     width: 100%;
     padding: 1rem;
+    display: flex;
+    justify-content: space-between;
     & h2 {
       margin: 0;
     }
   }
   &__menu {
-    padding: 1rem;
-    display: flex;
-    justify-content: flex-end;
-    margin: 0;
+    margin: auto 0;
+  }
+  &__close {
+    cursor: pointer;
+    font-size: 28px;
+    height: 28px;
+    line-height: 28px;
   }
 }
 
