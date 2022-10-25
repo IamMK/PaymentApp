@@ -17,6 +17,7 @@
             name="presence"
             :value="item.value"
             v-model="checked"
+            class="form__radio"
           />
           {{ item.description }}
         </label>
@@ -27,6 +28,7 @@
             pattern="\d*"
             @change="checkHours(field.hours)"
             v-model="field.hours"
+            class="form__textfield"
           />
         </label>
       </fieldset>
@@ -89,9 +91,9 @@ const setDailyInfo = () => {
     // month: 10,
     day: props.date.day.value,
     // day: 24,
-    group: Group.Vacation,
-    value: checked.value,
-    hours: 4,
+    group: Group.Vacation, // to do
+    value: checked.value, //to do
+    hours: 4, //to do
   } as userDay;
   userDaysStore.addInfo(dailyData);
 };
@@ -123,11 +125,43 @@ const setDailyInfo = () => {
   }
   &__field {
     padding: 0.1em;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    // justify-content: ;
   }
   &__fields {
     max-height: 100%;
     overflow-y: auto;
     border-radius: 12px;
+  }
+  &__textfield {
+    background-color: #ffde0080;
+    padding: 5px;
+    font-size: medium;
+    width: 100%;
+    text-align: center;
+    border: 2px solid #121212;
+    border-radius: 12px;
+  }
+  &__radio {
+    appearance: none;
+    background-color: transparent;
+    margin-right: 5px;
+    cursor: pointer;
+
+    font: inherit;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #121212;
+    transition: all 0.3s ease;
+
+    &:checked {
+      // color: blue;
+      background-color: #d2001a80;
+      outline: max(1px, 0.15em) solid currentColor;
+      // outline-offset: max(2px, 0.15em);
+    }
   }
 }
 </style>
