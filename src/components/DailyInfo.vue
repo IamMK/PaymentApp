@@ -29,18 +29,27 @@
             @change="checkHours(field.hours)"
             v-model="field.hours"
             class="form__textfield"
+            :disabled="
+              (field.group === Group.Overhours &&
+                !(
+                  checked === Overhours.fifty || checked === Overhours.hundert
+                )) ||
+              (field.group === Group.Presence &&
+                checked !== Presence.notfullday)
+            "
           />
         </label>
       </fieldset>
     </div>
     <base-button>Zapisz</base-button>
+    <!-- <div>{{ test }}</div> -->
   </form>
 </template>
 
 <script setup lang="ts">
 import { defineProps, ref } from "vue";
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
-import { Group, userDay } from "@/types/dailyInfo";
+import { Group, Overhours, Presence, userDay } from "@/types/dailyInfo";
 import { useUserDaysStore } from "@/store/userDays";
 
 const userDaysStore = useUserDaysStore();
@@ -84,16 +93,21 @@ const fields = ref([
 const checkHours = (value: number) => (value < 0 ? (value = 0) : value);
 
 const setDailyInfo = () => {
+  const fieldsFiltered = fields.value.filter((el) => {
+    for (const item of el.items) {
+      console.log(item.value, item.value === checked.value);
+
+      if (item.value === checked.value) return true;
+    }
+  });
+
   const dailyData = {
     year: props.date.year.value,
-    // year: 2022,
     month: props.date.month.value,
-    // month: 10,
     day: props.date.day.value,
-    // day: 24,
-    group: Group.Vacation, // to do
-    value: checked.value, //to do
-    hours: 4, //to do
+    group: fieldsFiltered[0].group,
+    value: checked.value,
+    hours: fieldsFiltered[0].hours,
   } as userDay;
   userDaysStore.addInfo(dailyData);
 };
