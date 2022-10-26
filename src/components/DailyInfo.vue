@@ -22,12 +22,11 @@
           {{ item.description }}
         </label>
         <label v-if="field.numberfield"
-          ><input
-            type="text"
-            inputmode="numeric"
-            pattern="\d*"
-            @change="checkHours(field.hours)"
+          >Ilość godzin<input
+            type="number"
             v-model="field.hours"
+            min="1"
+            max="24"
             class="form__textfield"
             :disabled="
               (field.group === Group.Overhours &&
@@ -64,7 +63,6 @@ const props = defineProps({
 });
 
 const checked = ref("");
-// const overhoursCount = ref(0);
 
 const fields = ref([
   {
@@ -90,7 +88,9 @@ const fields = ref([
   },
 ]);
 
-const checkHours = (value: number) => (value < 0 ? (value = 0) : value);
+// const checkHours = (value: number) => {
+//   return value.replace();
+// };
 
 const setDailyInfo = () => {
   const fieldsFiltered = fields.value.filter((el) => {
