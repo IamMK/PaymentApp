@@ -45,7 +45,10 @@
         <div
           @click="openDayDialog(n)"
           class="dayCount__item"
-          :class="{ 'dayCount__item--sunday': isSunday(n) }"
+          :class="[
+            { 'dayCount__item--sunday': isSunday(n) },
+            { 'dayCount__item--atwork': dayCheck(n) },
+          ]"
           v-for="n in daysCount"
           :key="n"
         >
@@ -60,7 +63,7 @@
         />
       </div>
     </main>
-    <div>{{ userDaysStore.dailyInfo }}</div>
+    <!-- <div>{{ userDaysStore.dailyInfo["5"] }}</div> -->
   </section>
 </template>
 
@@ -114,6 +117,17 @@ const monthDecrease = () => {
     month.value = 12;
     year.value--;
   }
+};
+
+const dayCheck = (day: number) => {
+  const usedDays = [];
+  for (const item of userDaysStore.dailyInfo) {
+    usedDays.push(Number(item.day));
+  }
+  const filteredDays = usedDays.includes(day);
+  // const filteredDays = userDaysStore.dailyInfo.includes({day})
+
+  return filteredDays;
 };
 
 const openDayDialog = (day: number) => {
@@ -177,6 +191,9 @@ onMounted(() => {
     border: 1px solid black;
     &--sunday {
       color: red;
+    }
+    &--atwork {
+      background-color: green;
     }
     &:first-child {
       grid-column-start: v-bind(monthStartDay);

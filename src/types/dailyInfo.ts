@@ -31,8 +31,8 @@ export type dayField = {
 };
 
 export type userDay = {
-  year: number;
-  month: number;
+  year?: number;
+  month?: number;
   day: number;
   group: Group;
   value: Presence | Overhours | Vacation;
