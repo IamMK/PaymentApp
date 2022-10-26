@@ -60,6 +60,7 @@
         />
       </div>
     </main>
+    <div>{{ userDaysStore.dailyInfo }}</div>
   </section>
 </template>
 
@@ -67,8 +68,11 @@
 import { computed, ref, toRefs } from "@vue/reactivity";
 
 import { useCalendarStore } from "@/store/calendar";
+import { onMounted } from "@vue/runtime-dom";
+import { useUserDaysStore } from "@/store/userDays";
 
 const calendarStore = useCalendarStore();
+const userDaysStore = useUserDaysStore();
 
 const year = toRefs(calendarStore).year;
 const month = toRefs(calendarStore).month;
@@ -131,6 +135,18 @@ const closeMonthDialog = () => {
 const closeYearDialog = () => {
   yearDialog.value = false;
 };
+
+const loadDailyInfo = async () => {
+  try {
+    await userDaysStore.fetchDailyData();
+  } catch (error: any) {
+    console.log(error.message);
+  }
+};
+
+onMounted(() => {
+  loadDailyInfo();
+});
 </script>
 
 <style lang="scss">

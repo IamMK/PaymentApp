@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
 
-export const useCalendarStore = defineStore("auth", {
+export const useCalendarStore = defineStore("calendar", {
   state: () => {
     return {
       year: new Date().getFullYear(),

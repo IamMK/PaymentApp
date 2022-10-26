@@ -88,10 +88,6 @@ const fields = ref([
   },
 ]);
 
-// const checkHours = (value: number) => {
-//   return value.replace();
-// };
-
 const setDailyInfo = () => {
   const fieldsFiltered = fields.value.filter((el) => {
     for (const item of el.items) {

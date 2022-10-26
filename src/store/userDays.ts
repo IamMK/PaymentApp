@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { userDay } from "@/types/dailyInfo";
 import { appConfig } from "@/config/appconfig";
+import { useCalendarStore } from "./calendar";
 
 export const useUserDaysStore = defineStore("userDays", {
   state: () => ({
@@ -22,10 +23,27 @@ export const useUserDaysStore = defineStore("userDays", {
       );
 
       if (!response.ok) {
-        // throw new Error(response.statusText);
+        const error = new Error("Failed to fetch Request");
+        throw error;
       }
 
       this.dailyInfo.push(data);
+    },
+    async fetchDailyData() {
+      const response = await fetch(
+        `${appConfig.database}/days/${useCalendarStore().year}/${
+          useCalendarStore().month
+        }.json`
+      );
+      const responseData = await response.json();
+
+      if (!response.ok) {
+        const error = new Error("Failed to fetch Request");
+        throw error;
+      }
+      console.log(responseData);
+
+      this.dailyInfo.push(responseData);
     },
   },
 });
