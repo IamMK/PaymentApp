@@ -35,26 +35,29 @@ export const useUserDaysStore = defineStore("userDays", {
           useCalendarStore().month
         }.json`
       );
+
       const responseData: userDay[] = await response.json();
 
-      if (!response.ok) {
-        const error = new Error("Failed to fetch Request");
-        throw error;
-      }
+      // if (!response.ok) {
+      //   const error = new Error("Failed to fetch Request");
+      //   throw error;
+      // }
 
       const days = [];
 
       for (const key in responseData) {
-        const day: userDay = {
-          day: Number(key),
-          group: responseData[key].group,
-          value: responseData[key].value,
-          hours: responseData[key].hours,
-        };
-        days.push(day);
+        if (responseData[key] != null) {
+          const day: userDay = {
+            day: Number(key),
+            group: responseData[key].group,
+            value: responseData[key].value,
+            hours: responseData[key].hours,
+          };
+          days.push(day);
+        }
       }
 
-      console.log(days);
+      // console.log(days);
 
       this.dailyInfo = days;
     },

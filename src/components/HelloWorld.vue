@@ -42,7 +42,9 @@
         </div>
       </div>
       <div class="dayCount__days">
+        <base-spinner v-if="daysLoading" />
         <div
+          v-else
           @click="openDayDialog(n)"
           class="dayCount__item"
           :class="[
@@ -71,7 +73,7 @@
 import { computed, ref, toRefs } from "@vue/reactivity";
 
 import { useCalendarStore } from "@/store/calendar";
-import { onMounted } from "@vue/runtime-dom";
+import { onMounted, watch } from "@vue/runtime-dom";
 import { useUserDaysStore } from "@/store/userDays";
 
 const calendarStore = useCalendarStore();
@@ -85,10 +87,9 @@ const monthDialog = ref(false);
 const dayDialog = ref(false);
 const checkedDay = ref(0);
 
+const daysLoading = ref(false);
+
 const checkedDate = computed(() => {
-  // const dayString =
-  //   checkedDay.value < 10 ? "0" + checkedDay.value : checkedDay.value;
-  // const monthString = month.value < 10 ? "0" + month.value : month.value;
   return { year, month, day: checkedDay };
 });
 
@@ -151,16 +152,21 @@ const closeYearDialog = () => {
 };
 
 const loadDailyInfo = async () => {
+  daysLoading.value = true;
   try {
     await userDaysStore.fetchDailyData();
   } catch (error: any) {
-    console.log(error.message);
+    console.log(error);
   }
+  daysLoading.value = false;
 };
 
 onMounted(() => {
   loadDailyInfo();
 });
+
+watch(year, loadDailyInfo);
+watch(month, loadDailyInfo);
 </script>
 
 <style lang="scss">
@@ -182,8 +188,10 @@ onMounted(() => {
   width: 100%;
   &__days,
   &__names {
+    width: 100%;
     display: grid;
     grid-template-columns: repeat(7, 1fr);
+    transition: all 0.3s ease;
   }
   &__item {
     // width: calc(100vw / 8);
