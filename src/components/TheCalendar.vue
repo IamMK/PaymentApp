@@ -49,7 +49,7 @@
             { 'dayCount__item--sunday': isSunday(n) },
             `dayCount__item--${dayClass(n)}`,
           ]"
-          v-for="n in daysCount"
+          v-for="n in calendarStore.daysCount"
           :key="n"
         >
           {{ n }}
@@ -90,10 +90,6 @@ const daysLoading = ref(false);
 
 const checkedDate = computed(() => {
   return { year, month, day: checkedDay };
-});
-
-const daysCount = computed(() => {
-  return new Date(year.value, month.value, 0).getDate();
 });
 
 const monthStartDay = computed(() => {
@@ -140,7 +136,6 @@ const dayIsDone = (day: number) => {
   const usedDays = [];
   for (const item of userDaysStore.dailyInfo) {
     usedDays.push(Number(item.day));
-    console.log(day, item.day);
   }
 
   return usedDays.includes(day);

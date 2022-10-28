@@ -16,7 +16,7 @@
           </menu>
         </header>
         <section class="dialog__container" v-if="mode === 'day'">
-          <daily-data v-if="done">Dupa</daily-data>
+          <daily-data v-if="done" :date="date">Dupa</daily-data>
           <daily-info v-else :date="date"></daily-info>
         </section>
         <section class="dialog__container" v-if="mode === 'year'">
