@@ -16,7 +16,7 @@
           </menu>
         </header>
         <section class="dialog__container" v-if="mode === 'day'">
-          <div v-if="done">Dupa</div>
+          <daily-data v-if="done">Dupa</daily-data>
           <daily-info v-else :date="date"></daily-info>
         </section>
         <section class="dialog__container" v-if="mode === 'year'">
@@ -49,6 +49,7 @@ import { defineProps, defineEmits, ref } from "vue";
 import { useCalendarStore } from "@/store/calendar";
 
 import DailyInfo from "@/components/DailyInfo.vue";
+import DailyData from "@/components/DailyData.vue";
 
 const calendarStore = useCalendarStore();
 const props = defineProps({
