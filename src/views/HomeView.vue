@@ -1,16 +1,16 @@
 <template>
   <div class="home">
-    <HelloWorld />
+    <the-calendar />
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from "vue-class-component";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import TheCalendar from "@/components/TheCalendar.vue"; // @ is an alias to /src
 
 @Options({
   components: {
-    HelloWorld,
+    TheCalendar,
   },
 })
 export default class HomeView extends Vue {}

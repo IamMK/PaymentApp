@@ -16,7 +16,8 @@
           </menu>
         </header>
         <section class="dialog__container" v-if="mode === 'day'">
-          <daily-info :date="date"></daily-info>
+          <div v-if="done">Dupa</div>
+          <daily-info v-else :date="date"></daily-info>
         </section>
         <section class="dialog__container" v-if="mode === 'year'">
           <i @click="startValue--" class="fa-solid fa-arrow-left"></i>
@@ -38,11 +39,6 @@
             {{ n }}
           </div>
         </section>
-        <!-- <menu class="dialog__menu">
-          <slot name="actions">
-            <base-button @click="tryClose">Zamknij</base-button>
-          </slot>
-        </menu> -->
       </dialog>
     </transition>
   </teleport>
@@ -83,6 +79,11 @@ const props = defineProps({
   title: {
     type: String,
     required: true,
+  },
+  done: {
+    type: Boolean,
+    required: true,
+    default: false,
   },
 });
 

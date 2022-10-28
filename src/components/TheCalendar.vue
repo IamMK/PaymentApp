@@ -3,7 +3,6 @@
     <header class="calendar__header">
       <p>Rok:</p>
       <section class="calendar__section">
-        <!-- <input type="number" id="year" name="year" v-model="year" /> -->
         <i @click="year--" class="fa-solid fa-arrow-left"></i>
         <span @click="openYearDialog">{{ year }}</span>
         <i @click="year++" class="fa-solid fa-arrow-right"></i>
@@ -17,7 +16,6 @@
       </section>
       <p>Miesiąc:</p>
       <section class="calendar__section">
-        <!-- <input type="number" id="year" name="year" v-model="year" /> -->
         <i @click="monthDecrease" class="fa-solid fa-arrow-left"></i>
         <span @click="openMonthDialog">{{ month }}</span>
         <i @click="monthIncrease" class="fa-solid fa-arrow-right"></i>
@@ -49,7 +47,7 @@
           class="dayCount__item"
           :class="[
             { 'dayCount__item--sunday': isSunday(n) },
-            { 'dayCount__item--atwork': dayCheck(n) },
+            `dayCount__item--${dayClass(n)}`,
           ]"
           v-for="n in daysCount"
           :key="n"
@@ -61,11 +59,11 @@
           @close="closeDayDialog"
           :show="dayDialog"
           mode="day"
+          :done="dayIsDone(checkedDate.day.value)"
           :date="checkedDate"
         />
       </div>
     </main>
-    <!-- <div>{{ userDaysStore.dailyInfo["5"] }}</div> -->
   </section>
 </template>
 
@@ -75,6 +73,7 @@ import { computed, ref, toRefs } from "@vue/reactivity";
 import { useCalendarStore } from "@/store/calendar";
 import { onMounted, watch } from "@vue/runtime-dom";
 import { useUserDaysStore } from "@/store/userDays";
+// import { userDay } from "@/types/dailyInfo";
 
 const calendarStore = useCalendarStore();
 const userDaysStore = useUserDaysStore();
@@ -120,15 +119,31 @@ const monthDecrease = () => {
   }
 };
 
-const dayCheck = (day: number) => {
+const dayClass = (day: number) => {
   const usedDays = [];
   for (const item of userDaysStore.dailyInfo) {
     usedDays.push(Number(item.day));
   }
-  const filteredDays = usedDays.includes(day);
-  // const filteredDays = userDaysStore.dailyInfo.includes({day})
+  const isChecked = usedDays.includes(day);
+  let checkedDay;
 
-  return filteredDays;
+  if (isChecked) {
+    checkedDay = userDaysStore.dailyInfo.filter((el) => {
+      return el.day === day;
+    });
+  } else return;
+
+  return checkedDay[0].group;
+};
+
+const dayIsDone = (day: number) => {
+  const usedDays = [];
+  for (const item of userDaysStore.dailyInfo) {
+    usedDays.push(Number(item.day));
+    console.log(day, item.day);
+  }
+
+  return usedDays.includes(day);
 };
 
 const openDayDialog = (day: number) => {
@@ -200,8 +215,14 @@ watch(month, loadDailyInfo);
     &--sunday {
       color: red;
     }
-    &--atwork {
+    &--presence {
       background-color: green;
+    }
+    &--overhours {
+      background-color: yellow;
+    }
+    &--vacation {
+      background-color: blue;
     }
     &:first-child {
       grid-column-start: v-bind(monthStartDay);
