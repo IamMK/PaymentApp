@@ -32,7 +32,7 @@
       <div class="dayCount__names">
         <div
           class="dayCount__name"
-          :class="{ 'dayCount__item--sunday': item === 'Sun' }"
+          :class="{ 'dayCount__item--sunday': item === 'Nied' }"
           v-for="item in weekDays"
           :key="item"
         >
@@ -182,10 +182,15 @@ watch(month, loadDailyInfo);
 <style lang="scss">
 .calendar {
   &__header {
+    background-color: $main-color;
+    color: $text-color;
+    border: 5px solid $sub-color;
+    border-radius: 15px;
     display: flex;
     flex-direction: column;
     font-size: 25px;
-    margin: 20px;
+    padding: 20px;
+    box-shadow: $sub-color 0px 0px 0px 5px, $sub-color 0px 0px 0px -5px;
   }
   &__section {
     width: 50%;
@@ -196,6 +201,10 @@ watch(month, loadDailyInfo);
 }
 .dayCount {
   width: 100%;
+  background: $sub-color;
+  box-shadow: 0 10px 10px $sub-color, 0 -10px 10px $sub-color;
+  padding: 10px;
+  font-weight: 800;
   &__days,
   &__names {
     width: 100%;
@@ -204,24 +213,55 @@ watch(month, loadDailyInfo);
     transition: all 0.3s ease;
   }
   &__item {
-    // width: calc(100vw / 8);
+    display: flex;
     height: calc(100vw / 7);
-    border: 1px solid black;
+    outline: 1px solid black;
+    align-items: center;
+    margin: 2px;
+    justify-content: center;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+      rgba(0, 0, 0, 0.22) 0px 10px 10px;
     &--sunday {
       color: red;
     }
     &--presence {
-      background-color: green;
+      background: radial-gradient(
+        circle,
+        $sub-color 0%,
+        $sub-color 10%,
+        #1d7b00 100%
+      );
     }
     &--overhours {
       background-color: yellow;
+      background: radial-gradient(
+        circle,
+        $sub-color 0%,
+        $sub-color 10%,
+        #2802b1 100%
+      );
     }
     &--vacation {
-      background-color: blue;
+      background-color: yellow;
+      background: radial-gradient(
+        circle,
+        $sub-color 0%,
+        $sub-color 10%,
+        #b10202 100%
+      );
     }
     &:first-child {
       grid-column-start: v-bind(monthStartDay);
     }
+  }
+  &__name {
+    font-weight: 800;
+    background: #00000010;
+    padding: 5px;
+    margin: 2px;
+    border-radius: 12px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
+      rgba(0, 0, 0, 0.22) 0px 10px 10px;
   }
 }
 </style>
