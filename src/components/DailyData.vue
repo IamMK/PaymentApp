@@ -1,9 +1,13 @@
 <template>
   <section class="daily__data">
     <h2>Wykaz dnia {{ date.day }}.{{ date.month }}.{{ date.year }}:</h2>
-    <h3>Dzienna aktywność: {{ dayInfo.value }}</h3>
-    <p>Ilość przepracowanych godzin: {{ dayInfo.hours }}</p>
-    <p>Ilość godzin nadliczbowych: {{ dayInfo.hours }}</p>
+    <h3>Dzienna aktywność: {{ dayDescription }}</h3>
+    <p v-if="showHoursAtWorkField">
+      Ilość przepracowanych godzin: {{ hoursAtWork }}
+    </p>
+    <p v-if="showOverhoursField">
+      Ilość godzin nadliczbowych: {{ dayInfo.hours }}
+    </p>
     <p>Brutto za dzień: {{ dayPayment.toFixed(2) }}</p>
   </section>
 </template>
@@ -13,6 +17,9 @@ import { computed, defineProps } from "vue";
 import { useUserDaysStore } from "@/store/userDays";
 import { useUserInfo } from "@/store/userInfo";
 import { useCalendarStore } from "@/store/calendar";
+
+import { presence, vacation, overhours } from "@/config/dayInfoFields";
+import { Group, Presence } from "@/types/dailyInfo";
 
 const userDays = useUserDaysStore();
 const userInfo = useUserInfo();
@@ -33,9 +40,28 @@ const dayInfo = computed(() => {
 });
 
 const dayPayment = computed(() => {
-  console.log("Ilość tygodni:", calendarStore.daysAtWork);
-  // console.log();
-
   return userInfo.salaryAmount / calendarStore.daysAtWork;
+});
+
+const dayDescription = computed(() => {
+  const compared = [...presence, ...vacation, ...overhours];
+  const infoField = compared.filter((item) => {
+    return item.value === dayInfo.value.value;
+  });
+  return infoField[0].description;
+});
+
+const hoursAtWork = computed(() => {
+  return dayInfo.value.group === Group.Overhours ||
+    dayInfo.value.value === Presence.atwork
+    ? 8
+    : dayInfo.value.hours;
+});
+
+const showHoursAtWorkField = computed(() => {
+  return dayInfo.value.group != Group.Vacation;
+});
+const showOverhoursField = computed(() => {
+  return dayInfo.value.group === Group.Overhours;
 });
 </script>
