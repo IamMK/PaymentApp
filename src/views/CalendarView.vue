@@ -32,7 +32,7 @@
       <div class="dayCount__names">
         <div
           class="dayCount__name"
-          :class="{ 'dayCount__item--sunday': item === 'Nied' }"
+          :class="{ 'dayCount__item--sunday': item === 'Nd' }"
           v-for="item in weekDays"
           :key="item"
         >
@@ -80,7 +80,7 @@ const userDaysStore = useUserDaysStore();
 
 const year = toRefs(calendarStore).year;
 const month = toRefs(calendarStore).month;
-const weekDays = ["Pon", "Wt", "Śr", "Czw", "Pia", "Sob", "Nied"];
+const weekDays = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"];
 const yearDialog = ref(false);
 const monthDialog = ref(false);
 const dayDialog = ref(false);
@@ -182,15 +182,18 @@ watch(month, loadDailyInfo);
 <style lang="scss">
 .calendar {
   &__header {
+    margin: 5px;
     background-color: $main-color;
     color: $text-color;
-    border: 5px solid $sub-color;
+    // border: 5px solid $background-color;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     font-size: 25px;
     padding: 20px;
-    box-shadow: $sub-color 0px 0px 0px 5px, $sub-color 0px 0px 0px -5px;
+    // box-shadow: $background-color 0px 0px 0px 5px,
+    //   $background-color 0px 0px 0px -5px;
+    box-shadow: $main-color 0 5px 10px;
   }
   &__section {
     width: 50%;
@@ -201,8 +204,8 @@ watch(month, loadDailyInfo);
 }
 .dayCount {
   width: 100%;
-  background: $sub-color;
-  box-shadow: 0 10px 10px $sub-color, 0 -10px 10px $sub-color;
+  // background: $background-color;
+  // box-shadow: 0 10px 10px $background-color;
   padding: 10px;
   font-weight: 800;
   &__days,
@@ -227,8 +230,8 @@ watch(month, loadDailyInfo);
     &--presence {
       background: radial-gradient(
         circle,
-        $sub-color 0%,
-        $sub-color 10%,
+        $background-color 0%,
+        $background-color 10%,
         #1d7b00 100%
       );
     }
@@ -236,8 +239,8 @@ watch(month, loadDailyInfo);
       background-color: yellow;
       background: radial-gradient(
         circle,
-        $sub-color 0%,
-        $sub-color 10%,
+        $background-color 0%,
+        $background-color 10%,
         #2802b1 100%
       );
     }
@@ -245,8 +248,8 @@ watch(month, loadDailyInfo);
       background-color: yellow;
       background: radial-gradient(
         circle,
-        $sub-color 0%,
-        $sub-color 10%,
+        $background-color 0%,
+        $background-color 10%,
         #b10202 100%
       );
     }

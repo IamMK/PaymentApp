@@ -115,7 +115,7 @@ const tryClose = () => {
   padding: 0;
   margin: 0;
   overflow: hidden;
-  background-color: $sub-color;
+  background-color: $background-color;
   height: 80%;
   &__container {
     padding: 1rem;
