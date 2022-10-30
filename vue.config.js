@@ -8,4 +8,8 @@ module.exports = defineConfig({
       },
     },
   },
+  pwa: {
+    name: "PaymentApp",
+    themeColor: "#FFFAE7"
+  }
 });
