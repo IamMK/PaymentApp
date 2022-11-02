@@ -164,7 +164,7 @@ const closeYearDialog = () => {
 const loadDailyInfo = async () => {
   daysLoading.value = true;
   try {
-    await userDaysStore.fetchDailyData();
+    await userDaysStore.fetchMonhlyData();
   } catch (error: any) {
     console.log(error);
   }
@@ -185,14 +185,11 @@ watch(month, loadDailyInfo);
     margin: 5px;
     background-color: $main-color;
     color: $text-color;
-    // border: 5px solid $background-color;
     border-radius: 15px;
     display: flex;
     flex-direction: column;
     font-size: 25px;
     padding: 20px;
-    // box-shadow: $background-color 0px 0px 0px 5px,
-    //   $background-color 0px 0px 0px -5px;
     box-shadow: $main-color 0 5px 10px;
   }
   &__section {
@@ -204,8 +201,6 @@ watch(month, loadDailyInfo);
 }
 .dayCount {
   width: 100%;
-  // background: $background-color;
-  // box-shadow: 0 10px 10px $background-color;
   padding: 10px;
   font-weight: 800;
   &__days,

@@ -9,11 +9,13 @@
       Ilość godzin nadliczbowych: {{ dayInfo.hours }}
     </p>
     <p>Brutto za dzień: {{ dayPayment.toFixed(2) }}</p>
+
+    <base-button @click="editMode">Zmień</base-button>
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from "vue";
+import { computed, defineProps, defineEmits } from "vue";
 import { useUserDaysStore } from "@/store/userDays";
 import { useUserInfo } from "@/store/userInfo";
 import { useCalendarStore } from "@/store/calendar";
@@ -24,6 +26,8 @@ import { Group, Presence } from "@/types/dailyInfo";
 const userDays = useUserDaysStore();
 const userInfo = useUserInfo();
 const calendarStore = useCalendarStore();
+
+const emits = defineEmits(["editMode"]);
 
 const props = defineProps({
   date: {
@@ -50,6 +54,10 @@ const dayDescription = computed(() => {
   });
   return infoField[0].description;
 });
+
+const editMode = () => {
+  emits("editMode");
+};
 
 const hoursAtWork = computed(() => {
   return dayInfo.value.group === Group.Overhours ||

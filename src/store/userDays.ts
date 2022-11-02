@@ -29,7 +29,7 @@ export const useUserDaysStore = defineStore("userDays", {
 
       this.dailyInfo.push({ day: data.day, ...dayData });
     },
-    async fetchDailyData() {
+    async fetchMonhlyData() {
       const response = await fetch(
         `${appConfig.database}/days/${useCalendarStore().year}/${
           useCalendarStore().month
@@ -38,10 +38,10 @@ export const useUserDaysStore = defineStore("userDays", {
 
       const responseData: userDay[] = await response.json();
 
-      // if (!response.ok) {
-      //   const error = new Error("Failed to fetch Request");
-      //   throw error;
-      // }
+      if (!response.ok) {
+        const error = new Error("Failed to fetch Request");
+        throw error;
+      }
 
       const days = [];
 
@@ -56,8 +56,6 @@ export const useUserDaysStore = defineStore("userDays", {
           days.push(day);
         }
       }
-
-      // console.log(days);
 
       this.dailyInfo = days;
     },

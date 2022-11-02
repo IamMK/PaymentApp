@@ -16,7 +16,16 @@
           </menu>
         </header>
         <section class="dialog__container" v-if="mode === 'day'">
-          <daily-data v-if="done" :date="date">Dupa</daily-data>
+          <daily-data
+            v-if="done && !editMode"
+            :date="date"
+            @editMode="editDay"
+          ></daily-data>
+          <daily-info
+            v-else-if="done && editMode"
+            :date="date"
+            edit
+          ></daily-info>
           <daily-info v-else :date="date"></daily-info>
         </section>
         <section class="dialog__container" v-if="mode === 'year'">
@@ -50,6 +59,7 @@ import { useCalendarStore } from "@/store/calendar";
 
 import DailyInfo from "@/components/DailyInfo.vue";
 import DailyData from "@/components/DailyData.vue";
+// import { computed } from "@vue/reactivity";
 
 const calendarStore = useCalendarStore();
 const props = defineProps({
@@ -89,8 +99,13 @@ const props = defineProps({
 });
 
 const startValue = ref(props.start);
+const editMode = ref(false);
 
 const emit = defineEmits(["close"]);
+
+const editDay = () => {
+  editMode.value = true;
+};
 
 const confirm = (value: number) => {
   if (props.mode === "year") calendarStore.year = value;
@@ -98,6 +113,7 @@ const confirm = (value: number) => {
   emit("close");
 };
 const tryClose = () => {
+  editMode.value = false;
   emit("close");
 };
 </script>

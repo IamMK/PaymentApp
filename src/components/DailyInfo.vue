@@ -18,6 +18,7 @@
             :value="item.value"
             v-model="checked"
             class="form__radio"
+            @click="uncheck(item.value)"
           />
           {{ item.description }}
         </label>
@@ -41,12 +42,14 @@
       </fieldset>
     </div>
     <base-button>Zapisz</base-button>
-    <!-- <div>{{ test }}</div> -->
+    <!-- <base-button v-if="edit" @click="changeCheck"
+      >Fabryczne ustawionka</base-button
+    > -->
   </form>
 </template>
 
 <script setup lang="ts">
-import { defineProps, ref } from "vue";
+import { defineProps, onMounted, ref } from "vue";
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence, userDay } from "@/types/dailyInfo";
 import { useUserDaysStore } from "@/store/userDays";
@@ -60,9 +63,14 @@ const props = defineProps({
       return { day: 0, month: 0, year: 0 };
     },
   },
+  edit: {
+    type: Boolean,
+    default: false,
+  },
 });
 
 const checked = ref("");
+const previousCheck = ref("");
 
 const fields = ref([
   {
@@ -88,11 +96,19 @@ const fields = ref([
   },
 ]);
 
+const changeDayInfo = () => {
+  const checkedDay = userDaysStore.dailyInfo.filter((el) => {
+    return el.day === props.date.day.value;
+  });
+  checked.value = checkedDay[0].value;
+  const group = fields.value.find((el) => el.group === checkedDay[0].group);
+  if (group)
+    fields.value[fields.value.indexOf(group)].hours = checkedDay[0].hours;
+};
+
 const setDailyInfo = () => {
   const fieldsFiltered = fields.value.filter((el) => {
     for (const item of el.items) {
-      console.log(item.value, item.value === checked.value);
-
       if (item.value === checked.value) return true;
     }
   });
@@ -107,6 +123,17 @@ const setDailyInfo = () => {
   } as userDay;
   userDaysStore.addInfo(dailyData);
 };
+
+const uncheck = (val: string) => {
+  previousCheck.value = checked.value;
+  if (val === previousCheck.value) {
+    checked.value = "";
+  }
+};
+
+onMounted(() => {
+  if (props.edit) changeDayInfo();
+});
 </script>
 
 <style lang="scss">
