@@ -27,7 +27,19 @@ export const useUserDaysStore = defineStore("userDays", {
         throw error;
       }
 
-      this.dailyInfo.push({ day: data.day, ...dayData });
+      let dayIndex = null;
+
+      for (const [index, item] of this.dailyInfo.entries()) {
+        if (item.day === data.day) {
+          dayIndex = index;
+        }
+      }
+
+      if (dayIndex !== null) {
+        this.dailyInfo[dayIndex] = { day: data.day, ...dayData };
+      } else {
+        this.dailyInfo.push({ day: data.day, ...dayData });
+      }
     },
     async fetchMonhlyData() {
       const response = await fetch(
