@@ -165,7 +165,7 @@ const loadDailyInfo = async () => {
   daysLoading.value = true;
   try {
     await userDaysStore.fetchMonhlyData();
-  } catch (error: any) {
+  } catch (error: string | unknown) {
     console.log(error);
   }
   daysLoading.value = false;

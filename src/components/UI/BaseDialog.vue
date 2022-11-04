@@ -60,7 +60,6 @@ import { useCalendarStore } from "@/store/calendar";
 import DailyInfo from "@/components/UI/DialogViews/DailyInfo.vue";
 import DailyData from "@/components/UI/DialogViews/DailyData.vue";
 import YearChange from "./DialogViews/YearChange.vue";
-// import { computed } from "@vue/reactivity";
 
 const calendarStore = useCalendarStore();
 const props = defineProps({
