@@ -2,6 +2,7 @@ import { defineStore } from "pinia";
 import { userDay } from "@/types/dailyInfo";
 import { appConfig } from "@/config/appconfig";
 import { useCalendarStore } from "./calendar";
+import { useAuthStore } from "./auth";
 
 export const useUserDaysStore = defineStore("userDays", {
   state: () => ({
@@ -9,13 +10,14 @@ export const useUserDaysStore = defineStore("userDays", {
   }),
   actions: {
     async addInfo(data: userDay) {
+      const userId = useAuthStore().userId;
       const dayData = {
         group: data.group,
         value: data.value,
         hours: data.hours,
       };
       const response = await fetch(
-        `${appConfig.database}/days/${data.year}/${data.month}/${data.day}.json`,
+        `${appConfig.database}/days/${userId}/${data.year}/${data.month}/${data.day}.json`,
         {
           method: "PUT",
           body: JSON.stringify(dayData),
@@ -42,8 +44,9 @@ export const useUserDaysStore = defineStore("userDays", {
       }
     },
     async fetchMonhlyData() {
+      const userId = useAuthStore().userId;
       const response = await fetch(
-        `${appConfig.database}/days/${useCalendarStore().year}/${
+        `${appConfig.database}/days/${userId}/${useCalendarStore().year}/${
           useCalendarStore().month
         }.json`
       );
@@ -72,8 +75,9 @@ export const useUserDaysStore = defineStore("userDays", {
       this.dailyInfo = days;
     },
     deleteDayInfo(data: { year: number; month: number; day: number }) {
+      const userId = useAuthStore().userId;
       fetch(
-        `${appConfig.database}/days/${data.year}/${data.month}/${data.day}.json`,
+        `${appConfig.database}/days/${data.year}/${userId}/${data.month}/${data.day}.json`,
         {
           method: "DELETE",
         }

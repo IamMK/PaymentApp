@@ -20,3 +20,15 @@
   min-height: 100vh;
 }
 </style>
+
+<script setup lang="ts">
+import { onBeforeMount } from "@vue/runtime-core";
+
+import { useAuthStore } from "@/store/auth";
+
+const authStore = useAuthStore();
+
+onBeforeMount(() => {
+  authStore.tryLogin();
+});
+</script>
