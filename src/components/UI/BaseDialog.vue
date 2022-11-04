@@ -12,7 +12,6 @@
               @click="tryClose"
               class="fa-sharp fa-solid fa-circle-xmark dialog__close"
             ></i>
-            <!-- <div >x</div> -->
           </menu>
         </header>
         <section class="dialog__container" v-if="mode === 'day'">
@@ -34,6 +33,7 @@
           <div @click="confirm(startValue)">{{ startValue }}</div>
           <div @click="confirm(startValue + 1)">{{ startValue + 1 }}</div>
           <i @click="startValue++" class="fa-solid fa-arrow-right"></i>
+          <!-- Odczyt emitów -->
         </section>
         <section
           class="dialog__container dialog__container--months"
@@ -57,8 +57,8 @@
 import { defineProps, defineEmits, ref } from "vue";
 import { useCalendarStore } from "@/store/calendar";
 
-import DailyInfo from "@/components/DailyInfo.vue";
-import DailyData from "@/components/DailyData.vue";
+import DailyInfo from "@/components/UI/DialogViews/DailyInfo.vue";
+import DailyData from "@/components/UI/DialogViews/DailyData.vue";
 // import { computed } from "@vue/reactivity";
 
 const calendarStore = useCalendarStore();

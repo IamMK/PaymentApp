@@ -11,6 +11,7 @@
     <p>Brutto za dzień: {{ dayPayment.toFixed(2) }}</p>
 
     <base-button @click="editMode">Zmień</base-button>
+    <base-button @click="deleteDayInfo">Usuń</base-button>
   </section>
 </template>
 
@@ -54,6 +55,16 @@ const dayDescription = computed(() => {
   });
   return infoField[0].description;
 });
+
+const deleteDayInfo = () => {
+  // console.log(props.date);
+
+  userDays.deleteDayInfo({
+    year: props.date.year.value,
+    month: props.date.month.value,
+    day: props.date.day.value,
+  });
+};
 
 const editMode = () => {
   emits("editMode");
