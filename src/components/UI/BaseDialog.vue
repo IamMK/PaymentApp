@@ -2,7 +2,12 @@
   <teleport to="body">
     <div v-if="show" @click="tryClose" class="backdrop"></div>
     <transition name="dialog">
-      <dialog class="dialog" open v-if="show">
+      <dialog
+        class="dialog"
+        :class="{ 'dialog--days': !done && mode === 'day' }"
+        open
+        v-if="show"
+      >
         <header class="dialog__header">
           <slot name="header">
             <h2>{{ title }}</h2>
@@ -28,12 +33,7 @@
           <daily-info v-else :date="date"></daily-info>
         </section>
         <section class="dialog__container" v-if="mode === 'year'">
-          <i @click="startValue--" class="fa-solid fa-arrow-left"></i>
-          <div @click="confirm(startValue - 1)">{{ startValue - 1 }}</div>
-          <div @click="confirm(startValue)">{{ startValue }}</div>
-          <div @click="confirm(startValue + 1)">{{ startValue + 1 }}</div>
-          <i @click="startValue++" class="fa-solid fa-arrow-right"></i>
-          <!-- Odczyt emitów -->
+          <year-change :startValue="start" @confirm="confirm"></year-change>
         </section>
         <section
           class="dialog__container dialog__container--months"
@@ -59,6 +59,7 @@ import { useCalendarStore } from "@/store/calendar";
 
 import DailyInfo from "@/components/UI/DialogViews/DailyInfo.vue";
 import DailyData from "@/components/UI/DialogViews/DailyData.vue";
+import YearChange from "./DialogViews/YearChange.vue";
 // import { computed } from "@vue/reactivity";
 
 const calendarStore = useCalendarStore();
@@ -98,7 +99,7 @@ const props = defineProps({
   },
 });
 
-const startValue = ref(props.start);
+// const startValue = ref(props.start);
 const editMode = ref(false);
 
 const emit = defineEmits(["close"]);
@@ -132,7 +133,11 @@ const tryClose = () => {
   margin: 0;
   overflow: hidden;
   background-color: $background-color;
-  height: 80%;
+  height: auto;
+  max-height: 80%;
+  &--days {
+    height: 80%;
+  }
   &__container {
     padding: 1rem;
     max-height: 70%;

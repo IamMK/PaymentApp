@@ -72,8 +72,6 @@ export const useUserDaysStore = defineStore("userDays", {
       this.dailyInfo = days;
     },
     deleteDayInfo(data: { year: number; month: number; day: number }) {
-      // console.log(data);
-
       fetch(
         `${appConfig.database}/days/${data.year}/${data.month}/${data.day}.json`,
         {
@@ -82,15 +80,9 @@ export const useUserDaysStore = defineStore("userDays", {
       ).then(() => {
         let dayIndex = null;
         for (const [index, item] of this.dailyInfo.entries()) {
-          if (item.day === data.day) {
-            dayIndex = index;
-          }
+          if (item.day === data.day) dayIndex = index;
         }
-        if (dayIndex !== null) {
-          console.log(dayIndex);
-
-          console.log(this.dailyInfo.splice(dayIndex, 1));
-        }
+        if (dayIndex !== null) this.dailyInfo.splice(dayIndex, 1);
       });
     },
   },
