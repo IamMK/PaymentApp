@@ -32,23 +32,15 @@ const modeClass = props.mode != null ? "base__container--" + props.mode : "";
   width: 100%;
   height: 100%;
   padding: 20px;
+  text-align: justify;
+  &--auth {
+    padding: 20px;
+  }
   &--flat {
     background-color: none;
   }
-  &--auth {
-    padding: 3rem;
-  }
-}
-
-@media (max-width: $breakpoint-tablet) {
-  .base__container {
-    &--auth {
-      padding: 20px;
-    }
-    & h1 {
-      text-align: center;
-    }
-    text-align: justify;
+  & h1 {
+    text-align: center;
   }
 }
 </style>

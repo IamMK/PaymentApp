@@ -5,6 +5,9 @@
     --sub-color: #FFDE00;
     --background-color: #FFFAE7;
     --text-color: #EFEFEF;
+
+    --button-background: #141414;
+    --button-text: #e2e2e2;
     
 }
 
@@ -19,3 +22,6 @@ $main-color: var(--main-color);
 $sub-color: var(--sub-color);
 $background-color: var(--background-color);
 $text-color: var(--text-color);
+
+$button-background: var(--button-background);
+$button-text: var(--button-text);

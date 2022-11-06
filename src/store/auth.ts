@@ -38,11 +38,16 @@ export const useAuthStore = defineStore("auth", {
         }
       );
       const responseData = await response.json();
-
       if (!response.ok) {
-        const error = new Error(
-          responseData.message || "Failed to authenticate."
-        );
+        let error = "" as string | Error;
+        if (authType === "signUp") {
+          error = new Error(
+            responseData.message ||
+              "Wystąpił błąd podczas rejestracji. E-mail jest już używany."
+          );
+        } else {
+          error = new Error(responseData.message || "Błąd logowana");
+        }
         throw error;
       }
 

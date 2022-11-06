@@ -36,47 +36,28 @@ const modeClass = props.mode != null ? "button--" + props.mode : "";
   text-decoration: none;
   padding: 0.75rem 1.5rem;
   font: inherit;
-  background-color: #000;
-  border: 1px solid #fff;
-  color: #fff;
+  background-color: $button-background;
+  border: 1px solid $button-text;
+  color: $button-text;
   cursor: pointer;
   border-radius: 30px;
   margin: 0.5rem;
   display: inline-block;
   transition: all 0.5s ease-in-out;
-  &:hover,
-  &:active {
-    background-color: #fff;
-    border-color: #000;
-    color: #fff;
+  &:hover {
+    background-color: $button-text;
+    border-color: $button-background;
+    color: $button-background;
   }
   &--flat {
     background-color: transparent;
-    color: #fff;
+    color: $button-background;
     border: 1px solid transparent;
     &:hover,
     &:active {
       background-color: transparent;
-      color: #000;
-      border: 1px solid #000;
+      border: 1px solid $button-background;
     }
   }
-  &--outline {
-    background-color: transparent;
-    border-color: #000;
-    color: #000;
-    border: 1px solid #000;
-    &:hover,
-    &:active {
-      background-color: #fff;
-    }
-  }
-}
-
-.flat:hover,
-.flat:active,
-.outline:hover,
-.outline:active {
-  background-color: #edd2ff;
 }
 </style>

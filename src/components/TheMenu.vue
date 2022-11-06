@@ -86,7 +86,6 @@ const changeMenu = () => {
         >
       </li>
     </ul>
-    <!-- <i class="logout icon fa-solid fa-right-from-bracket"></i> -->
   </nav>
 </template>
 
@@ -154,10 +153,10 @@ const changeMenu = () => {
   & &__hamburger {
     color: $text-color;
     font-size: 20px;
-    height: 50px;
+    height: 55px;
     width: 2rem;
     text-align: center;
-    line-height: 50px;
+    line-height: 55px;
     cursor: pointer;
 
     position: absolute;

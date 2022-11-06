@@ -9,7 +9,6 @@ const router = useRouter();
 const formData = reactive({
   email: "",
   password: "",
-  rePassword: "",
 });
 
 const validEmail = computed(() =>
@@ -25,13 +24,6 @@ const special = computed(() =>
   /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(formData.password)
 );
 const passwordLength = computed(() => formData.password.length >= 8);
-const passwordConfirmed = computed(() => {
-  if (data.mode === "login") return true;
-  if (formData.password.length === 0) return false;
-  console.log(formData.password.length === 0);
-
-  return formData.password === formData.rePassword;
-});
 const formIsValid = (): boolean => {
   return (
     validEmail.value &&
@@ -39,8 +31,7 @@ const formIsValid = (): boolean => {
     lowerCase.value &&
     digits.value &&
     special.value &&
-    passwordLength.value &&
-    passwordConfirmed.value
+    passwordLength.value
   );
 };
 
@@ -82,13 +73,12 @@ const submitForm = async () => {
   const authData = reactive({
     email: formData.email,
     password: formData.password,
-    password2: formData.rePassword,
   });
 
   try {
     await authStore.authenticate({ ...authData, authType: data.mode });
   } catch (err: string | null | unknown) {
-    data.error = err || "Failed to authenticate. Try later.";
+    data.error = err;
   }
 
   data.isLoading = false;
@@ -108,125 +98,125 @@ const formReset = () => {
 </script>
 
 <template>
-  <div>
+  <section class="auth">
+    <header class="auth__header">
+      <transition name="header" mode="out-in">
+        <h1 v-if="data.mode === 'login'">Logowanie</h1>
+        <h1 v-else>Rejestracja</h1>
+      </transition>
+    </header>
+
+    <main class="card" auth-padding>
+      <form @submit.prevent="submitForm">
+        <div class="form-control">
+          <label for="email"
+            ><i class="fa-solid fa-envelope"></i> <span>E-mail</span></label
+          ><input
+            type="email"
+            name="email"
+            id="email"
+            v-model.trim="formData.email"
+            @focus="formReset"
+          />
+        </div>
+        <div class="form-control">
+          <label for="password"
+            ><i class="fa-solid fa-key"></i> <span>Password</span></label
+          ><input
+            type="password"
+            name="password"
+            id="password"
+            v-model.trim="formData.password"
+            @focus="formReset"
+          />
+        </div>
+        <p v-if="!formIsValid() && sendTry && data.mode === 'login'">
+          Wprowadź prawidłowe dane logowania.
+        </p>
+        <p
+          v-if="
+            formIsValid() &&
+            sendTry &&
+            data.mode === 'login' &&
+            authStore.registered
+          "
+        >
+          Now you can LogIn with your email and password.
+        </p>
+        <base-button>{{ submitButtonCaption }}</base-button>
+        <base-button type="button" mode="flat" @click="switchAuthMode">{{
+          switchModeButtonCaption
+        }}</base-button>
+      </form>
+    </main>
+    <transition name="confirm" mode="out-in">
+      <aside
+        mode="flat"
+        v-if="data.mode === 'signup'"
+        class="card card--dialog"
+      >
+        <p class="rules" :class="validEmail ? 'rules--ok' : 'rules--ng'">
+          Email ok
+        </p>
+        <p class="rules" :class="passwordLength ? 'rules--ok' : 'rules--ng'">
+          Password has at least 8 letters
+        </p>
+        <p class="rules" :class="upperCase ? 'rules--ok' : 'rules--ng'">
+          Password contains at least one capital letter
+        </p>
+        <p class="rules" :class="lowerCase ? 'rules--ok' : 'rules--ng'">
+          Password contains at least one lower letter
+        </p>
+        <p class="rules" :class="digits ? 'rules--ok' : 'rules--ng'">
+          Password constains numbers
+        </p>
+        <p class="rules" :class="special ? 'rules--ok' : 'rules--ng'">
+          Password contains special char
+        </p>
+      </aside>
+    </transition>
+
     <base-dialog
       :show="!!data.error"
-      title="An error occured"
+      title="Błąd autoryzacji"
       @close="handleError"
     >
       <p>{{ data.error }}</p>
     </base-dialog>
-    <base-dialog title="Logowanie..." :show="data.isLoading" fixed>
+    <base-dialog
+      :title="data.mode === 'login' ? 'Logowanie...' : 'Rejestracja...'"
+      :show="data.isLoading"
+      fixed
+    >
       <base-spinner></base-spinner>
     </base-dialog>
-    <base-card mode="row">
-      <base-container class="card__element" auth-padding>
-        <form @submit.prevent="submitForm">
-          <div class="form-control">
-            <label for="email"
-              ><i class="fa-solid fa-envelope"></i> <span>E-mail</span></label
-            ><input
-              type="email"
-              name="email"
-              id="email"
-              v-model.trim="formData.email"
-              @focus="formReset"
-            />
-          </div>
-          <div class="form-control">
-            <label for="password"
-              ><i class="fa-solid fa-key"></i> <span>Password</span></label
-            ><input
-              type="password"
-              name="password"
-              id="password"
-              v-model.trim="formData.password"
-              @focus="formReset"
-            />
-          </div>
-          <transition name="confirm" mode="out-in">
-            <div class="form-control" v-if="data.mode === 'signup'">
-              <label for="re-password"
-                ><i class="fa-solid fa-key"></i>
-                <span>Confirm Password</span></label
-              ><input
-                type="password"
-                name="re-password"
-                id="re-password"
-                v-model.trim="formData.rePassword"
-                @focus="formReset"
-              />
-            </div>
-          </transition>
-          <p v-if="!formIsValid() && sendTry">
-            Please enter a valid email and password.
-          </p>
-          <p
-            v-if="
-              formIsValid() &&
-              sendTry &&
-              data.mode === 'login' &&
-              authStore.registered
-            "
-          >
-            Now you can LogIn with your email and password.
-          </p>
-          <base-button>{{ submitButtonCaption }}</base-button>
-          <base-button type="button" mode="flat" @click="switchAuthMode">{{
-            switchModeButtonCaption
-          }}</base-button>
-        </form>
-      </base-container>
-      <transition name="confirm" mode="out-in">
-        <base-container
-          mode="flat"
-          v-if="data.mode === 'signup'"
-          class="card__element card__element--dialog"
-        >
-          <p class="rules" :class="validEmail ? 'rules--ok' : 'rules--ng'">
-            Email ok
-          </p>
-          <p class="rules" :class="passwordLength ? 'rules--ok' : 'rules--ng'">
-            Password has at least 8 letters
-          </p>
-          <p class="rules" :class="upperCase ? 'rules--ok' : 'rules--ng'">
-            Password contains at least one capital letter
-          </p>
-          <p class="rules" :class="lowerCase ? 'rules--ok' : 'rules--ng'">
-            Password contains at least one lower letter
-          </p>
-          <p class="rules" :class="digits ? 'rules--ok' : 'rules--ng'">
-            Password constains numbers
-          </p>
-          <p class="rules" :class="special ? 'rules--ok' : 'rules--ng'">
-            Password contains special char
-          </p>
-          <p
-            class="rules"
-            :class="passwordConfirmed ? 'rules--ok' : 'rules--ng'"
-          >
-            Password Confirmed
-          </p>
-        </base-container>
-      </transition>
-    </base-card>
-  </div>
+  </section>
 </template>
 
 <style scoped lang="scss">
+.auth {
+  &__header {
+    width: 100%;
+    background-color: $main-color;
+    color: $text-color;
+    padding: 20px;
+  }
+}
 .card {
-  &__element {
-    margin: 1rem;
+  margin: 1rem;
+  width: auto;
+  background-color: $background-color;
+  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 1);
+  height: 100%;
+  padding: 20px;
+  text-align: justify;
 
-    width: auto;
-
-    &--dialog {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      font-weight: 700;
-    }
+  &--dialog {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    font-weight: 700;
   }
 }
 
@@ -236,6 +226,7 @@ form {
 
 .form-control {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   margin: 0.5rem 0;
@@ -244,10 +235,10 @@ form {
 
 label {
   display: flex;
-  flex-direction: column;
   font-weight: bold;
+  flex-direction: row;
+  width: auto;
   margin-bottom: 0.5rem;
-  width: 120px;
   padding: 10px;
 
   & i {
@@ -260,44 +251,42 @@ label {
 input,
 textarea {
   display: block;
-  width: 300px;
-  // font: inherit;
   border: 1px solid #ccc;
   padding: 0.15rem;
   border-radius: 10px;
   font-size: large;
   font-weight: 400;
+  width: 100%;
 }
 
 input:focus,
 textarea:focus {
   border-color: $text-color;
-  background-color: $background-color;
-  color: $text-color;
+  background-color: $sub-color;
   outline: none;
 }
 
-.confirm-enter-from {
-  opacity: 0;
-  transform: scaleY(0);
-}
-.confirm-leave-to {
-  transform: scaleY(0);
-  opacity: 0;
-}
+// .confirm-enter-from {
+//   opacity: 0;
+//   transform: scaleY(0);
+// }
+// .confirm-leave-to {
+//   transform: scaleY(0);
+//   opacity: 0;
+// }
 
-.confirm-enter-active {
-  transition: all 0.3s ease-out;
-}
-.confirm-leave-active {
-  transition: all 0.3s ease-in;
-}
+// .confirm-enter-active {
+//   transition: all 0.3s ease-out;
+// }
+// .confirm-leave-active {
+//   transition: all 0.3s ease-in;
+// }
 
-.confirm-enter-to,
-.confirm-leave-from {
-  opacity: 1;
-  transform: scaleY(1);
-}
+// .confirm-enter-to,
+// .confirm-leave-from {
+//   opacity: 1;
+//   transform: scaleY(1);
+// }
 
 .rules {
   transition: all 0.2s ease-in-out;
@@ -309,16 +298,25 @@ textarea:focus {
   }
 }
 
-@media (max-width: $breakpoint-tablet) {
-  .form-control {
-    flex-direction: column;
-  }
-  label {
-    flex-direction: row;
-    width: auto;
-  }
-  input {
-    width: 100%;
-  }
+.header-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+.header-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+.header-enter-active {
+  transition: all 0.3s ease-out;
+}
+.header-leave-active {
+  transition: all 0.3s ease-in;
+}
+
+.header-enter-to,
+.header-leave-from {
+  opacity: 1;
+  transform: translateY(0);
 }
 </style>
