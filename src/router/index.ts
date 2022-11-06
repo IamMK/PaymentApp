@@ -19,6 +19,17 @@ const routes: Array<RouteRecordRaw> = [
     component: () =>
       import(/* webpackChunkName: "about" */ "../views/AuthView.vue"),
   },
+  {
+    path: "/logout",
+    name: "logout",
+    meta: { requiresAuth: true },
+    redirect: () => {
+      console.log("Dupa");
+
+      useAuthStore().logout();
+      return { name: "auth" };
+    },
+  },
 ];
 
 const router = createRouter({
