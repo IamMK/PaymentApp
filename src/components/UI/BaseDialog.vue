@@ -32,12 +32,12 @@
           ></daily-info>
           <daily-info v-else :date="date"></daily-info>
         </section>
-        <section class="dialog__container" v-if="mode === 'year'">
+        <section class="dialog__container" v-else-if="mode === 'year'">
           <year-change :startValue="start" @confirm="confirm"></year-change>
         </section>
         <section
           class="dialog__container dialog__container--months"
-          v-if="mode === 'month'"
+          v-else-if="mode === 'month'"
         >
           <div
             class="dialog__month"
@@ -48,6 +48,7 @@
             {{ n }}
           </div>
         </section>
+        <section v-else class="dialog__container"><slot></slot></section>
       </dialog>
     </transition>
   </teleport>

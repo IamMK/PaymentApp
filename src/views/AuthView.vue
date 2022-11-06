@@ -116,7 +116,7 @@ const formReset = () => {
     >
       <p>{{ data.error }}</p>
     </base-dialog>
-    <base-dialog title="Authenticating..." :show="data.isLoading" fixed>
+    <base-dialog title="Logowanie..." :show="data.isLoading" fixed>
       <base-spinner></base-spinner>
     </base-dialog>
     <base-card mode="row">
