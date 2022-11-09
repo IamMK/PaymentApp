@@ -54,7 +54,7 @@ import { onBeforeMount, watch } from "@vue/runtime-core";
 import TheMenu from "./components/TheMenu.vue";
 
 import { useAuthStore } from "@/store/auth";
-import { useRouter } from "vue-router";
+import { RouterView, useRouter } from "vue-router";
 
 const authStore = useAuthStore();
 const router = useRouter();

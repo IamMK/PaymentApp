@@ -1,11 +1,18 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import CalendarView from "@/views/CalendarView.vue";
+import MainView from "@/views/MainView.vue";
 import { useAuthStore } from "@/store/auth";
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
     name: "home",
+    meta: { requiresUnauth: true },
+    component: MainView,
+  },
+  {
+    path: "/calendar",
+    name: "calendar",
     meta: { requiresAuth: true },
     component: CalendarView,
   },

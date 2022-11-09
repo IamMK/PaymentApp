@@ -16,6 +16,12 @@ const state = reactive({
       href: "home",
     },
     {
+      name: "Kalendarz",
+      icon: "fa-regular fa-calendar-days",
+      tooltip: "Kalendarz",
+      href: "calendar",
+    },
+    {
       name: "Kalkulator",
       icon: "fa-solid fa-sack-dollar",
       tooltip: "Kalkulator",
