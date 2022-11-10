@@ -2,7 +2,7 @@
 
 export const APP = {
   deferredInstall: null as any,
-  init() {
+  init(): void {
     if ("serviceWorker" in navigator) {
       //register our service worker
       navigator.serviceWorker
