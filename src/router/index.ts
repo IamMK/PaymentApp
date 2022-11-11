@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import CalendarView from "@/views/CalendarView.vue";
 import MainView from "@/views/MainView.vue";
 import { useAuthStore } from "@/store/auth";
+import { useAppStore } from "@/store/app";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -45,13 +46,19 @@ const router = createRouter({
 });
 
 router.beforeEach((to, _, next) => {
+  let nextPoint = null as { name: string } | null;
   if (to.meta.requiresAuth && !useAuthStore().isAuthenticated) {
-    next({ name: "auth" });
+    nextPoint = { name: "auth" };
   } else if (to.meta.requiresUnauth && useAuthStore().isAuthenticated) {
-    next({ name: "calendar" });
+    nextPoint = { name: "calendar" };
   } else {
-    next();
+    nextPoint = null;
   }
+
+  if (nextPoint === null) next();
+  else next(nextPoint);
+
+  useAppStore().menuActive = false;
 });
 
 export default router;

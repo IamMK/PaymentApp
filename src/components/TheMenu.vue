@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { reactive, ref } from "vue";
+import { computed, reactive } from "vue";
 import { useAppStore } from "@/store/app";
 
 const appStore = useAppStore();
 
-const menuActive = ref(appStore.menuActive);
+const menuActive = computed(() => appStore.menuActive);
 
 const state = reactive({
-  menuActive: false,
   menuItems: [
     {
       name: "Home",
@@ -37,7 +36,7 @@ const state = reactive({
 });
 
 const changeMenu = () => {
-  menuActive.value = !menuActive.value;
+  appStore.menuActive = !appStore.menuActive;
 };
 </script>
 
