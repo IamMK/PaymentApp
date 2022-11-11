@@ -1,3 +1,5 @@
+import { useRouter } from "vue-router";
+
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: Array<string>;
   readonly userChoice: Promise<{
@@ -6,6 +8,8 @@ interface BeforeInstallPromptEvent extends Event {
   }>;
   prompt(): Promise<void>;
 }
+
+const router = useRouter();
 
 export const APP = {
   deferredInstall: null as BeforeInstallPromptEvent | null,
@@ -27,8 +31,9 @@ export const APP = {
         console.log(data, "from service worker");
       });
 
-      // window.addEventListener("appinstalled", () => {
-      // });
+      window.addEventListener("appinstalled", () => {
+        router.push({ name: "calendar" });
+      });
       window.addEventListener("beforeinstallprompt", (ev) => {
         ev.preventDefault();
         APP.deferredInstall = ev as BeforeInstallPromptEvent;
