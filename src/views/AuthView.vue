@@ -45,13 +45,13 @@ const data = reactive({
 });
 
 const submitButtonCaption = computed(() => {
-  if (data.mode === "login") return "Login";
-  else return "Sign up";
+  if (data.mode === "login") return "Zaloguj";
+  else return "Zarejestruj";
 });
 
 const switchModeButtonCaption = computed(() => {
-  if (data.mode === "login") return "Signup instead";
-  else return "Login instead";
+  if (data.mode === "login") return "Rejestracja";
+  else return "Logowanie";
 });
 
 const switchAuthMode = () => {
