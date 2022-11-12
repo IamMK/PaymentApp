@@ -66,6 +66,7 @@ export const useAuthStore = defineStore("auth", {
         userId: responseData.localId,
         didAutoLogout: false,
       });
+      // router.push({ name: "home" });
     },
     tryLogin() {
       const token = localStorage.getItem("token");
@@ -75,7 +76,7 @@ export const useAuthStore = defineStore("auth", {
       const expiresIn = ((tokenExpiration as unknown as number) -
         new Date().getTime()) as number;
 
-      if (expiresIn < 0) return;
+      if (expiresIn < 0) return false;
 
       TIMER = setTimeout(this.autoLogout, expiresIn);
 
@@ -84,6 +85,8 @@ export const useAuthStore = defineStore("auth", {
           token,
           userId,
         });
+        return true;
+        // router.push({ name: "home" });
       }
     },
     setUser(userData: userData) {

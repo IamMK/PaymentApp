@@ -83,7 +83,7 @@ const submitForm = async () => {
 
   data.isLoading = false;
   if (formIsValid() && !data.error) {
-    if (data.mode === "login") router.push({ name: "home" });
+    if (data.mode === "login") router.push({ name: "calendar" });
     if (data.mode === "signup") data.mode = "login";
   }
 };

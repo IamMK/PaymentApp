@@ -60,14 +60,14 @@ const authStore = useAuthStore();
 const router = useRouter();
 
 onBeforeMount(() => {
-  authStore.tryLogin();
+  if (authStore.tryLogin()) router.push({ name: "calendar" });
 });
 
 watch(
   () => authStore.didAutoLogout,
   async (curVal, oldVal) => {
     if (curVal && curVal !== oldVal) {
-      router.replace("/coaches");
+      router.replace({ name: "main" });
     }
   }
 );
