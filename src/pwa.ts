@@ -49,5 +49,11 @@ export const APP = {
       });
     }
   },
+  checkInstallation() {
+    if ("getInstalledRelatedApps" in navigator) {
+      return true;
+    }
+    return false;
+  },
 };
 document.addEventListener("DOMContentLoaded", APP.init);

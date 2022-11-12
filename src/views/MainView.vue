@@ -18,7 +18,17 @@
           <p>
             Jeśli chcesz mieć mnie zawsze pod ręką, pobierz darmową aplikację.
           </p>
-          <base-button class="button" @click="installApp">Pobierz</base-button>
+          <base-button
+            v-if="isAppInstalled"
+            class="button"
+            mode="flat"
+            link
+            to="auth"
+            >Zaloguj się</base-button
+          >
+          <base-button v-else class="button" @click="installApp"
+            >Pobierz</base-button
+          >
         </article>
       </section>
     </main>
@@ -27,10 +37,15 @@
 
 <script setup lang="ts">
 import { APP } from "@/pwa";
+import { computed } from "vue";
 
 const installApp = () => {
   APP.startChromeInstall();
 };
+
+const isAppInstalled = computed(() => {
+  return APP.checkInstallation();
+});
 </script>
 
 <style lang="scss">
