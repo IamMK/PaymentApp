@@ -1,6 +1,7 @@
 <template>
   <section class="daily__data">
     <h2>Wykaz dnia {{ date.day }}.{{ date.month }}.{{ date.year }}:</h2>
+    <!-- Święto do dopisania jeśli będzie -->
     <h3>Dzienna aktywność: {{ dayDescription }}</h3>
     <p v-if="showHoursAtWorkField">
       Ilość przepracowanych godzin: {{ hoursAtWork }}
