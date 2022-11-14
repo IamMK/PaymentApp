@@ -46,7 +46,7 @@
           @click="openDayDialog(n)"
           class="dayCount__item"
           :class="[
-            { 'dayCount__item--sunday': isSunday(n) },
+            { 'dayCount__item--sunday': isHoliday(n) },
             `dayCount__item--${dayClass(n)}`,
           ]"
           v-for="n in calendarStore.daysCount"
@@ -95,9 +95,10 @@ const checkedDate = computed(() => {
 const monthStartDay = computed(() => {
   return calendarStore.monthStartDay;
 });
-const isSunday = (day: number) => {
+const isHoliday = (day: number) => {
   const dayOfWeek = new Date(year.value, month.value - 1, day).getDay();
-  return dayOfWeek === 0;
+  const holidays = calendarStore.holidaysAtMonth;
+  if (dayOfWeek === 0 || holidays.includes(day)) return true;
 };
 
 const monthIncrease = () => {
