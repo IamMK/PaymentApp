@@ -4,7 +4,12 @@ export const useAppStore = defineStore("app", {
   state: () => {
     return {
       theme: localStorage.getItem("theme") || ("" as string),
-      menuActive: false,
+      isMenuActive: false,
     };
+  },
+  actions: {
+    toogleMenu() {
+      this.isMenuActive = !this.isMenuActive;
+    },
   },
 });

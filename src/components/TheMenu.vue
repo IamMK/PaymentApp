@@ -1,132 +1,81 @@
 <script setup lang="ts">
-import { computed, reactive } from "vue";
+import { computed } from "vue";
 import { useAppStore } from "@/store/app";
 import { useAuthStore } from "@/store/auth";
+
+import { menuItems } from "@/config/menuItems";
+import { ItemVisibility } from "@/types/menuTypes";
 
 const appStore = useAppStore();
 const authStore = useAuthStore();
 
-const menuActive = computed(() => appStore.menuActive);
-
-enum ItemVisibility {
-  always,
-  auth,
-  unauth,
-}
-
-const state = reactive({
-  menuItems: [
-    {
-      name: "Home",
-      icon: "fa-solid fa-house",
-      tooltip: "Home",
-      href: "home",
-      visible: ItemVisibility.always,
-    },
-    {
-      name: "Profil",
-      icon: "fa-solid fa-user",
-      tooltip: "Profil",
-      href: "home",
-      visible: ItemVisibility.auth,
-    },
-    {
-      name: "Kalendarz",
-      icon: "fa-regular fa-calendar-days",
-      tooltip: "Kalendarz",
-      href: "calendar",
-      visible: ItemVisibility.auth,
-    },
-    {
-      name: "Kalkulator",
-      icon: "fa-solid fa-sack-dollar",
-      tooltip: "Kalkulator",
-      href: "home",
-      visible: ItemVisibility.auth,
-    },
-    {
-      name: "Wyloguj",
-      icon: "fa-solid fa-right-from-bracket",
-      tooltip: "Wyloguj",
-      href: "logout",
-      visible: ItemVisibility.auth,
-    },
-    {
-      name: "Autoryzacja",
-      icon: "fa-solid fa-user",
-      tooltip: "Autoryzacja",
-      href: "auth",
-      visible: ItemVisibility.unauth,
-    },
-  ],
-});
-
-const changeMenu = () => {
-  appStore.menuActive = !appStore.menuActive;
-};
-
 const menuVisibleItems = computed(() => {
-  return state.menuItems.filter((item) => {
-    if (item.visible === ItemVisibility.always) return true;
-    else if (item.visible === ItemVisibility.auth && authStore.isAuthenticated)
-      return true;
-    else if (
-      item.visible === ItemVisibility.unauth &&
-      !authStore.isAuthenticated
-    )
-      return true;
-    else return false;
+  return menuItems.filter((item) => {
+    const isAlwaysVisible = item.visible === ItemVisibility.always;
+    const forAuthenticated =
+      item.visible === ItemVisibility.auth && authStore.isAuthenticated;
+    const forUnauthenticated =
+      item.visible === ItemVisibility.unauth && !authStore.isAuthenticated;
+
+    if (isAlwaysVisible || forAuthenticated || forUnauthenticated) return true;
+    return false;
   });
 });
 </script>
 
 <template>
-  <nav class="navigation" :class="{ 'navigation--active': menuActive }">
-    <figure class="logo" :class="{ 'logo--active': menuActive }">
-      <div class="logo__icon" :class="{ 'logo__icon--active': menuActive }">
+  <nav
+    class="navigation"
+    :class="{ 'navigation--active': appStore.isMenuActive }"
+  >
+    <figure class="logo" :class="{ 'logo--active': appStore.isMenuActive }">
+      <div
+        class="logo__icon"
+        :class="{ 'logo__icon--active': appStore.isMenuActive }"
+      >
         <i class="fa-solid fa-laptop-code"></i>
         <figcaption class="logo__name">PaymentApp</figcaption>
       </div>
     </figure>
 
     <i
-      @click="changeMenu"
+      @click="appStore.toogleMenu"
       class="fa-solid navigation__hamburger"
       :class="[
-        { 'navigation__hamburger--active': menuActive },
-        menuActive ? 'fa-x' : 'fa-bars',
+        { 'navigation__hamburger--active': appStore.isMenuActive },
+        appStore.isMenuActive ? 'fa-x' : 'fa-bars',
       ]"
       id="btn"
     ></i>
 
     <ul
       class="navigation__wrapper"
-      :class="{ 'navigation__wrapper--active': menuActive }"
+      :class="{ 'navigation__wrapper--active': appStore.isMenuActive }"
     >
       <li
         class="navigation__item"
-        :class="{ 'navigation__item--active': menuActive }"
+        :class="{ 'navigation__item--active': appStore.isMenuActive }"
         v-for="item in menuVisibleItems"
         :key="item.name"
       >
         <router-link
           class="navigation__link"
-          :class="{ 'navigation__link--active': menuActive }"
+          :class="{ 'navigation__link--active': appStore.isMenuActive }"
           :to="{ name: item.href }"
         >
           <i
-            :class="[item.icon, { 'icon--active': menuActive }]"
+            :class="[item.icon, { 'icon--active': appStore.isMenuActive }]"
             class="icon"
           ></i>
           <span
             class="navigation__linkName"
-            :class="{ 'navigation__linkName--active': menuActive }"
+            :class="{ 'navigation__linkName--active': appStore.isMenuActive }"
             >{{ item.name }}</span
           >
         </router-link>
         <span
           class="navigation__tooltip"
-          :class="{ 'navigation__tooltip--active': menuActive }"
+          :class="{ 'navigation__tooltip--active': appStore.isMenuActive }"
           >{{ item.tooltip }}</span
         >
       </li>

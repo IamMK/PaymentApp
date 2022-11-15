@@ -58,7 +58,7 @@ router.beforeEach((to, _, next) => {
   if (nextPoint === null) next();
   else next(nextPoint);
 
-  useAppStore().menuActive = false;
+  useAppStore().isMenuActive = false;
 });
 
 export default router;
