@@ -28,11 +28,8 @@ const menuVisibleItems = computed(() => {
     class="navigation"
     :class="{ 'navigation--active': appStore.isMenuActive }"
   >
-    <figure class="logo" :class="{ 'logo--active': appStore.isMenuActive }">
-      <div
-        class="logo__icon"
-        :class="{ 'logo__icon--active': appStore.isMenuActive }"
-      >
+    <figure class="logo">
+      <div class="logo__icon">
         <i class="fa-solid fa-laptop-code"></i>
         <figcaption class="logo__name">PaymentApp</figcaption>
       </div>
@@ -41,43 +38,21 @@ const menuVisibleItems = computed(() => {
     <i
       @click="appStore.toogleMenu"
       class="fa-solid navigation__hamburger"
-      :class="[
-        { 'navigation__hamburger--active': appStore.isMenuActive },
-        appStore.isMenuActive ? 'fa-x' : 'fa-bars',
-      ]"
+      :class="appStore.isMenuActive ? 'fa-x' : 'fa-bars'"
       id="btn"
     ></i>
 
-    <ul
-      class="navigation__wrapper"
-      :class="{ 'navigation__wrapper--active': appStore.isMenuActive }"
-    >
+    <ul class="navigation__wrapper">
       <li
         class="navigation__item"
-        :class="{ 'navigation__item--active': appStore.isMenuActive }"
         v-for="item in menuVisibleItems"
         :key="item.name"
       >
-        <router-link
-          class="navigation__link"
-          :class="{ 'navigation__link--active': appStore.isMenuActive }"
-          :to="{ name: item.href }"
-        >
-          <i
-            :class="[item.icon, { 'icon--active': appStore.isMenuActive }]"
-            class="icon"
-          ></i>
-          <span
-            class="navigation__linkName"
-            :class="{ 'navigation__linkName--active': appStore.isMenuActive }"
-            >{{ item.name }}</span
-          >
+        <router-link class="navigation__link" :to="{ name: item.href }">
+          <i :class="item.icon" class="icon"></i>
+          <span class="navigation__linkName">{{ item.name }}</span>
         </router-link>
-        <span
-          class="navigation__tooltip"
-          :class="{ 'navigation__tooltip--active': appStore.isMenuActive }"
-          >{{ item.tooltip }}</span
-        >
+        <span class="navigation__tooltip">{{ item.tooltip }}</span>
       </li>
     </ul>
   </nav>
@@ -104,11 +79,6 @@ const menuVisibleItems = computed(() => {
     line-height: 50px;
     text-align: center;
     transition: all 0.5s ease;
-
-    &--active {
-      margin-left: 0;
-      width: 50px;
-    }
   }
 
   & .logo {
@@ -123,11 +93,6 @@ const menuVisibleItems = computed(() => {
       opacity: 0;
       pointer-events: none;
       transition: all 0.5s ease;
-
-      &--active {
-        opacity: 1;
-        pointer-events: none;
-      }
     }
 
     & i {
@@ -138,9 +103,6 @@ const menuVisibleItems = computed(() => {
     &__name {
       font-size: 20px;
       font-weight: 400;
-    }
-    &--active {
-      transform: scale(1);
     }
   }
 
@@ -158,11 +120,6 @@ const menuVisibleItems = computed(() => {
     left: 50%;
     transform: translateX(-50%);
     transition: all 0.5s ease;
-
-    &--active {
-      left: 90%;
-      transform: translateX(100%);
-    }
   }
 
   &__link {
@@ -185,12 +142,6 @@ const menuVisibleItems = computed(() => {
     width: 0;
     pointer-events: none;
     transition: all 0.5s ease;
-
-    &--active {
-      width: calc(100% - 50px);
-      opacity: 1;
-      pointer-events: auto;
-    }
   }
 
   &__wrapper {
@@ -208,10 +159,6 @@ const menuVisibleItems = computed(() => {
       top: 50%;
       transition: 0.5s ease;
       opacity: 1;
-    }
-
-    &--active {
-      margin: 0 5px;
     }
   }
   &__tooltip {
@@ -232,37 +179,38 @@ const menuVisibleItems = computed(() => {
     pointer-events: none;
     opacity: 0;
     display: block;
-
-    &--active {
-      display: none;
-    }
   }
 
   &--active {
     width: 240px;
-  }
-}
-
-.logout {
-  min-width: 50px;
-
-  position: absolute;
-  bottom: 6px;
-  left: 50%;
-  font-size: 20px;
-  height: 50px;
-  width: 50px;
-  text-align: center;
-  line-height: 50px;
-  transform: translateX(-50%);
-  transition: all 0.5s ease;
-
-  &--active {
-    left: 88%;
-  }
-
-  & i {
-    color: $text-color;
+    & .icon {
+      margin-left: 0;
+      width: 50px;
+    }
+    & .navigation {
+      &__tooltip {
+        display: none;
+      }
+      &__item {
+        margin: 0 5px;
+      }
+      &__linkName {
+        width: calc(100% - 50px);
+        opacity: 1;
+        pointer-events: auto;
+      }
+      &__hamburger {
+        left: 90%;
+        transform: translateX(100%);
+      }
+    }
+    & .logo {
+      transform: scale(1);
+      &__icon {
+        opacity: 1;
+        pointer-events: none;
+      }
+    }
   }
 }
 
@@ -279,22 +227,23 @@ const menuVisibleItems = computed(() => {
 
     & &__hamburger {
       transform: translateX(100%);
-
-      &--active {
-        transform: translateX(-50%);
-      }
     }
 
     & .icon {
       display: none;
-      &--active {
-        display: initial;
-      }
     }
 
     &--active {
       transform: translateX(0);
       width: 100%;
+      & .icon {
+        display: initial;
+      }
+      & .navigation {
+        &__hamburger {
+          transform: translateX(-50%);
+        }
+      }
     }
   }
 }
