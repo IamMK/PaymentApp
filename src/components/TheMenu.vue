@@ -80,11 +80,6 @@ const menuVisibleItems = computed(() => {
     transition: all 0.5s ease;
   }
 
-  & i {
-    font-size: 28px;
-    margin-right: 5px;
-  }
-
   & .icon {
     @include shape(100%, 50px, 12px);
     display: none;
@@ -136,6 +131,11 @@ const menuVisibleItems = computed(() => {
       opacity: 0;
       pointer-events: none;
       transition: all 0.5s ease;
+    }
+
+    & i {
+      font-size: 28px;
+      margin-right: 5px;
     }
 
     &__name {

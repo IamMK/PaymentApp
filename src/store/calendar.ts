@@ -1,74 +1,12 @@
 import { defineStore } from "pinia";
+import { holidays } from "@/config/dayInfoFields";
 
 export const useCalendarStore = defineStore("calendar", {
   state: () => {
     return {
       year: new Date().getFullYear(),
       month: new Date().getMonth() + 1,
-      holidays: [
-        {
-          month: 1,
-          days: [
-            {
-              day: 1,
-              name: "Nowy Rok",
-            },
-            {
-              day: 6,
-              name: "Trzech Króli",
-            },
-          ],
-        },
-        {
-          month: 5,
-          days: [
-            {
-              day: 1,
-              name: "Święto Pracy",
-            },
-            {
-              day: 3,
-              name: "Święto Konstytucji",
-            },
-          ],
-        },
-        {
-          month: 8,
-          days: [
-            {
-              day: 15,
-              name: "Święto Wojska Polskiego",
-            },
-          ],
-        },
-        {
-          month: 11,
-          days: [
-            {
-              day: 1,
-              name: "Wszystkich Świętych",
-            },
-            {
-              day: 11,
-              name: "Święto Niepodległości",
-            },
-          ],
-        },
-        {
-          month: 12,
-          days: [
-            {},
-            {
-              day: 25,
-              name: "Pierwszy Dzień Świąt Bożego Narodzenia",
-            },
-            {
-              day: 26,
-              name: "Drugi Dzień Świąt Bożego Narodzenia",
-            },
-          ],
-        },
-      ],
+      holidays,
     };
   },
   getters: {
