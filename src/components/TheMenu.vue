@@ -60,78 +60,56 @@ const menuVisibleItems = computed(() => {
 
 <style lang="scss">
 .navigation {
-  transform: translateX(-100%);
-  width: 0px;
-
-  height: 100%;
+  @include position(fixed, 0, $l: 0, $z: 10);
+  @include shape(0px, 100%);
   background-color: $main-color;
-  position: fixed;
-  top: 0;
-  left: 0;
   padding: 6px 14px;
   text-align: left;
+  transform: translateX(-100%);
   transition: all 0.5s ease;
-  z-index: 10;
-
-  .icon {
-    display: none;
-    height: 50px;
-    min-width: 50px;
-    width: 100%;
-    border-radius: 12px;
-    line-height: 50px;
-    text-align: center;
-    transition: all 0.5s ease;
-  }
-
-  & .logo {
-    transform: scale(0);
-    transition: all 0.5s ease;
-    &__icon {
-      color: $text-color;
-      display: flex;
-      height: 50px;
-      width: 100%;
-      align-items: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: all 0.5s ease;
-    }
-
-    & i {
-      font-size: 28px;
-      margin-right: 5px;
-    }
-
-    &__name {
-      font-size: 20px;
-      font-weight: 400;
-    }
-  }
 
   & &__hamburger {
+    @include shape(2rem, 55px);
+    @include position(absolute, $t: 5px, $l: 50%);
     color: $text-color;
-    font-size: 20px;
-    height: 55px;
-    width: 2rem;
-    text-align: center;
-    line-height: 55px;
     cursor: pointer;
-
-    position: absolute;
-    top: 6px;
-    left: 50%;
+    font-size: 20px;
+    line-height: 55px;
+    text-align: center;
     transform: translateX(100%);
     transition: all 0.5s ease;
   }
 
+  & i {
+    font-size: 28px;
+    margin-right: 5px;
+  }
+
+  & .icon {
+    @include shape(100%, 50px, 12px);
+    display: none;
+    line-height: 50px;
+    min-width: 50px;
+    text-align: center;
+    transition: all 0.5s ease;
+  }
+
+  &__item {
+    min-height: 50px;
+    line-height: 50px;
+    list-style: none;
+    position: relative;
+    width: 100%;
+    transition: all 0.5s ease;
+  }
+
   &__link {
+    border-radius: 12px;
+    align-items: center;
     color: $text-color;
     display: flex;
-    align-items: center;
     text-decoration: none;
     transition: all 0.5s ease;
-    border-radius: 12px;
     white-space: nowrap;
 
     &:hover {
@@ -142,24 +120,39 @@ const menuVisibleItems = computed(() => {
 
   &__linkName {
     opacity: 0;
-    width: 0;
     pointer-events: none;
     transition: all 0.5s ease;
+    width: 0;
+  }
+
+  & .logo {
+    transform: scale(0);
+    transition: all 0.5s ease;
+    &__icon {
+      @include shape(100%, 50px);
+      align-items: center;
+      color: $text-color;
+      display: flex;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.5s ease;
+    }
+
+    &__name {
+      font-size: 20px;
+      font-weight: 400;
+    }
+
+    &__tooltip {
+      display: none;
+    }
   }
 
   &__wrapper {
     height: calc(90% - 100px);
+    margin-top: 20px;
     overflow-y: auto;
     overflow-x: hidden;
-    margin-top: 20px;
-  }
-  &__item {
-    position: relative;
-    list-style: none;
-    width: 100%;
-    min-height: 50px;
-    line-height: 50px;
-    transition: all 0.5s ease;
   }
 
   &--active {
@@ -170,20 +163,6 @@ const menuVisibleItems = computed(() => {
       margin-left: 0;
       width: 50px;
     }
-    & .navigation {
-      &__item {
-        margin: 0 5px;
-      }
-      &__linkName {
-        width: calc(100% - 50px);
-        opacity: 1;
-        pointer-events: auto;
-      }
-      &__hamburger {
-        left: 90%;
-        transform: translateX(-50%);
-      }
-    }
     & .logo {
       transform: scale(1);
       &__icon {
@@ -191,48 +170,26 @@ const menuVisibleItems = computed(() => {
         pointer-events: none;
       }
     }
-  }
-}
-
-// change code for mobile first
-@media (min-width: $breakpoint-tablet) {
-  .navigation {
-    transform: translateX(0);
-    width: 78px;
-
-    &__item {
-      &:hover .navigation__tooltip {
-        top: 50%;
-        transition: 0.5s ease;
+    & .navigation {
+      &__item {
+        margin: 0 5px;
+      }
+      &__linkName {
         opacity: 1;
+        pointer-events: auto;
+        width: calc(100% - 50px);
+      }
+      &__hamburger {
+        left: 90%;
+        transform: translateX(-50%);
       }
     }
-
-    &__tooltip {
-      z-index: 10;
-      position: absolute;
-      left: 100px;
-      top: 0;
-      transform: translateY(-50%);
-      height: 35px;
-      line-height: 35px;
-      width: 122px;
-      background: $text-color;
-      color: $main-color;
-      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-      border-radius: 6px;
-      text-align: center;
-      transition: 0.5s;
-      pointer-events: none;
-      opacity: 0;
-      display: block;
-    }
-
-    &__wrapper {
-      height: auto;
-      overflow-y: initial;
-      overflow-x: initial;
-    }
+  }
+}
+@media (min-width: $breakpoint-tablet) {
+  .navigation {
+    width: 78px;
+    transform: translateX(0);
 
     & &__hamburger {
       transform: translateX(-50%);
@@ -240,6 +197,35 @@ const menuVisibleItems = computed(() => {
 
     & .icon {
       display: initial;
+    }
+
+    &__item {
+      &:hover .navigation__tooltip {
+        opacity: 1;
+        top: 50%;
+        transition: 0.5s ease;
+      }
+    }
+
+    &__tooltip {
+      @include position(absolute, $t: 0, $l: 100px, $z: 10);
+      @include shape(122px, 35px, 6px);
+      background: $text-color;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      color: $main-color;
+      display: block;
+      line-height: 35px;
+      opacity: 0;
+      pointer-events: none;
+      text-align: center;
+      transform: translateY(-50%);
+      transition: 0.5s;
+    }
+
+    &__wrapper {
+      height: auto;
+      overflow-y: initial;
+      overflow-x: initial;
     }
 
     &--active {
