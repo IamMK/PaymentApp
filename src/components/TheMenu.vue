@@ -60,8 +60,10 @@ const menuVisibleItems = computed(() => {
 
 <style lang="scss">
 .navigation {
+  transform: translateX(-100%);
+  width: 0px;
+
   height: 100%;
-  width: 78px;
   background-color: $main-color;
   position: fixed;
   top: 0;
@@ -72,6 +74,7 @@ const menuVisibleItems = computed(() => {
   z-index: 10;
 
   .icon {
+    display: none;
     height: 50px;
     min-width: 50px;
     width: 100%;
@@ -118,7 +121,7 @@ const menuVisibleItems = computed(() => {
     position: absolute;
     top: 6px;
     left: 50%;
-    transform: translateX(-50%);
+    transform: translateX(100%);
     transition: all 0.5s ease;
   }
 
@@ -145,6 +148,9 @@ const menuVisibleItems = computed(() => {
   }
 
   &__wrapper {
+    height: calc(90% - 100px);
+    overflow-y: auto;
+    overflow-x: hidden;
     margin-top: 20px;
   }
   &__item {
@@ -154,43 +160,17 @@ const menuVisibleItems = computed(() => {
     min-height: 50px;
     line-height: 50px;
     transition: all 0.5s ease;
-
-    &:hover .navigation__tooltip {
-      top: 50%;
-      transition: 0.5s ease;
-      opacity: 1;
-    }
-  }
-  &__tooltip {
-    z-index: 10;
-    position: absolute;
-    left: 100px;
-    top: 0;
-    transform: translateY(-50%, -50%);
-    height: 35px;
-    line-height: 35px;
-    width: 122px;
-    background: $text-color;
-    color: $main-color;
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
-    border-radius: 6px;
-    text-align: center;
-    transition: 0.5s;
-    pointer-events: none;
-    opacity: 0;
-    display: block;
   }
 
   &--active {
-    width: 240px;
+    transform: translateX(0);
+    width: 100%;
     & .icon {
+      display: initial;
       margin-left: 0;
       width: 50px;
     }
     & .navigation {
-      &__tooltip {
-        display: none;
-      }
       &__item {
         margin: 0 5px;
       }
@@ -201,7 +181,7 @@ const menuVisibleItems = computed(() => {
       }
       &__hamburger {
         left: 90%;
-        transform: translateX(100%);
+        transform: translateX(-50%);
       }
     }
     & .logo {
@@ -214,34 +194,63 @@ const menuVisibleItems = computed(() => {
   }
 }
 
-@media (max-width: $breakpoint-tablet) {
+// change code for mobile first
+@media (min-width: $breakpoint-tablet) {
   .navigation {
-    transform: translateX(-100%);
-    width: 0px;
+    transform: translateX(0);
+    width: 78px;
+
+    &__item {
+      &:hover .navigation__tooltip {
+        top: 50%;
+        transition: 0.5s ease;
+        opacity: 1;
+      }
+    }
+
+    &__tooltip {
+      z-index: 10;
+      position: absolute;
+      left: 100px;
+      top: 0;
+      transform: translateY(-50%);
+      height: 35px;
+      line-height: 35px;
+      width: 122px;
+      background: $text-color;
+      color: $main-color;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      text-align: center;
+      transition: 0.5s;
+      pointer-events: none;
+      opacity: 0;
+      display: block;
+    }
 
     &__wrapper {
-      height: calc(90% - 100px);
-      overflow-y: auto;
-      overflow-x: hidden;
+      height: auto;
+      overflow-y: initial;
+      overflow-x: initial;
     }
 
     & &__hamburger {
-      transform: translateX(100%);
+      transform: translateX(-50%);
     }
 
     & .icon {
-      display: none;
+      display: initial;
     }
 
     &--active {
       transform: translateX(0);
-      width: 100%;
-      & .icon {
-        display: initial;
-      }
+      width: 240px;
       & .navigation {
         &__hamburger {
-          transform: translateX(-50%);
+          transform: translateX(100%);
+        }
+        &__tooltip {
+          display: none;
         }
       }
     }
