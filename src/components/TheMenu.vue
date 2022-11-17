@@ -142,10 +142,10 @@ const menuVisibleItems = computed(() => {
       font-size: 20px;
       font-weight: 400;
     }
+  }
 
-    &__tooltip {
-      display: none;
-    }
+  &__tooltip {
+    display: none;
   }
 
   &__wrapper {

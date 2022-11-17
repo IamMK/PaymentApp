@@ -27,9 +27,9 @@ export const APP = {
         console.log(data, "from service worker");
       });
 
-      // window.addEventListener("appinstalled", () => {
-      // It's probably depreciated when you are copying this code, but you could know this listener exists
-      // });
+      window.addEventListener("appinstalled", () => {
+        APP.deferredInstall = null;
+      });
       window.addEventListener("beforeinstallprompt", (ev) => {
         ev.preventDefault();
         APP.deferredInstall = ev as BeforeInstallPromptEvent;
@@ -49,11 +49,20 @@ export const APP = {
       });
     }
   },
-  checkInstallation() {
-    if ("getInstalledRelatedApps" in navigator) {
-      return true;
-    }
-    return false;
-  },
+  // async checkInstallation() {
+  //   // if ("getInstalledRelatedApps" in navigator) {
+  //   //   if (navigator.getInstalledRelatedApps()) {
+  //   //     return true;
+  //   //   }
+  //   //   return false;
+  //   // },
+  //   // if ("getInstalledRelatedApps" in navigator) {
+  //   //   const relatedApps = await navigator["getInstalledRelatedApps"];
+  //   //   relatedApps.forEach((app: { id: any; platform: any; url: any; }) => {
+  //   //     console.log(app.id, app.platform, app.url);
+  //   //   });
+  //   // }
+  //   console.log(navigator);
+  // },
 };
 document.addEventListener("DOMContentLoaded", APP.init);

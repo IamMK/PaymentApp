@@ -156,22 +156,22 @@ const formReset = () => {
         class="card card--dialog"
       >
         <p class="rules" :class="validEmail ? 'rules--ok' : 'rules--ng'">
-          Email ok
+          Email prawidłowy
         </p>
         <p class="rules" :class="passwordLength ? 'rules--ok' : 'rules--ng'">
-          Password has at least 8 letters
+          Hasło zawiera minimum 8 znaków
         </p>
         <p class="rules" :class="upperCase ? 'rules--ok' : 'rules--ng'">
-          Password contains at least one capital letter
+          Hasło zawiera minumum jedną wielką literę
         </p>
         <p class="rules" :class="lowerCase ? 'rules--ok' : 'rules--ng'">
-          Password contains at least one lower letter
+          Hasło zawiera minumum jedną małą literę
         </p>
         <p class="rules" :class="digits ? 'rules--ok' : 'rules--ng'">
-          Password constains numbers
+          Hasło zawiera liczby
         </p>
         <p class="rules" :class="special ? 'rules--ok' : 'rules--ng'">
-          Password contains special char
+          Hasło zawiera znak specjalny
         </p>
       </aside>
     </transition>
