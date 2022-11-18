@@ -7,7 +7,7 @@ export const presence = [
   },
   {
     value: Presence.notfullday,
-    description: "Niepełna ilość godzin",
+    description: "Inna ilość godzin",
   },
 ] as dayField[];
 

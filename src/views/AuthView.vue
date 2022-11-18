@@ -162,10 +162,10 @@ const formReset = () => {
           Hasło zawiera minimum 8 znaków
         </p>
         <p class="rules" :class="upperCase ? 'rules--ok' : 'rules--ng'">
-          Hasło zawiera minumum jedną wielką literę
+          Hasło zawiera minimum jedną wielką literę
         </p>
         <p class="rules" :class="lowerCase ? 'rules--ok' : 'rules--ng'">
-          Hasło zawiera minumum jedną małą literę
+          Hasło zawiera minimum jedną małą literę
         </p>
         <p class="rules" :class="digits ? 'rules--ok' : 'rules--ng'">
           Hasło zawiera liczby

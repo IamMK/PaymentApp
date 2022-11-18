@@ -42,19 +42,17 @@
       </fieldset>
     </div>
     <base-button>Zapisz</base-button>
-    <!-- <base-button v-if="edit" @click="changeCheck"
-      >Fabryczne ustawionka</base-button
-    > -->
   </form>
 </template>
 
 <script setup lang="ts">
-import { defineProps, onMounted, ref } from "vue";
+import { defineProps, defineEmits, onMounted, ref } from "vue";
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence, userDay } from "@/types/dailyInfo";
 import { useUserDaysStore } from "@/store/userDays";
 
 const userDaysStore = useUserDaysStore();
+const emits = defineEmits(["close"]);
 
 const props = defineProps({
   date: {
@@ -109,7 +107,10 @@ const changeDayInfo = () => {
 const setDailyInfo = () => {
   const fieldsFiltered = fields.value.filter((el) => {
     for (const item of el.items) {
-      if (item.value === checked.value) return true;
+      if (item.value === checked.value) {
+        emits("close");
+        return true;
+      }
     }
   });
 

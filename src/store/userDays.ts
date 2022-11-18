@@ -77,7 +77,7 @@ export const useUserDaysStore = defineStore("userDays", {
     deleteDayInfo(data: { year: number; month: number; day: number }) {
       const userId = useAuthStore().userId;
       fetch(
-        `${appConfig.database}/days/${data.year}/${userId}/${data.month}/${data.day}.json`,
+        `${appConfig.database}/days/${userId}/${data.year}/${data.month}/${data.day}.json`,
         {
           method: "DELETE",
         }

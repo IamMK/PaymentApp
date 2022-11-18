@@ -4,7 +4,7 @@
     <transition name="dialog">
       <dialog
         class="dialog"
-        :class="{ 'dialog--days': !done && mode === 'day' }"
+        :class="{ 'dialog--days': !dayIsDone && mode === 'day' }"
         open
         v-if="show"
       >
@@ -21,16 +21,17 @@
         </header>
         <section class="dialog__container" v-if="mode === 'day'">
           <daily-data
-            v-if="done && !editMode"
+            v-if="dayIsDone && !editMode"
             :date="date"
             @editMode="editDay"
           ></daily-data>
           <daily-info
-            v-else-if="done && editMode"
+            @close="tryClose"
+            v-else-if="dayIsDone && editMode"
             :date="date"
             edit
           ></daily-info>
-          <daily-info v-else :date="date"></daily-info>
+          <daily-info @close="tryClose" v-else :date="date"></daily-info>
         </section>
         <section class="dialog__container" v-else-if="mode === 'year'">
           <year-change :startValue="start" @confirm="confirm"></year-change>
@@ -99,13 +100,14 @@ const props = defineProps({
   },
 });
 
-// const startValue = ref(props.start);
 const editMode = ref(false);
+const dayIsDone = ref(props.done);
 
 const emit = defineEmits(["close"]);
 
 const editDay = () => {
   editMode.value = true;
+  dayIsDone.value = false;
 };
 
 const confirm = (value: number) => {
