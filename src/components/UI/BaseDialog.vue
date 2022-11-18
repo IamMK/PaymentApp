@@ -4,7 +4,7 @@
     <transition name="dialog">
       <dialog
         class="dialog"
-        :class="{ 'dialog--days': !dayIsDone && mode === 'day' }"
+        :class="{ 'dialog--days': !done && !dayIsDone && mode === 'day' }"
         open
         v-if="show"
       >
@@ -21,13 +21,13 @@
         </header>
         <section class="dialog__container" v-if="mode === 'day'">
           <daily-data
-            v-if="dayIsDone && !editMode"
+            v-if="done && !editMode"
             :date="date"
             @editMode="editDay"
           ></daily-data>
           <daily-info
             @close="tryClose"
-            v-else-if="dayIsDone && editMode"
+            v-else-if="done && editMode"
             :date="date"
             edit
           ></daily-info>
