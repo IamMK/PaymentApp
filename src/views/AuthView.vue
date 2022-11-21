@@ -205,10 +205,7 @@ const formReset = () => {
 .card {
   margin: 1rem;
   width: auto;
-  background-color: $background-color;
-  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 1);
   height: 100%;
-  padding: 20px;
   text-align: justify;
 
   &--dialog {
@@ -222,6 +219,9 @@ const formReset = () => {
 
 form {
   margin: auto;
+  background-color: $background-color;
+  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 1);
+  padding: 20px;
 }
 
 .form-control {
@@ -273,6 +273,14 @@ textarea:focus {
   }
   &--ng {
     color: red;
+  }
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .card {
+    margin: 1rem auto;
+    padding-left: calc(20px + 78px);
+    width: 90%;
   }
 }
 

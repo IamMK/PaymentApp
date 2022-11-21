@@ -5,7 +5,7 @@
     </header>
 
     <main class="main__welcome">
-      <section>
+      <section class="main__leaf">
         <h2>Witaj</h2>
         <article>
           <h3>Pozwól, że się przedstawię.</h3>
@@ -46,12 +46,14 @@ const installApp = () => {
     padding: 1em;
     letter-spacing: 1px;
   }
-  &__welcome {
-    width: 90%;
-    margin: 5%;
+  &__leaf {
     background-color: $sub-color;
     box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 1);
     padding: 1em;
+  }
+  &__welcome {
+    width: 90%;
+    margin: 5%;
     .button {
       margin-top: 1em;
     }
@@ -68,6 +70,15 @@ const installApp = () => {
     p {
       margin-top: 1em;
       text-align: justify;
+    }
+  }
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .main {
+    &__welcome {
+      margin: 5% auto;
+      padding-left: calc(1em + 78px);
     }
   }
 }
