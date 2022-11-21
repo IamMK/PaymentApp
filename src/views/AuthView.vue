@@ -24,7 +24,7 @@ const special = computed(() =>
   /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(formData.password)
 );
 const passwordLength = computed(() => formData.password.length >= 8);
-const formIsValid = (): boolean => {
+const formIsValid = computed((): boolean => {
   return (
     validEmail.value &&
     upperCase.value &&
@@ -33,13 +33,12 @@ const formIsValid = (): boolean => {
     special.value &&
     passwordLength.value
   );
-};
+});
 
 let sendTry = ref(false);
 
 const data = reactive({
   mode: "login" as "login" | "signup",
-  formIsValid: true,
   isLoading: false,
   error: null as string | null | unknown,
 });
@@ -64,7 +63,8 @@ const switchAuthMode = () => {
 
 const submitForm = async () => {
   sendTry.value = true;
-  if (!formIsValid()) {
+  if (!formIsValid.value) {
+    data.error = "Sprawdź poprawność wpisanych danych";
     return;
   }
 
@@ -82,9 +82,12 @@ const submitForm = async () => {
   }
 
   data.isLoading = false;
-  if (formIsValid() && !data.error) {
+  if (formIsValid.value && !data.error) {
     if (data.mode === "login") router.push({ name: "calendar" });
-    if (data.mode === "signup") data.mode = "login";
+    if (data.mode === "signup") {
+      data.mode = "login";
+      authStore.registered = true;
+    }
   }
 };
 
@@ -130,18 +133,18 @@ const formReset = () => {
             @focus="formReset"
           />
         </div>
-        <p v-if="!formIsValid() && sendTry && data.mode === 'login'">
+        <p v-if="!formIsValid && sendTry && data.mode === 'login'">
           Wprowadź prawidłowe dane logowania.
         </p>
         <p
           v-if="
-            formIsValid() &&
+            formIsValid &&
             sendTry &&
             data.mode === 'login' &&
             authStore.registered
           "
         >
-          Now you can LogIn with your email and password.
+          Możesz zalogować się używając swojego loginu i hasła.
         </p>
         <base-button>{{ submitButtonCaption }}</base-button>
         <base-button type="button" mode="flat" @click="switchAuthMode">{{
