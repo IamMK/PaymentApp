@@ -266,28 +266,6 @@ textarea:focus {
   outline: none;
 }
 
-// .confirm-enter-from {
-//   opacity: 0;
-//   transform: scaleY(0);
-// }
-// .confirm-leave-to {
-//   transform: scaleY(0);
-//   opacity: 0;
-// }
-
-// .confirm-enter-active {
-//   transition: all 0.3s ease-out;
-// }
-// .confirm-leave-active {
-//   transition: all 0.3s ease-in;
-// }
-
-// .confirm-enter-to,
-// .confirm-leave-from {
-//   opacity: 1;
-//   transform: scaleY(1);
-// }
-
 .rules {
   transition: all 0.2s ease-in-out;
   &--ok {
