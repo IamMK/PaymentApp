@@ -1,27 +1,26 @@
 <template>
   <section class="main">
     <header class="main__header">
-      <h1>PaymentApp</h1>
+      <h1>{{ messages.payment }}</h1>
     </header>
 
     <main class="main__welcome">
       <section class="main__leaf">
-        <h2>Witaj</h2>
+        <h2>{{ messages.hello }}</h2>
         <article>
-          <h3>Pozwól, że się przedstawię.</h3>
+          <h3>{{ messages.introduce }}</h3>
           <p>
-            Jestem PaymentApp, twój prywatny kalendarz, który pozwoli Ci
-            pamiętać o każdym dniu, który przepracowałeś. W przyszłości
-            zamierzam również powiedzieć Ci ile zarobiłeś, zanim jeszcze
-            otrzymasz pieniędze na konto.
+            {{ messages.desc1 }}
           </p>
           <p>
-            Jeśli chcesz mieć mnie zawsze pod ręką, pobierz darmową aplikację.
+            {{ messages.desc2 }}
           </p>
-          <base-button class="button" @click="installApp">Pobierz</base-button>
-          <base-button class="button" mode="flat" link to="auth"
-            >Zaloguj się</base-button
-          >
+          <base-button class="button" @click="installApp">{{
+            messages.download
+          }}</base-button>
+          <base-button class="button" mode="flat" link to="auth">{{
+            messages.login
+          }}</base-button>
         </article>
       </section>
     </main>
@@ -30,6 +29,14 @@
 
 <script setup lang="ts">
 import { APP } from "@/pwa";
+import { useLangStore } from "@/store/lang";
+import { computed } from "vue";
+
+const lang = useLangStore();
+
+const messages = computed(() => {
+  return lang.messages.mainView;
+});
 
 const installApp = () => {
   APP.startChromeInstall();

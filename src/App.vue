@@ -54,13 +54,16 @@ import { onBeforeMount, watch } from "@vue/runtime-core";
 import TheMenu from "./components/TheMenu.vue";
 
 import { useAuthStore } from "@/store/auth";
+import { useLangStore } from "./store/lang";
 import { RouterView, useRouter } from "vue-router";
 
 const authStore = useAuthStore();
+const langStore = useLangStore();
 const router = useRouter();
 
 onBeforeMount(() => {
   if (authStore.tryLogin()) router.push({ name: "calendar" });
+  langStore.changeLang();
 });
 
 watch(
