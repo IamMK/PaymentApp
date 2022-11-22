@@ -3,7 +3,7 @@ import { userInfo, SalaryType, Currency } from "@/types/userInfo";
 
 export const useUserInfo = defineStore("userinfo", {
   state: (): userInfo => ({
-    nickname: "Malk",
+    nickname: "",
     salaryType: SalaryType.HOURLY,
     salaryAmount: 4100,
     currency: Currency.PLN,

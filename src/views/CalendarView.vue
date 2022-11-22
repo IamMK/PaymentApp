@@ -263,4 +263,29 @@ watch(month, loadDailyInfo);
       rgba(0, 0, 0, 0.22) 0px 10px 10px;
   }
 }
+@media (min-width: $breakpoint-tablet) {
+  .dayCount {
+    width: auto;
+    height: 100%;
+    padding-left: 0;
+    &__item {
+      @include shape(100px, 100px);
+    }
+    &__name {
+      width: 100px;
+    }
+    &__days,
+    &__names {
+      max-width: 700px;
+      margin: auto;
+    }
+  }
+  .calendar {
+    &__header {
+      margin: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+  }
+}
 </style>
