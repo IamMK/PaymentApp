@@ -2,6 +2,7 @@
 import { reactive, computed, ref } from "vue";
 import { useAuthStore } from "@/store/auth";
 import { useRouter } from "vue-router";
+import TopBar from "@/components/TopBar.vue";
 
 const authStore = useAuthStore();
 const router = useRouter();
@@ -102,12 +103,12 @@ const formReset = () => {
 
 <template>
   <section class="auth">
-    <header class="auth__header">
+    <top-bar>
       <transition name="header" mode="out-in">
         <h1 v-if="data.mode === 'login'">Logowanie</h1>
         <h1 v-else>Rejestracja</h1>
       </transition>
-    </header>
+    </top-bar>
 
     <main class="card" auth-padding>
       <form @submit.prevent="submitForm">

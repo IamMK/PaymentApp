@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import CalendarView from "@/views/CalendarView.vue";
 import MainView from "@/views/MainView.vue";
+import ProfileView from "@/views/ProfileView.vue";
 import { useAuthStore } from "@/store/auth";
 import { useAppStore } from "@/store/app";
 
@@ -28,12 +29,16 @@ const routes: Array<RouteRecordRaw> = [
       import(/* webpackChunkName: "about" */ "../views/AuthView.vue"),
   },
   {
+    path: "/profile",
+    name: "profile",
+    meta: { requiresAuth: true },
+    component: ProfileView,
+  },
+  {
     path: "/logout",
     name: "logout",
     meta: { requiresAuth: true },
     redirect: () => {
-      console.log("Dupa");
-
       useAuthStore().logout();
       return { name: "auth" };
     },

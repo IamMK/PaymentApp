@@ -3,8 +3,15 @@ export enum SalaryType {
   MONTHLY = "monthly",
 }
 
+export enum Currency {
+  PLN = "PLN",
+  EUR = "€",
+  DOL = "$",
+}
+
 export type userInfo = {
   nickname: string;
   salaryType: SalaryType;
   salaryAmount: number;
+  currency: Currency;
 };

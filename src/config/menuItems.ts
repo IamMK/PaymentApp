@@ -12,7 +12,7 @@ export const menuItems = [
     name: "Profil",
     icon: "fa-solid fa-user",
     tooltip: "Profil",
-    href: "home",
+    href: "profile",
     visible: ItemVisibility.auth,
   },
   {
