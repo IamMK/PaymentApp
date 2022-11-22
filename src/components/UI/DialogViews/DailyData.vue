@@ -6,10 +6,8 @@
     <p v-if="showHoursAtWorkField">
       Ilość przepracowanych godzin: {{ hoursAtWork }}
     </p>
-    <p v-if="showOverhoursField">
-      Ilość godzin nadliczbowych: {{ dayInfo.hours }}
-    </p>
-    <p>Brutto za dzień: {{ dayPayment.toFixed(2) }}</p>
+    <p v-if="showOverhoursField">Ilość godzin nadliczbowych: {{ overHours }}</p>
+    <!-- <p>Brutto za dzień: {{ dayPayment.toFixed(2) }}</p> -->
 
     <base-button @click="editMode">Zmień</base-button>
     <base-button mode="flat" @click="deleteDayInfo">Usuń</base-button>
@@ -19,15 +17,15 @@
 <script setup lang="ts">
 import { computed, defineProps, defineEmits } from "vue";
 import { useUserDaysStore } from "@/store/userDays";
-import { useUserInfo } from "@/store/userInfo";
-import { useCalendarStore } from "@/store/calendar";
+// import { useUserInfo } from "@/store/userInfo";
+// import { useCalendarStore } from "@/store/calendar";
 
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
-import { Group, Presence } from "@/types/dailyInfo";
+import { Group, Overhours, Presence } from "@/types/dailyInfo";
 
 const userDays = useUserDaysStore();
-const userInfo = useUserInfo();
-const calendarStore = useCalendarStore();
+// const userInfo = useUserInfo();
+// const calendarStore = useCalendarStore();
 
 const emits = defineEmits(["editMode"]);
 
@@ -45,9 +43,9 @@ const dayInfo = computed(() => {
   return info[0];
 });
 
-const dayPayment = computed(() => {
-  return userInfo.salaryAmount / calendarStore.daysAtWork;
-});
+// const dayPayment = computed(() => {
+//   return userInfo.salaryAmount / calendarStore.daysAtWork;
+// });
 
 const dayDescription = computed(() => {
   const compared = [...presence, ...vacation, ...overhours];
@@ -70,10 +68,22 @@ const editMode = () => {
 };
 
 const hoursAtWork = computed(() => {
-  return dayInfo.value.group === Group.Overhours ||
+  let hours = 0;
+  if (
+    (dayInfo.value.group === Group.Overhours &&
+      dayInfo.value.value === Overhours.fifty) ||
     dayInfo.value.value === Presence.atwork
-    ? 8
-    : dayInfo.value.hours;
+  )
+    hours += 8;
+  if (dayInfo.value.value === Presence.notfullday) hours += dayInfo.value.hours;
+  return hours;
+});
+
+const overHours = computed(() => {
+  let hours = 0;
+  if (dayInfo.value.value === Overhours.fifty) hours += dayInfo.value.hours;
+  if (dayInfo.value.value === Overhours.hundert) hours += dayInfo.value.hours;
+  return hours;
 });
 
 const showHoursAtWorkField = computed(() => {
