@@ -14,7 +14,7 @@
       </p>
       <h3>Jeżeli będę czegoś jeszcze potrzebować, odezwę się do Ciebie</h3>
     </base-notecard>
-    <section v-else>Tutaj będzie formularz</section>
+    <profile-set v-else></profile-set>
   </section>
 </template>
 
@@ -24,6 +24,7 @@ import { useUserInfo } from "@/store/userInfo";
 import BaseNotecard from "@/components/UI/BaseNotecard.vue";
 import { SalaryType } from "@/types/userInfo";
 import { computed } from "vue";
+import ProfileSet from "@/components/ProfileSet.vue";
 
 const userInfoStore = useUserInfo();
 

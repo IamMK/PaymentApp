@@ -6,7 +6,7 @@ export enum SalaryType {
 export enum Currency {
   PLN = "PLN",
   EUR = "€",
-  DOL = "$",
+  USD = "$",
 }
 
 export type userInfo = {
