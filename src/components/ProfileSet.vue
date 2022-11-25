@@ -1,41 +1,51 @@
 <template>
-  <base-notecard>
+  <base-notecard class="profile__notecard">
+    <h1>Brakuje mi o Tobie następujących informacji</h1>
     <form @submit.prevent="" class="profile__form">
-      <div class="profile__item">
-        <label for="nickname">Nickname:</label>
-        <input type="text" name="nickname" class="profile__input" />
-      </div>
-      <div class="profile__item">
-        <label for="salaryType">Typ wynagrodzenia:</label>
-        <select name="salaryType" class="profile__input">
-          <option value="hourly" class="profile__input">Godzinowe</option>
-          <option value="monthly">Miesięczne</option>
-        </select>
-      </div>
-      <div class="profile__item">
-        <label for="currency">Waluta</label>
-        <select name="currency" class="profile__input">
-          <option value="pln">PLN</option>
-          <option value="eur">EUR</option>
-          <option value="usd">USD</option>
-        </select>
-      </div>
-      <div class="profile__item">
-        <label for="salary">Wysokość wynagrodzenia</label>
+      <div
+        v-for="item in userInfo.getEmpty"
+        :key="item.property"
+        class="profile__item"
+      >
+        <label :for="item.property">{{ item.name }}</label>
         <input
-          type="number"
+          v-if="item.type === 'string'"
+          :type="item.type"
+          :name="item.property"
+          class="profile__input"
+        />
+        <select
+          v-else-if="item.type === 'select'"
+          :name="item.property"
+          class="profile__input"
+        >
+          <option
+            v-for="value in item.allowed"
+            :key="value"
+            :value="value"
+            class="profile__input"
+          >
+            {{ value }}
+          </option>
+        </select>
+        <input
+          v-else-if="item.type === 'number'"
+          :type="item.type"
           @keypress="isNumber"
-          v-model.number="formData.salary"
           class="profile__input"
         />
       </div>
+      <base-button class="profile__button">Zapisz profil</base-button>
     </form>
   </base-notecard>
 </template>
 
 <script setup lang="ts">
-import { reactive } from "vue";
+// import { reactive } from "vue";
 import BaseNotecard from "./UI/BaseNotecard.vue";
+import { useUserInfo } from "@/store/userInfo";
+
+const userInfo = useUserInfo();
 
 const isNumber = (ev: { charCode: number; preventDefault: () => void }) => {
   if (ev.charCode < 48 || ev.charCode > 57) {
@@ -44,25 +54,22 @@ const isNumber = (ev: { charCode: number; preventDefault: () => void }) => {
   }
   return true;
 };
-
-const formData = reactive({
-  nickname: "",
-  salaryType: "",
-  currency: "",
-  salary: 0,
-});
 </script>
 
 <style lang="scss">
 .profile {
+  &__button {
+    margin-top: 20px;
+  }
   &__form {
+    margin-top: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
   }
   &__item {
-    width: 70%;
+    width: 100%;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -70,6 +77,31 @@ const formData = reactive({
   &__input {
     text-align: center;
     text-align-last: center;
+
+    display: block;
+    border: 1px solid #ccc;
+    padding: 0.15rem;
+    border-radius: 10px;
+    font-size: large;
+    font-weight: 400;
+    width: 100%;
+    &:focus {
+      border-color: $text-color;
+      background-color: $background-color;
+      outline: none;
+    }
+  }
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .profile {
+    &__notecard {
+      width: 40%;
+      // padding: 2rem;
+      & .notecard__wrapper {
+        padding: 2em;
+      }
+    }
   }
 }
 </style>

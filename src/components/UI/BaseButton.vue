@@ -42,6 +42,7 @@ const modeClass = props.mode != null ? "button--" + props.mode : "";
   cursor: pointer;
   border-radius: 30px;
   margin: 0.5rem;
+  margin-top: 20px;
   display: inline-block;
   transition: all 0.5s ease-in-out;
   &:hover {

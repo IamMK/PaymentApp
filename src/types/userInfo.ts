@@ -9,9 +9,24 @@ export enum Currency {
   USD = "$",
 }
 
+export enum Property {
+  NICKNAME = "nickname",
+  SALARYTYPE = "salaryType",
+  SALARYAMOUNT = "salaryAmount",
+  CURRENCY = "currency",
+}
+
 export type userInfo = {
-  nickname: string;
-  salaryType: SalaryType;
-  salaryAmount: number;
-  currency: Currency;
+  property: Property;
+  name: string;
+  value: SalaryType | Currency | number | string | null;
+  type: string;
+  allowed?: string[];
+};
+
+export type profile = {
+  nickname: "string" | null;
+  salaryType: SalaryType | null;
+  salaryAmount: number | null;
+  currency: Currency | null;
 };

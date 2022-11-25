@@ -4,13 +4,13 @@
       <h1>Profil</h1>
     </top-bar>
     <base-notecard v-if="userInfoStore.isProfileFinished">
-      <h2>Hej, {{ userInfoStore.nickname }}</h2>
+      <h2>Hej, {{ userInfo.nickname }}</h2>
       <h3>Podsumujmy informacje, jakie o Tobie posiadam:</h3>
       <p>Typ wynagrodzenia: {{ salaryType }}</p>
       <p>
-        Wynagrodzenie na umowie: {{ userInfoStore.salaryAmount }}
-        {{ userInfoStore.currency
-        }}{{ userInfoStore.salaryType === SalaryType.HOURLY ? "/h" : "" }}
+        Wynagrodzenie na umowie: {{ userInfo.salaryAmount }}
+        {{ userInfo.currency
+        }}{{ userInfo.salaryType === SalaryType.HOURLY ? "/h" : "" }}
       </p>
       <h3>Jeżeli będę czegoś jeszcze potrzebować, odezwę się do Ciebie</h3>
     </base-notecard>
@@ -28,9 +28,13 @@ import ProfileSet from "@/components/ProfileSet.vue";
 
 const userInfoStore = useUserInfo();
 
+const userInfo = userInfoStore.getProfile;
+
+console.log(userInfo);
+
 const salaryType = computed(() => {
-  if (userInfoStore.salaryType === SalaryType.MONTHLY) return "Miesięczny";
-  if (userInfoStore.salaryType === SalaryType.HOURLY) return "Godzinowe";
+  if (userInfo.salaryType === SalaryType.MONTHLY) return "Miesięczny";
+  if (userInfo.salaryType === SalaryType.HOURLY) return "Godzinowe";
   return null;
 });
 </script>

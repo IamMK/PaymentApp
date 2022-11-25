@@ -82,4 +82,14 @@ export default {
     download: "Pobierz",
     login: "Zaloguj się",
   },
+  profileSet: {
+    nickname: "Nickname",
+    salaryType: "Typ Wynagrodzenia",
+    salaryAmount: "Wysokość Wynagrodzenia",
+    currency: "Waluta",
+    salaryTypes: [
+      { name: "hourly", value: "Godzinowe" },
+      { name: "monthly", value: "Miesięczne" },
+    ],
+  },
 } as lang;

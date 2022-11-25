@@ -78,4 +78,11 @@ export type lang = {
     download: string;
     login: string;
   };
+  profileSet: {
+    nickname: string;
+    salaryType: string;
+    salaryAmount: string;
+    currency: string;
+    salaryTypes: { name: string; value: string }[];
+  };
 };
