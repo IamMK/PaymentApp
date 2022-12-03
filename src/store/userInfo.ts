@@ -1,91 +1,80 @@
 import { defineStore } from "pinia";
-import {
-  userInfo,
-  Property,
-  SalaryType,
-  Currency,
-  profile,
-} from "@/types/userInfo";
-import { useLangStore } from "./lang";
+import { userInfo, ProfileField, SalaryType, Currency } from "@/types/userInfo";
+// import { useLangStore } from "./lang";
+// import { appConfig } from "@/config/appconfig";
+// import { useAuthStore } from "./auth";
 
 export const useUserInfo = defineStore("userinfo", {
   state: () => ({
-    userInfo: [
-      {
-        property: Property.NICKNAME,
+    userInfo: {
+      [ProfileField.NICKNAME]: {
         name: "Nickname",
-        value: null,
+        value: "Malk",
         type: "string",
       },
-      {
-        property: Property.SALARYTYPE,
+      [ProfileField.SALARYTYPE]: {
         name: "Typ wynagrodzenia",
         value: null,
         type: "select",
-        allowed: Object.keys(SalaryType),
+        allowed: Object.values(SalaryType),
       },
-      {
-        property: Property.SALARYAMOUNT,
+      [ProfileField.SALARYAMOUNT]: {
         name: "Wysokość wynagrodzenia",
         value: null,
         type: "number",
       },
-      {
-        property: Property.CURRENCY,
+      [ProfileField.CURRENCY]: {
         name: "Waluta",
         value: null,
         type: "select",
         allowed: Object.keys(Currency),
       },
-    ] as userInfo[],
+    } as userInfo,
   }),
   getters: {
-    getEmpty(state) {
-      const emptyItems = state.userInfo.filter((item) => {
-        if (item.value === null) {
-          item.allowed = this.translateAllowed;
+    getEmpty(state: { userInfo: userInfo }) {
+      const emptyProperties = Object.fromEntries(
+        Object.entries(state.userInfo).filter(
+          ([, field]) => field.value === null
+        )
+      );
+
+      return emptyProperties;
+    },
+    isProfileFinished(state) {
+      const emptyKeys = Object.keys(state.userInfo).filter((key) => {
+        if (state.userInfo[key as ProfileField].value === null) {
           return true;
         }
       });
-      return emptyItems;
-    },
-    getProfile(state): profile {
-      let profile: profile = {
-        nickname: null,
-        salaryType: null,
-        salaryAmount: null,
-        currency: null,
-      };
-      for (const item of state.userInfo) {
-        // profile[item.property] = item.value;
-        profile = { ...profile, [item.property]: item.value };
-      }
-      return profile;
-    },
-    isProfileFinished() {
-      if (this.getEmpty.length > 0) return false;
+
+      if (emptyKeys.length > 0) return false;
       return true;
     },
 
-    translateAllowed(state) {
-      const transtlations = [];
-      const salaryTypes = useLangStore().messages.profileSet.salaryTypes;
-      // const currencyTypes = useLangStore().messages.profileSet.currency;
-
-      for (const item of state.userInfo) {
-        if (item.allowed && item.property === Property.SALARYTYPE) {
-          for (const type of item.allowed) {
-            const typeName = salaryTypes.filter((stype) => {
-              return stype.name === type.toLowerCase();
-            });
-            if (typeName[0]) {
-              transtlations.push(typeName[0].value);
-            }
-          }
-        }
-      }
-
-      return transtlations;
-    },
+    // translateAllowed() {
+    //   const emptyKeys =
+    // },
   },
+  // actions: {
+  //   async sendUserData() {
+  //     return "ToDo";
+  //     const userId = useAuthStore().userId;
+  //     const response = await fetch(
+  //       `${appConfig.database}/profiles/${userId}.json`,
+  //       {
+  //         method: "PUT",
+  //         body: JSON.stringify(data),
+  //       }
+  //     );
+
+  //     if (!response.ok) {
+  //       const error = new Error("Failed to fetch Request");
+  //       throw error;
+  //     }
+  //   },
+  //   setUserData() {
+  //     return "ToDo";
+  //   },
+  // },
 });

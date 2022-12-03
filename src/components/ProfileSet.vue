@@ -4,19 +4,19 @@
     <form @submit.prevent="" class="profile__form">
       <div
         v-for="item in userInfo.getEmpty"
-        :key="item.property"
+        :key="item.name"
         class="profile__item"
       >
-        <label :for="item.property">{{ item.name }}</label>
+        <label :for="item.name">{{ item.name }}</label>
         <input
           v-if="item.type === 'string'"
           :type="item.type"
-          :name="item.property"
+          :name="item.name"
           class="profile__input"
         />
         <select
           v-else-if="item.type === 'select'"
-          :name="item.property"
+          :name="item.name"
           class="profile__input"
         >
           <option
@@ -54,6 +54,8 @@ const isNumber = (ev: { charCode: number; preventDefault: () => void }) => {
   }
   return true;
 };
+
+// const setProfileInfo = userInfo.sendUserData()
 </script>
 
 <style lang="scss">

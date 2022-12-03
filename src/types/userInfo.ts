@@ -1,6 +1,6 @@
 export enum SalaryType {
-  HOURLY = "hourly",
-  MONTHLY = "monthly",
+  HOURLY = "Godzinowe",
+  MONTHLY = "Miesięczne",
 }
 
 export enum Currency {
@@ -9,7 +9,7 @@ export enum Currency {
   USD = "$",
 }
 
-export enum Property {
+export enum ProfileField {
   NICKNAME = "nickname",
   SALARYTYPE = "salaryType",
   SALARYAMOUNT = "salaryAmount",
@@ -17,16 +17,17 @@ export enum Property {
 }
 
 export type userInfo = {
-  property: Property;
-  name: string;
-  value: SalaryType | Currency | number | string | null;
-  type: string;
-  allowed?: string[];
+  [x in ProfileField]: {
+    name: string;
+    value: SalaryType | Currency | number | string | null;
+    type: string;
+    allowed?: string[];
+  };
 };
 
-export type profile = {
-  nickname: "string" | null;
-  salaryType: SalaryType | null;
-  salaryAmount: number | null;
-  currency: Currency | null;
-};
+// export type profile = {
+//   nickname: "string" | null;
+//   salaryType: SalaryType | null;
+//   salaryAmount: number | null;
+//   currency: Currency | null;
+// };
