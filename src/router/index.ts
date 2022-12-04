@@ -56,8 +56,6 @@ router.beforeEach((to, _, next) => {
     nextPoint = { name: "auth" };
   } else if (to.meta.requiresUnauth && useAuthStore().isAuthenticated) {
     nextPoint = { name: "calendar" };
-  } else {
-    nextPoint = null;
   }
 
   if (nextPoint === null) next();
