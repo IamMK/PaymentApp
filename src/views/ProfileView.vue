@@ -6,7 +6,10 @@
     <base-notecard v-if="userInfoStore.isProfileFinished">
       <h2>Hej, {{ userInfoStore.userInfo[ProfileField.NICKNAME].value }}</h2>
       <h3>Podsumujmy informacje, jakie o Tobie posiadam:</h3>
-      <p>Typ wynagrodzenia: {{ salaryType }}</p>
+      <p>
+        Typ wynagrodzenia:
+        {{ userInfoStore.userInfo[ProfileField.SALARYTYPE].value }}
+      </p>
       <p>
         Wynagrodzenie na umowie:
         {{ userInfoStore.userInfo[ProfileField.SALARYAMOUNT].value }}
@@ -29,24 +32,8 @@ import TopBar from "@/components/TopBar.vue";
 import { useUserInfo } from "@/store/userInfo";
 import BaseNotecard from "@/components/UI/BaseNotecard.vue";
 import { ProfileField, SalaryType } from "@/types/userInfo";
-import { computed } from "vue";
+// import { computed } from "vue";
 import ProfileSet from "@/components/ProfileSet.vue";
 
 const userInfoStore = useUserInfo();
-
-// const userInfo = userInfoStore.getProfile;
-
-// console.log(userInfo);
-
-const salaryType = computed(() => {
-  if (
-    userInfoStore.userInfo[ProfileField.SALARYTYPE].value === SalaryType.MONTHLY
-  )
-    return "Miesięczny";
-  if (
-    userInfoStore.userInfo[ProfileField.SALARYTYPE].value === SalaryType.HOURLY
-  )
-    return "Godzinowe";
-  return null;
-});
 </script>

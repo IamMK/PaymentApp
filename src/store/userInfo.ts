@@ -1,15 +1,14 @@
 import { defineStore } from "pinia";
 import { userInfo, ProfileField, SalaryType, Currency } from "@/types/userInfo";
-// import { useLangStore } from "./lang";
-// import { appConfig } from "@/config/appconfig";
-// import { useAuthStore } from "./auth";
+import { useAuthStore } from "./auth";
+import { appConfig } from "@/config/appconfig";
 
 export const useUserInfo = defineStore("userinfo", {
   state: () => ({
     userInfo: {
       [ProfileField.NICKNAME]: {
         name: "Nickname",
-        value: "Malk",
+        value: null,
         type: "string",
       },
       [ProfileField.SALARYTYPE]: {
@@ -51,30 +50,44 @@ export const useUserInfo = defineStore("userinfo", {
       if (emptyKeys.length > 0) return false;
       return true;
     },
-
-    // translateAllowed() {
-    //   const emptyKeys =
-    // },
   },
-  // actions: {
-  //   async sendUserData() {
-  //     return "ToDo";
-  //     const userId = useAuthStore().userId;
-  //     const response = await fetch(
-  //       `${appConfig.database}/profiles/${userId}.json`,
-  //       {
-  //         method: "PUT",
-  //         body: JSON.stringify(data),
-  //       }
-  //     );
+  actions: {
+    async sendUserData(data: { [x: string]: string | number | null }) {
+      const userId = useAuthStore().userId;
+      const response = await fetch(
+        `${appConfig.database}/profiles/${userId}.json`,
+        {
+          method: "PUT",
+          body: JSON.stringify(data),
+        }
+      );
 
-  //     if (!response.ok) {
-  //       const error = new Error("Failed to fetch Request");
-  //       throw error;
-  //     }
-  //   },
-  //   setUserData() {
-  //     return "ToDo";
-  //   },
-  // },
+      if (!response.ok) {
+        const error = new Error("Failed to fetch Request");
+        throw error;
+      }
+      // console.log(response);
+
+      this.setUserData(data);
+    },
+    async setUserData(userData?: { [x: string]: string | number | null }) {
+      if (!userData) {
+        const response = await fetch(
+          `${appConfig.database}/profiles/${useAuthStore().userId}.json`
+        );
+        if (!response.ok) {
+          const error = new Error("Failed to set Profile");
+          throw error;
+        }
+        userData = await response.json();
+      }
+
+      if (userData) {
+        this.userInfo[ProfileField.NICKNAME].value = userData.nickname;
+        this.userInfo[ProfileField.CURRENCY].value = userData.currency;
+        this.userInfo[ProfileField.SALARYAMOUNT].value = userData.salaryAmount;
+        this.userInfo[ProfileField.SALARYTYPE].value = userData.salaryType;
+      }
+    },
+  },
 });

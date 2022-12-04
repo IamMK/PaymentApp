@@ -24,10 +24,3 @@ export type userInfo = {
     allowed?: string[];
   };
 };
-
-// export type profile = {
-//   nickname: "string" | null;
-//   salaryType: SalaryType | null;
-//   salaryAmount: number | null;
-//   currency: Currency | null;
-// };

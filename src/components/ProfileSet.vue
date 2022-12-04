@@ -2,22 +2,20 @@
   <base-notecard class="profile__notecard">
     <h1>Brakuje mi o Tobie następujących informacji</h1>
     <form @submit.prevent="" class="profile__form">
-      <div
-        v-for="item in userInfo.getEmpty"
-        :key="item.name"
-        class="profile__item"
-      >
+      <div v-for="item in emptyFields" :key="item.name" class="profile__item">
         <label :for="item.name">{{ item.name }}</label>
         <input
           v-if="item.type === 'string'"
           :type="item.type"
           :name="item.name"
           class="profile__input"
+          v-model="item.value"
         />
         <select
           v-else-if="item.type === 'select'"
           :name="item.name"
           class="profile__input"
+          v-model="item.value"
         >
           <option
             v-for="value in item.allowed"
@@ -33,19 +31,28 @@
           :type="item.type"
           @keypress="isNumber"
           class="profile__input"
+          v-model="item.value"
         />
       </div>
-      <base-button class="profile__button">Zapisz profil</base-button>
+      <base-button class="profile__button" @click="setProfileInfo"
+        >Zapisz profil</base-button
+      >
     </form>
   </base-notecard>
 </template>
 
 <script setup lang="ts">
-// import { reactive } from "vue";
 import BaseNotecard from "./UI/BaseNotecard.vue";
 import { useUserInfo } from "@/store/userInfo";
+import { userInfo } from "@/types/userInfo";
+// import { useRouter } from "vue-router";
 
-const userInfo = useUserInfo();
+const userInfoStore = useUserInfo();
+// const router = useRouter();
+
+const emptyFields: userInfo = JSON.parse(
+  JSON.stringify(userInfoStore.getEmpty)
+);
 
 const isNumber = (ev: { charCode: number; preventDefault: () => void }) => {
   if (ev.charCode < 48 || ev.charCode > 57) {
@@ -55,7 +62,13 @@ const isNumber = (ev: { charCode: number; preventDefault: () => void }) => {
   return true;
 };
 
-// const setProfileInfo = userInfo.sendUserData()
+const setProfileInfo = () => {
+  const info = Object.fromEntries(
+    Object.entries(emptyFields).map(([key, item]) => [key, item.value])
+  );
+  userInfoStore.sendUserData(info);
+  // router.push()
+};
 </script>
 
 <style lang="scss">
