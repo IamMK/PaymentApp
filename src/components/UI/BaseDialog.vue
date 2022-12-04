@@ -4,7 +4,9 @@
     <transition name="dialog">
       <dialog
         class="dialog"
-        :class="{ 'dialog--days': !done && !dayIsDone && mode === 'day' }"
+        :class="{
+          'dialog--days': editMode || (!done && mode === 'day'),
+        }"
         open
         v-if="show"
       >
@@ -101,13 +103,11 @@ const props = defineProps({
 });
 
 const editMode = ref(false);
-const dayIsDone = ref(props.done);
 
 const emit = defineEmits(["close"]);
 
 const editDay = () => {
   editMode.value = true;
-  dayIsDone.value = false;
 };
 
 const confirm = (value: number) => {
@@ -117,6 +117,7 @@ const confirm = (value: number) => {
 };
 const tryClose = () => {
   editMode.value = false;
+  // dayIsDone.value = !props.done;
   emit("close");
 };
 </script>
