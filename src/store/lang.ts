@@ -10,6 +10,20 @@ export const useLangStore = defineStore("lang", {
       messages: {} as lang,
     };
   },
+  getters: {
+    getLangName(state) {
+      let langName = "";
+      switch (state.lang) {
+        case "pl":
+          langName = "Polski";
+          break;
+        case "en":
+          langName = "Angielski";
+          break;
+      }
+      return langName;
+    },
+  },
   actions: {
     changeLang() {
       switch (this.lang) {

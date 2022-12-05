@@ -4,7 +4,10 @@
       <h1>Profil</h1>
     </top-bar>
     <base-notecard v-if="userInfoStore.isProfileFinished">
-      <h2>Hej, {{ userInfoStore.userInfo[ProfileField.NICKNAME].value }}</h2>
+      <h2>
+        Hej,
+        {{ userInfoStore.userInfo[ProfileField.NICKNAME].value }}
+      </h2>
       <h3>Podsumujmy informacje, jakie o Tobie posiadam:</h3>
       <p>
         Typ wynagrodzenia:
@@ -21,6 +24,7 @@
             : ""
         }}
       </p>
+      Język, jakiego używasz w PaymentApp to: {{ langStore.getLangName }}
       <h3>Jeżeli będę czegoś jeszcze potrzebować, odezwę się do Ciebie</h3>
     </base-notecard>
     <profile-set v-else></profile-set>
@@ -34,6 +38,8 @@ import BaseNotecard from "@/components/UI/BaseNotecard.vue";
 import { ProfileField, SalaryType } from "@/types/userInfo";
 // import { computed } from "vue";
 import ProfileSet from "@/components/ProfileSet.vue";
+import { useLangStore } from "@/store/lang";
 
 const userInfoStore = useUserInfo();
+const langStore = useLangStore();
 </script>

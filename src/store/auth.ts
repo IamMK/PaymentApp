@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
 import { auth, userData } from "@/types/authTypes";
 import { appConfig } from "@/config/appconfig";
+import { useLangStore } from "./lang";
+import { useUserInfo } from "./userInfo";
 
 let TIMER = null as number | null;
 
@@ -66,7 +68,9 @@ export const useAuthStore = defineStore("auth", {
         userId: responseData.localId,
         didAutoLogout: false,
       });
-      // router.push({ name: "home" });
+
+      useLangStore().changeLang();
+      useUserInfo().setUserData();
     },
     tryLogin() {
       const token = localStorage.getItem("token");
@@ -85,8 +89,10 @@ export const useAuthStore = defineStore("auth", {
           token,
           userId,
         });
+        useLangStore().changeLang();
+        useUserInfo().setUserData();
+
         return true;
-        // router.push({ name: "home" });
       }
     },
     setUser(userData: userData) {
