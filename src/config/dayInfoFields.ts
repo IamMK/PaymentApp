@@ -106,7 +106,6 @@ export const holidays = [
   {
     month: 12,
     days: [
-      {},
       {
         day: 25,
         name: "Pierwszy Dzień Świąt Bożego Narodzenia",

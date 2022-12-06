@@ -1,13 +1,13 @@
 <template>
   <section class="daily__data">
     <h2>Wykaz dnia {{ date.day }}.{{ date.month }}.{{ date.year }}:</h2>
+    <h2 v-if="isHoliday">{{ isHoliday }}</h2>
     <!-- Święto do dopisania jeśli będzie -->
     <h3>Dzienna aktywność: {{ dayDescription }}</h3>
     <p v-if="showHoursAtWorkField">
       Ilość przepracowanych godzin: {{ hoursAtWork }}
     </p>
     <p v-if="showOverhoursField">Ilość godzin nadliczbowych: {{ overHours }}</p>
-    <!-- <p>Brutto za dzień: {{ dayPayment.toFixed(2) }}</p> -->
 
     <base-button @click="editMode">Zmień</base-button>
     <base-button mode="flat" @click="deleteDayInfo">Usuń</base-button>
@@ -17,15 +17,14 @@
 <script setup lang="ts">
 import { computed, defineProps, defineEmits } from "vue";
 import { useUserDaysStore } from "@/store/userDays";
-// import { useUserInfo } from "@/store/userInfo";
-// import { useCalendarStore } from "@/store/calendar";
+import { useCalendarStore } from "@/store/calendar";
 
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence } from "@/types/dailyInfo";
 
 const userDays = useUserDaysStore();
 // const userInfo = useUserInfo();
-// const calendarStore = useCalendarStore();
+const calendarStore = useCalendarStore();
 
 const emits = defineEmits(["editMode"]);
 
@@ -79,6 +78,22 @@ const hoursAtWork = computed(() => {
   return hours;
 });
 
+const isHoliday = computed(() => {
+  const holiday: { [k: string]: { day: number; name: string } }[] = [];
+  calendarStore.holidays.forEach((obj) => {
+    if (obj.month === props.date.month.value)
+      holiday.push(
+        Object.fromEntries(
+          Object.entries(obj.days).filter(([, val]) => {
+            return val.day === props.date.day.value;
+          })
+        )
+      );
+  });
+  if (holiday[0][1]) return holiday[0][1].name;
+  return false;
+});
+
 const overHours = computed(() => {
   let hours = 0;
   if (dayInfo.value.value === Overhours.fifty) hours += dayInfo.value.hours;
@@ -87,7 +102,10 @@ const overHours = computed(() => {
 });
 
 const showHoursAtWorkField = computed(() => {
-  return dayInfo.value.group != Group.Vacation;
+  return (
+    dayInfo.value.group != Group.Vacation &&
+    dayInfo.value.group != Group.Overhours
+  );
 });
 const showOverhoursField = computed(() => {
   return dayInfo.value.group === Group.Overhours;

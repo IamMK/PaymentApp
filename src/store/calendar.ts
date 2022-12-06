@@ -10,15 +10,6 @@ export const useCalendarStore = defineStore("calendar", {
     };
   },
   getters: {
-    monthStartDay: (state) => {
-      const day = new Date(state.year, state.month - 1, 1).getDay();
-      return day === 0 ? 7 : day;
-    },
-    monthEndDay: (state) => {
-      const day = new Date(state.year, state.month, 0).getDay();
-      // console.log(day);
-      return day === 0 ? 7 : day;
-    },
     daysCount: (state) => {
       return new Date(state.year, state.month, 0).getDate();
     },
@@ -47,6 +38,14 @@ export const useCalendarStore = defineStore("calendar", {
         }
       }
       return days;
+    },
+    monthStartDay: (state) => {
+      const day = new Date(state.year, state.month - 1, 1).getDay();
+      return day === 0 ? 7 : day;
+    },
+    monthEndDay: (state) => {
+      const day = new Date(state.year, state.month, 0).getDay();
+      return day === 0 ? 7 : day;
     },
   },
 });

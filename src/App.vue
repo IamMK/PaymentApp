@@ -55,12 +55,15 @@ import TheMenu from "./components/TheMenu.vue";
 
 import { useAuthStore } from "@/store/auth";
 import { RouterView, useRouter } from "vue-router";
+import { useLangStore } from "./store/lang";
 
 const authStore = useAuthStore();
 const router = useRouter();
+const langStore = useLangStore();
 
 onBeforeMount(() => {
   if (authStore.tryLogin()) router.push({ name: "calendar" });
+  langStore.changeLang();
 });
 
 watch(

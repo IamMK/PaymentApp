@@ -89,7 +89,6 @@ export const useAuthStore = defineStore("auth", {
           token,
           userId,
         });
-        useLangStore().changeLang();
         useUserInfo().setUserData();
 
         return true;
