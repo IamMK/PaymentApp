@@ -7,6 +7,7 @@
       Ilość przepracowanych godzin: {{ hoursAtWork }}
     </p>
     <p v-if="showOverhoursField">Ilość godzin nadliczbowych: {{ overHours }}</p>
+    <p>Brutto za dzień: {{ dayPayment }}</p>
 
     <base-button @click="editMode">Zmień</base-button>
     <base-button mode="flat" @click="deleteDayInfo">Usuń</base-button>
@@ -20,9 +21,10 @@ import { useCalendarStore } from "@/store/calendar";
 
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence } from "@/types/dailyInfo";
+import { useUserInfo } from "@/store/userInfo";
 
 const userDays = useUserDaysStore();
-// const userInfo = useUserInfo();
+const userInfo = useUserInfo();
 const calendarStore = useCalendarStore();
 
 const emits = defineEmits(["editMode"]);
@@ -41,9 +43,11 @@ const dayInfo = computed(() => {
   return info[0];
 });
 
-// const dayPayment = computed(() => {
-//   return userInfo.salaryAmount / calendarStore.daysAtWork;
-// });
+const dayPayment = computed(() => {
+  return (
+    Number(userInfo.userInfo.salaryAmount.value) / calendarStore.daysAtWork
+  ).toFixed(2);
+});
 
 const dayDescription = computed(() => {
   const compared = [...presence, ...vacation, ...overhours];
