@@ -1,16 +1,24 @@
 <template>
   <section class="daily__data">
-    <h2>Wykaz dnia {{ date.day }}.{{ date.month }}.{{ date.year }}:</h2>
+    <h2>
+      {{ messages.daySummaryText }} {{ date.day }}.{{ date.month }}.{{
+        date.year
+      }}:
+    </h2>
     <h2 v-if="isHoliday">{{ isHoliday }}</h2>
-    <h3>Dzienna aktywność: {{ dayDescription }}</h3>
+    <h3>{{ messages.dayActivityText }} {{ dayDescription }}</h3>
     <p v-if="showHoursAtWorkField">
-      Ilość przepracowanych godzin: {{ hoursAtWork }}
+      {{ messages.hoursAtWorkText }} {{ hoursAtWork }}
     </p>
-    <p v-if="showOverhoursField">Ilość godzin nadliczbowych: {{ overHours }}</p>
-    <p>Brutto za dzień: {{ dayPayment }}</p>
+    <p v-if="showOverhoursField">
+      {{ messages.overhoursText }} {{ overHours }}
+    </p>
+    <p>{{ messages.bruttoText }} {{ dayPayment }}</p>
 
-    <base-button @click="editMode">Zmień</base-button>
-    <base-button mode="flat" @click="deleteDayInfo">Usuń</base-button>
+    <base-button @click="editMode">{{ messages.changeText }}</base-button>
+    <base-button mode="flat" @click="deleteDayInfo">{{
+      messages.deleteText
+    }}</base-button>
   </section>
 </template>
 
@@ -18,14 +26,20 @@
 import { computed, defineProps, defineEmits } from "vue";
 import { useUserDaysStore } from "@/store/userDays";
 import { useCalendarStore } from "@/store/calendar";
+import { useLangStore } from "@/store/lang";
+import { useUserInfo } from "@/store/userInfo";
 
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence } from "@/types/dailyInfo";
-import { useUserInfo } from "@/store/userInfo";
 
 const userDays = useUserDaysStore();
 const userInfo = useUserInfo();
 const calendarStore = useCalendarStore();
+const langStore = useLangStore();
+
+const messages = computed(() => {
+  return langStore.messages.dailyData;
+});
 
 const emits = defineEmits(["editMode"]);
 
