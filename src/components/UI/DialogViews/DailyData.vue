@@ -57,18 +57,24 @@ const dayInfo = computed(() => {
   return info[0];
 });
 
-const dayPayment = computed(() => {
-  return (
-    Number(userInfo.userInfo.salaryAmount.value) / calendarStore.daysAtWork
-  ).toFixed(2);
-});
-
 const dayDescription = computed(() => {
   const compared = [...presence, ...vacation, ...overhours];
   const infoField = compared.filter((item) => {
     return item.value === dayInfo.value.value;
   });
   return infoField[0].description;
+});
+
+const dayPayment = computed(() => {
+  if (userInfo.userInfo.salaryAmount.value === null)
+    return "Jeśli chcesz uzyskać dostęp do funkcji, udostępnij profil";
+  let payment =
+    Number(userInfo.userInfo.salaryAmount.value) / calendarStore.daysAtWork;
+  if (dayInfo.value.value === Presence.notfullday)
+    payment = (payment / 8) * dayInfo.value.hours;
+  if (dayInfo.value.value === Overhours.fifty) payment = payment * 1.5;
+  if (dayInfo.value.value === Overhours.hundert) payment = payment * 2;
+  return payment.toFixed(2);
 });
 
 const deleteDayInfo = () => {
