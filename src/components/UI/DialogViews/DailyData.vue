@@ -4,10 +4,15 @@
     <h2 v-if="isHoliday">{{ isHoliday }}</h2>
     <h3>Dzienna aktywność: {{ dayDescription }}</h3>
     <p v-if="showHoursAtWorkField">
-      Ilość przepracowanych godzin: {{ hoursAtWork }}
+      Ilość przepracowanych godzin: <strong>{{ hoursAtWork }}</strong>
     </p>
-    <p v-if="showOverhoursField">Ilość godzin nadliczbowych: {{ overHours }}</p>
-    <p>Brutto za dzień: {{ dayPayment }}</p>
+    <p v-if="showOverhoursField">
+      Ilość godzin nadliczbowych: <strong>{{ overHours }}</strong>
+    </p>
+    <p v-if="dayInfo.group !== Group.Vacation">
+      Brutto za dzień: <strong>{{ dayPayment }}</strong>
+    </p>
+    <p v-else>Obliczanie wynagrodzenia za urlop wkrótce</p>
 
     <base-button @click="editMode">Zmień</base-button>
     <base-button mode="flat" @click="deleteDayInfo">Usuń</base-button>
@@ -43,18 +48,24 @@ const dayInfo = computed(() => {
   return info[0];
 });
 
-const dayPayment = computed(() => {
-  return (
-    Number(userInfo.userInfo.salaryAmount.value) / calendarStore.daysAtWork
-  ).toFixed(2);
-});
-
 const dayDescription = computed(() => {
   const compared = [...presence, ...vacation, ...overhours];
   const infoField = compared.filter((item) => {
     return item.value === dayInfo.value.value;
   });
   return infoField[0].description;
+});
+
+const dayPayment = computed(() => {
+  if (userInfo.userInfo.salaryAmount.value === null)
+    return "Jeśli chcesz uzyskać dostęp do funkcji, udostępnij profil";
+  let payment =
+    Number(userInfo.userInfo.salaryAmount.value) / calendarStore.daysAtWork;
+  if (dayInfo.value.value === Presence.notfullday)
+    payment = (payment / 8) * dayInfo.value.hours;
+  if (dayInfo.value.value === Overhours.fifty) payment = payment * 1.5;
+  if (dayInfo.value.value === Overhours.hundert) payment = payment * 2;
+  return payment.toFixed(2);
 });
 
 const deleteDayInfo = () => {
