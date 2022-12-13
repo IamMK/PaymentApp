@@ -67,7 +67,7 @@ const dayDescription = computed(() => {
 
 const dayPayment = computed(() => {
   if (userInfo.userInfo.salaryAmount.value === null)
-    return "Jeśli chcesz uzyskać dostęp do funkcji, udostępnij profil";
+    return messages.value.functions;
   let payment =
     Number(userInfo.userInfo.salaryAmount.value) / calendarStore.daysAtWork;
   if (dayInfo.value.value === Presence.notfullday)

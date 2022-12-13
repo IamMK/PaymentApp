@@ -7,6 +7,7 @@ export type lang = {
     bruttoText: string;
     changeText: string;
     deleteText: string;
+    functions: string;
   };
   dailyInfo: {
     hoursCountText: string;
