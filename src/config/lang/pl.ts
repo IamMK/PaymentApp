@@ -13,6 +13,7 @@ export default {
   },
   dailyInfo: {
     hoursCountText: "Ilość godzin",
+    saveText: "Zapisz",
   },
   dayInfoFields: {
     atWorkText: "8 godzin",

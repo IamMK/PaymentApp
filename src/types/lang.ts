@@ -11,6 +11,7 @@ export type lang = {
   };
   dailyInfo: {
     hoursCountText: string;
+    saveText: string;
   };
   dayInfoFields: {
     atWorkText: string;
