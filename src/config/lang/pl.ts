@@ -9,6 +9,7 @@ export default {
     bruttoText: "Brutto za dzień",
     changeText: "Zmień",
     deleteText: "Usuń",
+    functions: "Jeśli chcesz uzyskać dostęp do funkcji, udostępnij profil",
   },
   dailyInfo: {
     hoursCountText: "Ilość godzin",
