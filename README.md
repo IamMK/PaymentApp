@@ -4,40 +4,41 @@
 
 Try it on mobile: https://paymentapp-e4f92.web.app/
 
-### Functions
+## Check your each work presention
 
-[In Progress]
+![Calendar View of the app. You can see each days of calendar marked with colors](./src/assets/screen1.png)
+![Prevuew of day summary. You can see data of work day - activity, hours at work and daily payment](./src/assets/screen2.png)
+
+## Set your profile for payment info calculating
+
+![Profile Info](./src/assets/screen3.png)
 
 ## Project setup
 
 ```
-npm install
+yarn
 ```
 
 ### Compiles and hot-reloads for development
 
 ```
-npm run serve
+yarn run serve
 ```
 
 ### Compiles and minifies for production
 
 ```
-npm run build
+yarn run build
 ```
 
-### Run your unit tests
+### Run your unit tests[in progress]
 
 ```
-npm run test:unit
+yarn run test:unit
 ```
 
 ### Lints and fixes files
 
 ```
-npm run lint
+yarn run lint
 ```
-
-### Customize configuration
-
-See [Configuration Reference](https://cli.vuejs.org/config/).
