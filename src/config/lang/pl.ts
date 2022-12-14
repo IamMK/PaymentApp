@@ -85,13 +85,15 @@ export default {
     login: "Zaloguj się",
   },
   profileSet: {
-    nickname: "Nickname",
-    salaryType: "Typ Wynagrodzenia",
-    salaryAmount: "Wysokość Wynagrodzenia",
-    currency: "Waluta",
-    salaryTypes: [
-      { name: "hourly", value: "Godzinowe" },
-      { name: "monthly", value: "Miesięczne" },
-    ],
+    titleText: "Brakuje mi o Tobie następujących informacji",
+    saveText: "Zapisz",
+    // nickname: "Nickname",
+    // salaryType: "Typ Wynagrodzenia",
+    // salaryAmount: "Wysokość Wynagrodzenia",
+    // currency: "Waluta",
+    // salaryTypes: [
+    //   { name: "hourly", value: "Godzinowe" },
+    //   { name: "monthly", value: "Miesięczne" },
+    // ],
   },
 } as lang;
