@@ -68,12 +68,21 @@ const dayDescription = computed(() => {
 const dayPayment = computed(() => {
   if (userInfo.userInfo.salaryAmount.value === null)
     return messages.value.functions;
+
   let payment =
     Number(userInfo.userInfo.salaryAmount.value) / calendarStore.daysAtWork;
+
   if (dayInfo.value.value === Presence.notfullday)
     payment = (payment / 8) * dayInfo.value.hours;
-  if (dayInfo.value.value === Overhours.fifty) payment = payment * 1.5;
-  if (dayInfo.value.value === Overhours.hundert) payment = payment * 2;
+
+  if (dayInfo.value.value === Overhours.fifty)
+    payment = payment + (payment / 8) * dayInfo.value.hours * 1.5;
+
+  if (dayInfo.value.value === Overhours.hundert)
+    payment = payment + (payment / 8) * dayInfo.value.hours * 2;
+
+  if (dayInfo.value.value === Presence.hundertday) payment = payment * 2;
+
   return payment.toFixed(2);
 });
 
@@ -94,7 +103,8 @@ const hoursAtWork = computed(() => {
   if (
     (dayInfo.value.group === Group.Overhours &&
       dayInfo.value.value === Overhours.fifty) ||
-    dayInfo.value.value === Presence.atwork
+    dayInfo.value.value === Presence.atwork ||
+    dayInfo.value.value === Presence.hundertday
   )
     hours += 8;
   if (dayInfo.value.value === Presence.notfullday) hours += dayInfo.value.hours;
