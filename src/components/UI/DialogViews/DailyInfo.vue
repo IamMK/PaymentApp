@@ -47,7 +47,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, onMounted, ref, computed } from "vue";
+import { onMounted, ref, computed } from "vue";
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence, userDay } from "@/types/dailyInfo";
 import { useUserDaysStore } from "@/store/userDays";

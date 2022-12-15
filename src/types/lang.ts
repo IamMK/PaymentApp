@@ -39,6 +39,7 @@ export type lang = {
     secondChristmas: string;
   };
   menu: {
+    logo: string;
     home: string;
     profile: string;
     calendar: string;
@@ -83,10 +84,5 @@ export type lang = {
   profileSet: {
     titleText: string;
     saveText: string;
-    // nickname: string;
-    // salaryType: string;
-    // salaryAmount: string;
-    // currency: string;
-    // salaryTypes: { name: string; value: string }[];
   };
 };

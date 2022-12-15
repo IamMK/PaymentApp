@@ -5,6 +5,7 @@ export const presence = [
     value: Presence.atwork,
     description: "8 godzin",
   },
+  { value: Presence.hundertday, description: "Dzień 100%" },
   {
     value: Presence.notfullday,
     description: "Inna ilość godzin",
