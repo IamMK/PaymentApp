@@ -1,6 +1,6 @@
 <template>
   <base-notecard class="profile__notecard">
-    <h1>Brakuje mi o Tobie następujących informacji</h1>
+    <h1>{{ messages.titleText }}</h1>
     <form @submit.prevent="" class="profile__form">
       <div v-for="item in emptyFields" :key="item.name" class="profile__item">
         <label :for="item.name">{{ item.name }}</label>
@@ -34,9 +34,9 @@
           v-model="item.value"
         />
       </div>
-      <base-button class="profile__button" @click="setProfileInfo"
-        >Zapisz profil</base-button
-      >
+      <base-button class="profile__button" @click="setProfileInfo">
+        {{ messages.saveText }}
+      </base-button>
     </form>
   </base-notecard>
 </template>
@@ -44,11 +44,16 @@
 <script setup lang="ts">
 import BaseNotecard from "./UI/BaseNotecard.vue";
 import { useUserInfo } from "@/store/userInfo";
+import { useLangStore } from "@/store/lang";
 import { userInfo } from "@/types/userInfo";
-// import { useRouter } from "vue-router";
+import { computed } from "vue";
 
 const userInfoStore = useUserInfo();
-// const router = useRouter();
+const langStore = useLangStore();
+
+const messages = computed(() => {
+  return langStore.messages.profileSet;
+});
 
 const emptyFields: userInfo = JSON.parse(
   JSON.stringify(userInfoStore.getEmpty)
@@ -67,7 +72,6 @@ const setProfileInfo = () => {
     Object.entries(emptyFields).map(([key, item]) => [key, item.value])
   );
   userInfoStore.sendUserData(info);
-  // router.push()
 };
 </script>
 

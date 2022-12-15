@@ -22,8 +22,9 @@
           />
           {{ item.description }}
         </label>
-        <label v-if="field.numberfield"
-          >Ilość godzin<input
+        <label v-if="field.numberfield">
+          {{ messages.hoursCountText }}
+          <input
             type="number"
             v-model="field.hours"
             min="1"
@@ -41,17 +42,24 @@
         </label>
       </fieldset>
     </div>
-    <base-button>Zapisz</base-button>
+    <base-button>{{ messages.saveText }}</base-button>
   </form>
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, onMounted, ref } from "vue";
+import { defineProps, defineEmits, onMounted, ref, computed } from "vue";
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence, userDay } from "@/types/dailyInfo";
 import { useUserDaysStore } from "@/store/userDays";
+import { useLangStore } from "@/store/lang";
 
 const userDaysStore = useUserDaysStore();
+const langStore = useLangStore();
+
+const messages = computed(() => {
+  return langStore.messages.dailyInfo;
+});
+
 const emits = defineEmits(["close"]);
 
 const props = defineProps({

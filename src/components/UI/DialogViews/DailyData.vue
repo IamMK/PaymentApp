@@ -113,7 +113,9 @@ const isHoliday = computed(() => {
         )
       );
   });
-  if (holiday[0][1]) return holiday[0][1].name;
+  console.log(holiday);
+
+  if (holiday[0] && holiday[0][1]) return holiday[0][1].name;
   return false;
 });
 
