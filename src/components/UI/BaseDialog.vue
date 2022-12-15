@@ -58,7 +58,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, defineEmits, ref } from "vue";
+import { ref } from "vue";
 import { useCalendarStore } from "@/store/calendar";
 
 import DailyInfo from "@/components/UI/DialogViews/DailyInfo.vue";

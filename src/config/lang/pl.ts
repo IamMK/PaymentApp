@@ -41,6 +41,7 @@ export default {
     secondChristmas: "Drugi Dzień Świąt Bożego Narodzenia",
   },
   menu: {
+    logo: "PaymentApp",
     home: "Home",
     profile: "Profil",
     calendar: "Kalendarz",
@@ -87,13 +88,5 @@ export default {
   profileSet: {
     titleText: "Brakuje mi o Tobie następujących informacji",
     saveText: "Zapisz",
-    // nickname: "Nickname",
-    // salaryType: "Typ Wynagrodzenia",
-    // salaryAmount: "Wysokość Wynagrodzenia",
-    // currency: "Waluta",
-    // salaryTypes: [
-    //   { name: "hourly", value: "Godzinowe" },
-    //   { name: "monthly", value: "Miesięczne" },
-    // ],
   },
 } as lang;

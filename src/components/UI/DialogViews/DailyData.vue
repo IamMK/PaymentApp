@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps, defineEmits } from "vue";
+import { computed } from "vue";
 import { useUserDaysStore } from "@/store/userDays";
 import { useCalendarStore } from "@/store/calendar";
 import { useLangStore } from "@/store/lang";

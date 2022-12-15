@@ -5,9 +5,15 @@ import { useAuthStore } from "@/store/auth";
 
 import { menuItems } from "@/config/menuItems";
 import { ItemVisibility } from "@/types/menuTypes";
+import { useLangStore } from "@/store/lang";
 
 const appStore = useAppStore();
 const authStore = useAuthStore();
+const langStore = useLangStore();
+
+const messages = computed(() => {
+  return langStore.messages.menu;
+});
 
 const menuVisibleItems = computed(() => {
   return menuItems.filter((item) => {
@@ -30,8 +36,8 @@ const menuVisibleItems = computed(() => {
   >
     <figure class="logo">
       <div class="logo__icon">
-        <i class="fa-solid fa-laptop-code"></i>
-        <figcaption class="logo__name">PaymentApp</figcaption>
+        <i class="fa-solid fa-coins"></i>
+        <figcaption class="logo__name">{{ messages.logo }}</figcaption>
       </div>
     </figure>
 
@@ -134,8 +140,10 @@ const menuVisibleItems = computed(() => {
     }
 
     & i {
-      font-size: 28px;
+      font-size: 22px;
       margin-right: 5px;
+      height: 25px;
+      line-height: 25px;
     }
 
     &__name {
