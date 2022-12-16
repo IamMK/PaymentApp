@@ -2,21 +2,23 @@
 import { computed } from "vue";
 import { useAppStore } from "@/store/app";
 import { useAuthStore } from "@/store/auth";
-
-import { menuItems } from "@/config/menuItems";
-import { ItemVisibility } from "@/types/menuTypes";
 import { useLangStore } from "@/store/lang";
+import { useMenuStore } from "@/store/menu";
+
+// import { menuItems } from "@/config/menuItems";
+import { ItemVisibility } from "@/types/menuTypes";
 
 const appStore = useAppStore();
 const authStore = useAuthStore();
 const langStore = useLangStore();
+const menuStore = useMenuStore();
 
 const messages = computed(() => {
   return langStore.messages.menu;
 });
 
 const menuVisibleItems = computed(() => {
-  return menuItems.filter((item) => {
+  return menuStore.menuItems.filter((item) => {
     const isAlwaysVisible = item.visible === ItemVisibility.always;
     const forAuthenticated =
       item.visible === ItemVisibility.auth && authStore.isAuthenticated;
@@ -58,7 +60,7 @@ const menuVisibleItems = computed(() => {
           <i :class="item.icon" class="icon"></i>
           <span class="navigation__linkName">{{ item.name }}</span>
         </router-link>
-        <span class="navigation__tooltip">{{ item.tooltip }}</span>
+        <span class="navigation__tooltip">{{ item.name }}</span>
       </li>
     </ul>
   </nav>
