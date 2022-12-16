@@ -27,6 +27,10 @@ export type lang = {
     babycare: string;
     training: string;
   };
+  error: {
+    auth_email: string;
+    auth_login: string;
+  };
   holidays: {
     newYear: string;
     epiphany: string;

@@ -29,6 +29,10 @@ export default {
     babycare: "Opieka na dziecko",
     training: "Urlop szkoleniowy",
   },
+  error: {
+    auth_email: "Wystąpił błąd podczas rejestracji. E-mail jest już używany.",
+    auth_login: "Błąd logowana",
+  },
   holidays: {
     newYear: "Nowy Rok",
     epiphany: "Święto Trzech Króli",
