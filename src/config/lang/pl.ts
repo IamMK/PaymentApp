@@ -93,4 +93,8 @@ export default {
     titleText: "Brakuje mi o Tobie następujących informacji",
     saveText: "Zapisz",
   },
+  salaryType: {
+    hourly: "Godzinowe",
+    monthly: "Miesięczne",
+  },
 } as lang;

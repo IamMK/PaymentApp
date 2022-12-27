@@ -69,7 +69,9 @@ const isNumber = (ev: { charCode: number; preventDefault: () => void }) => {
 
 const setProfileInfo = () => {
   const info = Object.fromEntries(
-    Object.entries(emptyFields).map(([key, item]) => [key, item.value])
+    Object.entries(emptyFields).map(([key, item]) => {
+      return [key, item.value];
+    })
   );
   userInfoStore.sendUserData(info);
 };

@@ -89,4 +89,8 @@ export type lang = {
     titleText: string;
     saveText: string;
   };
+  salaryType: {
+    hourly: "Godzinowe";
+    monthly: string;
+  };
 };

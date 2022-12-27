@@ -38,6 +38,8 @@ export const useUserInfo = defineStore("userinfo", {
         )
       );
 
+      // emptyProperties.salaryType.value
+
       return emptyProperties;
     },
     isProfileFinished(state) {
@@ -54,11 +56,17 @@ export const useUserInfo = defineStore("userinfo", {
   actions: {
     async sendUserData(data: { [x: string]: string | number | null }) {
       const userId = useAuthStore().userId;
+      const dataForSend = {
+        nickname: data.nickname || this.userInfo.nickname.value,
+        salaryType: data.salaryType || this.userInfo.salaryType.value,
+        salaryAmount: data.salaryAmount || this.userInfo.salaryAmount.value,
+        currency: data.currency || this.userInfo.currency.value,
+      };
       const response = await fetch(
         `${appConfig.database}/profiles/${userId}.json`,
         {
           method: "PUT",
-          body: JSON.stringify(data),
+          body: JSON.stringify(dataForSend),
         }
       );
 
@@ -66,7 +74,6 @@ export const useUserInfo = defineStore("userinfo", {
         const error = new Error("Failed to fetch Request");
         throw error;
       }
-      // console.log(response);
 
       this.setUserData(data);
     },
@@ -83,10 +90,15 @@ export const useUserInfo = defineStore("userinfo", {
       }
 
       if (userData) {
-        this.userInfo[ProfileField.NICKNAME].value = userData.nickname;
-        this.userInfo[ProfileField.CURRENCY].value = userData.currency;
-        this.userInfo[ProfileField.SALARYAMOUNT].value = userData.salaryAmount;
-        this.userInfo[ProfileField.SALARYTYPE].value = userData.salaryType;
+        this.userInfo[ProfileField.NICKNAME].value =
+          userData.nickname || this.userInfo[ProfileField.NICKNAME].value;
+        this.userInfo[ProfileField.CURRENCY].value =
+          userData.currency || this.userInfo[ProfileField.CURRENCY].value;
+        this.userInfo[ProfileField.SALARYAMOUNT].value =
+          userData.salaryAmount ||
+          this.userInfo[ProfileField.SALARYAMOUNT].value;
+        this.userInfo[ProfileField.SALARYTYPE].value =
+          userData.salaryType || this.userInfo[ProfileField.SALARYTYPE].value;
       }
     },
   },
