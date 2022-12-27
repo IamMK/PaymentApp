@@ -38,8 +38,6 @@ export const useUserInfo = defineStore("userinfo", {
         )
       );
 
-      // emptyProperties.salaryType.value
-
       return emptyProperties;
     },
     isProfileFinished(state) {
@@ -56,6 +54,8 @@ export const useUserInfo = defineStore("userinfo", {
   actions: {
     async sendUserData(data: { [x: string]: string | number | null }) {
       const userId = useAuthStore().userId;
+      // console.log(data);
+
       const dataForSend = {
         nickname: data.nickname || this.userInfo.nickname.value,
         salaryType: data.salaryType || this.userInfo.salaryType.value,
