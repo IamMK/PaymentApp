@@ -1,7 +1,3 @@
-export const SalaryTypes = {
-  HOURLY: "HOURLY",
-  MONTHLY: "MONTHLY",
-};
 // jakoś trza zrobić żeby automatycznie brało i tłumaczyło salaryType...
 export enum Currency {
   PLN = "PLN",
