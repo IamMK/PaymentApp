@@ -45,7 +45,7 @@
 import BaseNotecard from "./UI/BaseNotecard.vue";
 import { useUserInfo } from "@/store/userInfo";
 import { useLangStore } from "@/store/lang";
-import { userInfo } from "@/types/userInfo";
+import { SalaryType, userInfo } from "@/types/userInfo";
 import { computed } from "vue";
 
 const userInfoStore = useUserInfo();
@@ -55,9 +55,12 @@ const messages = computed(() => {
   return langStore.messages.profileSet;
 });
 
-const emptyFields: userInfo = JSON.parse(
-  JSON.stringify(userInfoStore.getEmpty)
-);
+const emptyFields = computed((): userInfo => {
+  const empty = JSON.parse(JSON.stringify(userInfoStore.getEmpty));
+  if (empty.salaryType)
+    empty.salaryType.allowed = langStore.messages.salaryType;
+  return empty;
+});
 
 const isNumber = (ev: { charCode: number; preventDefault: () => void }) => {
   if (ev.charCode < 48 || ev.charCode > 57) {
@@ -69,8 +72,22 @@ const isNumber = (ev: { charCode: number; preventDefault: () => void }) => {
 
 const setProfileInfo = () => {
   const info = Object.fromEntries(
-    Object.entries(emptyFields).map(([key, item]) => [key, item.value])
+    Object.entries(emptyFields.value).map(([key, item]) => {
+      return [key, item.value];
+    })
   );
+
+  if (info.salaryType) {
+    switch (info.salaryType) {
+      case langStore.messages.salaryType.monthly:
+        info.salaryType = SalaryType.MONTHLY;
+        break;
+      case langStore.messages.salaryType.hourly:
+        info.salaryType = SalaryType.HOURLY;
+        break;
+    }
+  }
+
   userInfoStore.sendUserData(info);
 };
 </script>

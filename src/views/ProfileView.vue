@@ -12,7 +12,7 @@
       <article>
         <h4>Typ wynagrodzenia:</h4>
         <p>
-          {{ userInfoStore.userInfo[ProfileField.SALARYTYPE].value }}
+          {{ salaryType }}
         </p>
       </article>
       <article>
@@ -43,12 +43,29 @@ import TopBar from "@/components/TopBar.vue";
 import { useUserInfo } from "@/store/userInfo";
 import BaseNotecard from "@/components/UI/BaseNotecard.vue";
 import { ProfileField, SalaryType } from "@/types/userInfo";
-// import { computed } from "vue";
+import { computed } from "vue";
 import ProfileSet from "@/components/ProfileSet.vue";
 import { useLangStore } from "@/store/lang";
 
 const userInfoStore = useUserInfo();
 const langStore = useLangStore();
+
+const salaryType = computed(() => {
+  let salaryTypeText = "";
+
+  switch (userInfoStore.userInfo[ProfileField.SALARYTYPE].value) {
+    case SalaryType.HOURLY:
+      salaryTypeText = langStore.messages.salaryType.hourly;
+      break;
+    case SalaryType.MONTHLY:
+      salaryTypeText = langStore.messages.salaryType.monthly;
+      break;
+    default:
+      salaryTypeText = userInfoStore.userInfo[ProfileField.SALARYTYPE]
+        .value as string;
+  }
+  return salaryTypeText;
+});
 </script>
 
 <style lang="scss">

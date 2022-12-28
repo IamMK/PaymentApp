@@ -27,6 +27,10 @@ export type lang = {
     babycare: string;
     training: string;
   };
+  error: {
+    auth_email: string;
+    auth_login: string;
+  };
   holidays: {
     newYear: string;
     epiphany: string;
@@ -84,5 +88,9 @@ export type lang = {
   profileSet: {
     titleText: string;
     saveText: string;
+  };
+  salaryType: {
+    hourly: "Godzinowe";
+    monthly: string;
   };
 };

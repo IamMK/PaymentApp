@@ -44,11 +44,12 @@ export const useAuthStore = defineStore("auth", {
         let error = "" as string | Error;
         if (authType === "signUp") {
           error = new Error(
-            responseData.message ||
-              "Wystąpił błąd podczas rejestracji. E-mail jest już używany."
+            responseData.message || useLangStore().messages.error.auth_email
           );
         } else {
-          error = new Error(responseData.message || "Błąd logowana");
+          error = new Error(
+            responseData.message || useLangStore().messages.error.auth_login
+          );
         }
         throw error;
       }
