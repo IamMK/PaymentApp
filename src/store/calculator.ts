@@ -3,6 +3,7 @@ import { Presence } from "@/types/dailyInfo";
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { useUserInfo } from "./userInfo";
+import { holidays } from "@/config/dayInfoFields";
 
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
@@ -17,8 +18,17 @@ export const useCalculatorStore = defineStore("calculator", {
           weekDays++;
         }
       }
+      let holidaysAtWorkWeek = 0;
+      const holidaysAtMonth = holidays.filter((el) => {
+        if (el.month === month) return true;
+        return false;
+      });
+      holidaysAtMonth[0].days.forEach((el) => {
+        if (![0, 6].includes(new Date(year, month - 1, el.day).getDay()))
+          holidaysAtWorkWeek++;
+      });
 
-      const workDays = monthEnd - weekDays;
+      const workDays = monthEnd - weekDays - holidaysAtWorkWeek;
       return workDays;
     },
     async getDaysFromMonth(year: number, month: number) {
@@ -46,6 +56,8 @@ export const useCalculatorStore = defineStore("calculator", {
     },
     async getBaseBrutto(year: number, month: number) {
       const daysAtWork = await this.getDaysAtWork(year, month);
+      console.log(this.getDaysToWork(year, month));
+
       const dailyPayment =
         (useUserInfo().userInfo.salaryAmount.value as number) /
         this.getDaysToWork(year, month);
