@@ -4,11 +4,40 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { useUserInfo } from "./userInfo";
 import { holidays } from "@/config/dayInfoFields";
+import { insurance } from "@/utils/calculator";
 
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
     baseBrutto: 0,
   }),
+  getters: {
+    pensionInsurance(state) {
+      return insurance(state.baseBrutto, 9.76);
+    },
+    disabilityInsurance(state) {
+      return insurance(state.baseBrutto, 1.5);
+    },
+    sickInsurance(state) {
+      return insurance(state.baseBrutto, 2.45);
+    },
+    healthInsurance(state) {
+      const taxBase: number =
+        state.baseBrutto -
+        useCalculatorStore().pensionInsurance -
+        useCalculatorStore().disabilityInsurance -
+        useCalculatorStore().sickInsurance;
+      return insurance(taxBase, 9);
+    },
+    nettoPayment(state) {
+      const nettoPayment: number =
+        state.baseBrutto -
+        useCalculatorStore().pensionInsurance -
+        useCalculatorStore().disabilityInsurance -
+        useCalculatorStore().sickInsurance -
+        useCalculatorStore().healthInsurance;
+      return nettoPayment.toFixed(2);
+    },
+  },
   actions: {
     getDaysToWork(year: number, month: number) {
       let weekDays = 0;

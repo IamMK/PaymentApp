@@ -3,9 +3,11 @@ import BaseNotecard from "@/components/UI/BaseNotecard.vue";
 import TopBar from "@/components/TopBar.vue";
 import BaseButton from "@/components/UI/BaseButton.vue";
 import { useCalculatorStore } from "@/store/calculator";
+import { useUserInfo } from "@/store/userInfo";
 import { computed, onBeforeMount, ref } from "vue";
 
 const calculatorStore = useCalculatorStore();
+const currency = useUserInfo().userInfo.currency.value;
 
 const year = ref(new Date().getFullYear());
 const month = ref(new Date().getMonth() + 1);
@@ -62,11 +64,11 @@ onBeforeMount(() => {
       <h2>Twoje wynagrodzenie</h2>
       <article>
         <h3>Brutto</h3>
-        <p>{{ brutto }}</p>
+        <p>{{ brutto }} {{ currency }}</p>
       </article>
       <article>
         <h3>Netto</h3>
-        <p>y</p>
+        <p>{{ calculatorStore.nettoPayment }}</p>
       </article>
       <article>
         <h3>Składniki wynagrodzenia</h3>
@@ -74,9 +76,15 @@ onBeforeMount(() => {
           <h4>Dni w pracy</h4>
           <p>{{ daysAtWork }}</p>
           <h4>Podstawa</h4>
-          <p>{{ calculatorStore.baseBrutto }}</p>
-          <h4>Wynagrodzenie za urlop</h4>
-          <p>q</p>
+          <p>{{ calculatorStore.baseBrutto }} {{ currency }}</p>
+          <h4>Ubezpieczenie emerytalne (9,76%)</h4>
+          <p>{{ calculatorStore.pensionInsurance }} {{ currency }}</p>
+          <h4>Ubezpieczenie rentowe (1,5%)</h4>
+          <p>{{ calculatorStore.disabilityInsurance }} {{ currency }}</p>
+          <h4>Ubezpieczenie chorobowe (2,45%)</h4>
+          <p>{{ calculatorStore.sickInsurance }} {{ currency }}</p>
+          <h4>Ubezpieczenie zdrowotne (9%)</h4>
+          <p>{{ calculatorStore.healthInsurance }} {{ currency }}</p>
         </article>
       </article>
     </base-notecard>
