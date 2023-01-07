@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import CalendarView from "@/views/CalendarView.vue";
 import MainView from "@/views/MainView.vue";
 import ProfileView from "@/views/ProfileView.vue";
+import CalculatorView from "@/views/CalculatorView.vue";
 import { useAuthStore } from "@/store/auth";
 import { useAppStore } from "@/store/app";
 
@@ -17,6 +18,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "calendar",
     meta: { requiresAuth: true },
     component: CalendarView,
+  },
+  {
+    path: "/calculator",
+    name: "calculator",
+    meta: { requiresAuth: true },
+    component: CalculatorView,
   },
   {
     path: "/auth",

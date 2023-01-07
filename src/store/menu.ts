@@ -29,7 +29,7 @@ export const useMenuStore = defineStore("menu", {
         {
           name: useLangStore().messages.menu.calc,
           icon: "fa-solid fa-sack-dollar",
-          href: "home",
+          href: "calculator",
           visible: ItemVisibility.auth,
         },
         {
