@@ -47,16 +47,32 @@ onBeforeMount(() => {
     <base-notecard>
       <h1>Kalkulator</h1>
       <form @submit.prevent="calc" class="calendar__form">
-        <label for="year">Rok:</label>
-        <select v-model="year" class="calendar__input" name="year" id="year">
-          <option v-for="n in years" :key="n" :value="n">
-            {{ n }}
-          </option>
-        </select>
-        <label for="month">Miesiąc:</label>
-        <select v-model="month" class="calendar__input" name="month" id="month">
-          <option v-for="n in 12" :key="n" :value="n">{{ n }}</option>
-        </select>
+        <div class="calendar__wrapper">
+          <div>
+            <label for="year">Rok:</label>
+            <select
+              v-model="year"
+              class="calendar__input"
+              name="year"
+              id="year"
+            >
+              <option v-for="n in years" :key="n" :value="n">
+                {{ n }}
+              </option>
+            </select>
+          </div>
+          <div>
+            <label for="month">Miesiąc:</label>
+            <select
+              v-model="month"
+              class="calendar__input"
+              name="month"
+              id="month"
+            >
+              <option v-for="n in 12" :key="n" :value="n">{{ n }}</option>
+            </select>
+          </div>
+        </div>
         <base-button>Sprawdź</base-button>
       </form>
     </base-notecard>
@@ -113,6 +129,11 @@ onBeforeMount(() => {
       background-color: $background-color;
       outline: none;
     }
+  }
+  &__wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
   }
 }
 </style>
