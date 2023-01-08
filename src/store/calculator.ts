@@ -85,7 +85,6 @@ export const useCalculatorStore = defineStore("calculator", {
     },
     async getBaseBrutto(year: number, month: number) {
       const daysAtWork = await this.getDaysAtWork(year, month);
-      console.log(this.getDaysToWork(year, month));
 
       const dailyPayment =
         (useUserInfo().userInfo.salaryAmount.value as number) /
