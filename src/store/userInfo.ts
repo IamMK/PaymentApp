@@ -28,6 +28,11 @@ export const useUserInfo = defineStore("userinfo", {
         type: "select",
         allowed: Object.keys(Currency),
       },
+      [ProfileField.BIRTHDATE]: {
+        name: "Data urodzenia",
+        value: null,
+        type: "date",
+      },
     } as userInfo,
   }),
   getters: {
@@ -50,15 +55,22 @@ export const useUserInfo = defineStore("userinfo", {
       if (emptyKeys.length > 0) return false;
       return true;
     },
+    userBirthDate(state) {
+      return new Date(state.userInfo.birthdate.value as string).toLocaleString(
+        "en-GB",
+        { year: "numeric", month: "numeric", day: "numeric" }
+      );
+    },
   },
   actions: {
-    async sendUserData(data: { [x: string]: string | number | null }) {
+    async sendUserData(data: { [x: string]: string | number | Date | null }) {
       const userId = useAuthStore().userId;
       const dataForSend = {
         nickname: data.nickname || this.userInfo.nickname.value,
         salaryType: data.salaryType || this.userInfo.salaryType.value,
         salaryAmount: data.salaryAmount || this.userInfo.salaryAmount.value,
         currency: data.currency || this.userInfo.currency.value,
+        birthdate: data.birthdate || this.userInfo.birthdate.value,
       };
       const response = await fetch(
         `${appConfig.database}/profiles/${userId}.json`,
@@ -75,7 +87,9 @@ export const useUserInfo = defineStore("userinfo", {
 
       this.setUserData(data);
     },
-    async setUserData(userData?: { [x: string]: string | number | null }) {
+    async setUserData(userData?: {
+      [x: string]: string | number | Date | null;
+    }) {
       if (!userData) {
         const response = await fetch(
           `${appConfig.database}/profiles/${useAuthStore().userId}.json`
@@ -97,6 +111,8 @@ export const useUserInfo = defineStore("userinfo", {
           this.userInfo[ProfileField.SALARYAMOUNT].value;
         this.userInfo[ProfileField.SALARYTYPE].value =
           userData.salaryType || this.userInfo[ProfileField.SALARYTYPE].value;
+        this.userInfo[ProfileField.BIRTHDATE].value =
+          userData.birthdate || this.userInfo[ProfileField.BIRTHDATE].value;
       }
     },
   },
