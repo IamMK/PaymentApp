@@ -15,12 +15,13 @@ export enum ProfileField {
   SALARYTYPE = "salaryType",
   SALARYAMOUNT = "salaryAmount",
   CURRENCY = "currency",
+  BIRTHDATE = "birthdate",
 }
 
 export type userInfo = {
   [x in ProfileField]: {
     name: string;
-    value: SalaryType | Currency | number | string | null;
+    value: SalaryType | Currency | number | string | Date | null;
     type: string;
     allowed?: string[];
   };

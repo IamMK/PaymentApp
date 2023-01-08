@@ -5,7 +5,7 @@
       <div v-for="item in emptyFields" :key="item.name" class="profile__item">
         <label :for="item.name">{{ item.name }}</label>
         <input
-          v-if="item.type === 'string'"
+          v-if="item.type === 'string' || item.type === 'date'"
           :type="item.type"
           :name="item.name"
           class="profile__input"
@@ -33,6 +33,7 @@
           class="profile__input"
           v-model="item.value"
         />
+        <!-- <input v-else-if="item.type === ''" :type="item.type"> -->
       </div>
       <base-button class="profile__button" @click="setProfileInfo">
         {{ messages.saveText }}

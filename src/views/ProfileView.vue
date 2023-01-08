@@ -10,6 +10,8 @@
       </h2>
       <h3>Podsumujmy informacje, jakie o Tobie posiadam:</h3>
       <article>
+        <h4>Data urodzenia:</h4>
+        <p>{{ userInfoStore.userBirthDate }}</p>
         <h4>Typ wynagrodzenia:</h4>
         <p>
           {{ salaryType }}
