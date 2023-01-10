@@ -6,26 +6,20 @@
         <i @click="year--" class="fa-solid fa-arrow-left"></i>
         <span @click="openYearDialog">{{ year }}</span>
         <i @click="year++" class="fa-solid fa-arrow-right"></i>
-        <base-dialog
+        <!-- <base-dialog
           title="Wybór roku"
           @close="closeYearDialog"
           :show="yearDialog"
           mode="year"
           :start="year"
-        />
+        /> -->
       </section>
       <p>Miesiąc:</p>
       <section class="calendar__section">
         <i @click="monthDecrease" class="fa-solid fa-arrow-left"></i>
         <span @click="openMonthDialog">{{ month }}</span>
         <i @click="monthIncrease" class="fa-solid fa-arrow-right"></i>
-        <base-dialog
-          title="Wybór miesiąca"
-          @close="closeMonthDialog"
-          :show="monthDialog"
-          mode="month"
-          :start="month"
-        />
+        <month-dialog v-if="monthDialog" title="Wybór miesiąca" />
       </section>
     </header>
     <main class="dayCount">
@@ -54,14 +48,14 @@
         >
           {{ n }}
         </div>
-        <base-dialog
+        <!-- <base-dialog
           title="Informacja dzienna"
           @close="closeDayDialog"
           :show="dayDialog"
           mode="day"
           :done="dayIsDone(checkedDate.day.value)"
           :date="checkedDate"
-        />
+        /> -->
       </div>
     </main>
   </section>
@@ -74,6 +68,7 @@ import { useCalendarStore } from "@/store/calendar";
 import { onMounted, watch } from "@vue/runtime-dom";
 import { useUserDaysStore } from "@/store/userDays";
 // import { userDay } from "@/types/dailyInfo";
+import MonthDialog from "@/components/UI/MonthDialog.vue";
 
 const calendarStore = useCalendarStore();
 const userDaysStore = useUserDaysStore();

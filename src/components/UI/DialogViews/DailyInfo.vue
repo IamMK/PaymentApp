@@ -1,49 +1,51 @@
 <template>
-  <form class="form" @submit.prevent="setDailyInfo">
-    <div class="form__fields">
-      <fieldset
-        v-for="field in fields"
-        :key="field.description"
-        class="form__info"
-      >
-        <legend class="form__desc">{{ field.description }}</legend>
-        <label
-          class="form__field"
-          v-for="item in field.items"
-          :key="item.description"
+  <base-dialog>
+    <form class="form" @submit.prevent="setDailyInfo">
+      <div class="form__fields">
+        <fieldset
+          v-for="field in fields"
+          :key="field.description"
+          class="form__info"
         >
-          <input
-            type="radio"
-            name="presence"
-            :value="item.value"
-            v-model="checked"
-            class="form__radio"
-            @click="uncheck(item.value)"
-          />
-          {{ item.description }}
-        </label>
-        <label v-if="field.numberfield">
-          {{ messages.hoursCountText }}
-          <input
-            type="number"
-            v-model="field.hours"
-            min="1"
-            max="24"
-            class="form__textfield"
-            :disabled="
-              (field.group === Group.Overhours &&
-                !(
-                  checked === Overhours.fifty || checked === Overhours.hundert
-                )) ||
-              (field.group === Group.Presence &&
-                checked !== Presence.notfullday)
-            "
-          />
-        </label>
-      </fieldset>
-    </div>
-    <base-button>{{ messages.saveText }}</base-button>
-  </form>
+          <legend class="form__desc">{{ field.description }}</legend>
+          <label
+            class="form__field"
+            v-for="item in field.items"
+            :key="item.description"
+          >
+            <input
+              type="radio"
+              name="presence"
+              :value="item.value"
+              v-model="checked"
+              class="form__radio"
+              @click="uncheck(item.value)"
+            />
+            {{ item.description }}
+          </label>
+          <label v-if="field.numberfield">
+            {{ messages.hoursCountText }}
+            <input
+              type="number"
+              v-model="field.hours"
+              min="1"
+              max="24"
+              class="form__textfield"
+              :disabled="
+                (field.group === Group.Overhours &&
+                  !(
+                    checked === Overhours.fifty || checked === Overhours.hundert
+                  )) ||
+                (field.group === Group.Presence &&
+                  checked !== Presence.notfullday)
+              "
+            />
+          </label>
+        </fieldset>
+      </div>
+      <base-button>{{ messages.saveText }}</base-button>
+    </form>
+  </base-dialog>
 </template>
 
 <script setup lang="ts">

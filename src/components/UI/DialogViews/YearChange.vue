@@ -1,17 +1,19 @@
 <template>
-  <section class="year">
-    <i
-      @click="startValueChange(Operator.decrease)"
-      class="fa-solid fa-arrow-left"
-    ></i>
-    <div @click="confirm(year - 1)">{{ year - 1 }}</div>
-    <div @click="confirm(year)">{{ year }}</div>
-    <div @click="confirm(year + 1)">{{ year + 1 }}</div>
-    <i
-      @click="startValueChange(Operator.increase)"
-      class="fa-solid fa-arrow-right"
-    ></i>
-  </section>
+  <base-dialog>
+    <section class="year">
+      <i
+        @click="startValueChange(Operator.decrease)"
+        class="fa-solid fa-arrow-left"
+      ></i>
+      <div @click="confirm(year - 1)">{{ year - 1 }}</div>
+      <div @click="confirm(year)">{{ year }}</div>
+      <div @click="confirm(year + 1)">{{ year + 1 }}</div>
+      <i
+        @click="startValueChange(Operator.increase)"
+        class="fa-solid fa-arrow-right"
+      ></i>
+    </section>
+  </base-dialog>
 </template>
 
 <script setup lang="ts">

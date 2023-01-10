@@ -1,15 +1,11 @@
 <template>
   <teleport to="body">
-    <div v-if="show" @click="tryClose" class="backdrop"></div>
+    <div @click="tryClose" class="backdrop"></div>
     <transition name="dialog">
-      <dialog
-        class="dialog"
-        :class="{
+      <dialog class="dialog" open>
+        <!-- :class="{
           'dialog--days': editMode || (!done && mode === 'day'),
-        }"
-        open
-        v-if="show"
-      >
+        }" -->
         <header class="dialog__header">
           <slot name="header">
             <h2>{{ title }}</h2>
@@ -21,7 +17,10 @@
             ></i>
           </menu>
         </header>
-        <section class="dialog__container" v-if="mode === 'day'">
+        <section class="dialog__container">
+          <slot></slot>
+        </section>
+        <!-- <section class="dialog__container" v-if="mode === 'day'">
           <daily-data
             v-if="done && !editMode"
             :date="date"
@@ -51,7 +50,7 @@
             {{ n }}
           </div>
         </section>
-        <section v-else class="dialog__container"><slot></slot></section>
+        <section v-else class="dialog__container"><slot></slot></section> -->
       </dialog>
     </transition>
   </teleport>
@@ -59,46 +58,10 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
-import { useCalendarStore } from "@/store/calendar";
-
-import DailyInfo from "@/components/UI/DialogViews/DailyInfo.vue";
-import DailyData from "@/components/UI/DialogViews/DailyData.vue";
-import YearChange from "./DialogViews/YearChange.vue";
-
-const calendarStore = useCalendarStore();
 const props = defineProps({
-  show: {
-    type: Boolean,
-    required: true,
-  },
-  fixed: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-  mode: {
-    type: String,
-    required: true,
-  },
-  start: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-  date: {
-    type: Object,
-    default: () => {
-      return { day: 0, month: 0, year: 0 };
-    },
-  },
   title: {
     type: String,
     required: true,
-  },
-  done: {
-    type: Boolean,
-    required: true,
-    default: false,
   },
 });
 
@@ -106,15 +69,15 @@ const editMode = ref(false);
 
 const emit = defineEmits(["close"]);
 
-const editDay = () => {
-  editMode.value = true;
-};
+// const editDay = () => {
+//   editMode.value = true;
+// };
 
-const confirm = (value: number) => {
-  if (props.mode === "year") calendarStore.year = value;
-  if (props.mode === "month") calendarStore.month = value;
-  emit("close");
-};
+// const confirm = (value: number) => {
+//   if (props.mode === "year") calendarStore.year = value;
+//   if (props.mode === "month") calendarStore.month = value;
+//   emit("close");
+// };
 const tryClose = () => {
   editMode.value = false;
   // dayIsDone.value = !props.done;
