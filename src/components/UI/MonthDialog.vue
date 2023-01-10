@@ -1,5 +1,9 @@
 <template>
-  <base-dialog :title="props.title">
+  <base-dialog
+    @close="tryClose"
+    :title="props.title"
+    class="dialog__container--months"
+  >
     <section class="dialog__container dialog__container--months">
       <div class="dialog__month" v-for="n in 12" :key="n" @click="confirm(n)">
         {{ n }}
@@ -24,6 +28,10 @@ const props = defineProps({
 
 const confirm = (value: number) => {
   calendarStore.month = value;
+  emit("close");
+};
+
+const tryClose = () => {
   emit("close");
 };
 </script>

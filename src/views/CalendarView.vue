@@ -19,7 +19,11 @@
         <i @click="monthDecrease" class="fa-solid fa-arrow-left"></i>
         <span @click="openMonthDialog">{{ month }}</span>
         <i @click="monthIncrease" class="fa-solid fa-arrow-right"></i>
-        <month-dialog v-if="monthDialog" title="Wybór miesiąca" />
+        <month-dialog
+          @close="closeMonthDialog"
+          v-if="monthDialog"
+          title="Wybór miesiąca"
+        />
       </section>
     </header>
     <main class="dayCount">
@@ -83,9 +87,9 @@ const checkedDay = ref(0);
 
 const daysLoading = ref(false);
 
-const checkedDate = computed(() => {
-  return { year, month, day: checkedDay };
-});
+// const checkedDate = computed(() => {
+//   return { year, month, day: checkedDay };
+// });
 
 const monthStartDay = computed(() => {
   return calendarStore.monthStartDay;
@@ -128,14 +132,14 @@ const dayClass = (day: number) => {
   return checkedDay[0].group;
 };
 
-const dayIsDone = (day: number) => {
-  const usedDays = [];
-  for (const item of userDaysStore.dailyInfo) {
-    usedDays.push(Number(item.day));
-  }
+// const dayIsDone = (day: number) => {
+//   const usedDays = [];
+//   for (const item of userDaysStore.dailyInfo) {
+//     usedDays.push(Number(item.day));
+//   }
 
-  return usedDays.includes(day);
-};
+//   return usedDays.includes(day);
+// };
 
 const openDayDialog = (day: number) => {
   checkedDay.value = day;
@@ -147,15 +151,15 @@ const openMonthDialog = () => {
 const openYearDialog = () => {
   yearDialog.value = true;
 };
-const closeDayDialog = () => {
-  dayDialog.value = false;
-};
+// const closeDayDialog = () => {
+//   dayDialog.value = false;
+// };
 const closeMonthDialog = () => {
   monthDialog.value = false;
 };
-const closeYearDialog = () => {
-  yearDialog.value = false;
-};
+// const closeYearDialog = () => {
+//   yearDialog.value = false;
+// };
 
 const loadDailyInfo = async () => {
   daysLoading.value = true;

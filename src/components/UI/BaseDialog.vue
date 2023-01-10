@@ -17,8 +17,8 @@
             ></i>
           </menu>
         </header>
-        <section class="dialog__container">
-          <slot></slot>
+        <section>
+          <slot class="dialog__container"></slot>
         </section>
         <!-- <section class="dialog__container" v-if="mode === 'day'">
           <daily-data
@@ -57,7 +57,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
+// import { ref } from "vue";
 const props = defineProps({
   title: {
     type: String,
@@ -65,7 +65,7 @@ const props = defineProps({
   },
 });
 
-const editMode = ref(false);
+// const editMode = ref(false);
 
 const emit = defineEmits(["close"]);
 
@@ -79,7 +79,7 @@ const emit = defineEmits(["close"]);
 //   emit("close");
 // };
 const tryClose = () => {
-  editMode.value = false;
+  // editMode.value = false;
   // dayIsDone.value = !props.done;
   emit("close");
 };
