@@ -48,7 +48,7 @@ onBeforeMount(() => {
       <h1>Kalkulator</h1>
       <form @submit.prevent="calc" class="calendar__form">
         <div class="calendar__wrapper">
-          <div>
+          <div class="calendar__dateField">
             <label for="year">Rok:</label>
             <select
               v-model="year"
@@ -61,7 +61,7 @@ onBeforeMount(() => {
               </option>
             </select>
           </div>
-          <div>
+          <div class="calendar__dateField">
             <label for="month">Miesiąc:</label>
             <select
               v-model="month"
@@ -73,6 +73,9 @@ onBeforeMount(() => {
             </select>
           </div>
         </div>
+        <!-- TO CHANGE INTO MONTH INPUT FIELD:
+          MOBILE - ONLY THAT, PC - TWO FIELDS AS A BASEDIALOG COMPONENT
+        -->
         <base-button>Sprawdź</base-button>
       </form>
     </base-notecard>
@@ -122,7 +125,7 @@ onBeforeMount(() => {
     text-align-last: center;
 
     display: block;
-    border: 1px solid #ccc;
+    border: 1px solid $button-background;
     padding: 0.15rem;
     font-size: large;
     font-weight: 400;
