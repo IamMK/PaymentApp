@@ -62,7 +62,7 @@ const messages = computed(() => {
   return langStore.messages.dailyInfo;
 });
 
-const emits = defineEmits(["close"]);
+// const emits = defineEmits(["close"]);
 
 const props = defineProps({
   date: {
@@ -118,7 +118,7 @@ const setDailyInfo = () => {
   const fieldsFiltered = fields.value.filter((el) => {
     for (const item of el.items) {
       if (item.value === checked.value) {
-        emits("close");
+        // emits("close");
         return true;
       }
     }

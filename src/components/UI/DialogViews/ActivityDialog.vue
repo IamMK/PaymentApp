@@ -1,5 +1,5 @@
 <template>
-  <base-dialog>
+  <base-dialog class="dialog__container--days">
     <section class="daily__data">
       <h2>
         {{ messages.daySummaryText }} {{ date.day }}.{{ date.month }}.{{

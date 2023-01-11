@@ -8,7 +8,7 @@
         }" -->
         <header class="dialog__header">
           <slot name="header">
-            <h2>{{ title }}</h2>
+            <h2>{{ props.title }}</h2>
           </slot>
           <menu class="dialog__menu">
             <i
@@ -20,44 +20,12 @@
         <section>
           <slot class="dialog__container"></slot>
         </section>
-        <!-- <section class="dialog__container" v-if="mode === 'day'">
-          <daily-data
-            v-if="done && !editMode"
-            :date="date"
-            @editMode="editDay"
-          ></daily-data>
-          <daily-info
-            @close="tryClose"
-            v-else-if="done && editMode"
-            :date="date"
-            edit
-          ></daily-info>
-          <daily-info @close="tryClose" v-else :date="date"></daily-info>
-        </section>
-        <section class="dialog__container" v-else-if="mode === 'year'">
-          <year-change :startValue="start" @confirm="confirm"></year-change>
-        </section>
-        <section
-          class="dialog__container dialog__container--months"
-          v-else-if="mode === 'month'"
-        >
-          <div
-            class="dialog__month"
-            v-for="n in 12"
-            :key="n"
-            @click="confirm(n)"
-          >
-            {{ n }}
-          </div>
-        </section>
-        <section v-else class="dialog__container"><slot></slot></section> -->
       </dialog>
     </transition>
   </teleport>
 </template>
 
 <script setup lang="ts">
-// import { ref } from "vue";
 const props = defineProps({
   title: {
     type: String,
@@ -65,22 +33,8 @@ const props = defineProps({
   },
 });
 
-// const editMode = ref(false);
-
 const emit = defineEmits(["close"]);
-
-// const editDay = () => {
-//   editMode.value = true;
-// };
-
-// const confirm = (value: number) => {
-//   if (props.mode === "year") calendarStore.year = value;
-//   if (props.mode === "month") calendarStore.month = value;
-//   emit("close");
-// };
 const tryClose = () => {
-  // editMode.value = false;
-  // dayIsDone.value = !props.done;
   emit("close");
 };
 </script>

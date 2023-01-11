@@ -1,9 +1,5 @@
 <template>
-  <base-dialog
-    @close="tryClose"
-    :title="props.title"
-    class="dialog__container--months"
-  >
+  <base-dialog class="dialog__container--months">
     <section class="dialog__container dialog__container--months">
       <div class="dialog__month" v-for="n in 12" :key="n" @click="confirm(n)">
         {{ n }}
@@ -17,21 +13,7 @@ import { useCalendarStore } from "@/store/calendar";
 
 const calendarStore = useCalendarStore();
 
-const emit = defineEmits(["close"]);
-
-const props = defineProps({
-  title: {
-    type: String,
-    required: true,
-  },
-});
-
 const confirm = (value: number) => {
   calendarStore.month = value;
-  emit("close");
-};
-
-const tryClose = () => {
-  emit("close");
 };
 </script>

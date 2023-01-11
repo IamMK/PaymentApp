@@ -6,13 +6,12 @@
         <i @click="year--" class="fa-solid fa-arrow-left"></i>
         <span @click="openYearDialog">{{ year }}</span>
         <i @click="year++" class="fa-solid fa-arrow-right"></i>
-        <!-- <base-dialog
+        <year-dialog
           title="Wybór roku"
           @close="closeYearDialog"
-          :show="yearDialog"
-          mode="year"
-          :start="year"
-        /> -->
+          v-if="yearDialog"
+          :startValue="year"
+        />
       </section>
       <p>Miesiąc:</p>
       <section class="calendar__section">
@@ -52,14 +51,18 @@
         >
           {{ n }}
         </div>
-        <!-- <base-dialog
-          title="Informacja dzienna"
+        <activity-dialog
+          title="Podsumowanie dnia"
           @close="closeDayDialog"
-          :show="dayDialog"
-          mode="day"
-          :done="dayIsDone(checkedDate.day.value)"
+          v-if="dayDialog && dayIsDone(checkedDate.day.value)"
           :date="checkedDate"
-        /> -->
+        />
+        <setday-dialog
+          title="Ustawienia dnia"
+          @close="closeDayDialog"
+          v-if="dayDialog && !dayIsDone(checkedDate.day.value)"
+          :date="checkedDate"
+        />
       </div>
     </main>
   </section>
@@ -71,8 +74,10 @@ import { computed, ref, toRefs } from "@vue/reactivity";
 import { useCalendarStore } from "@/store/calendar";
 import { onMounted, watch } from "@vue/runtime-dom";
 import { useUserDaysStore } from "@/store/userDays";
-// import { userDay } from "@/types/dailyInfo";
-import MonthDialog from "@/components/UI/MonthDialog.vue";
+import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
+import YearDialog from "@/components/UI/DialogViews/YearDialog.vue";
+import SetdayDialog from "@/components/UI/DialogViews/SetdayDialog.vue";
+import ActivityDialog from "@/components/UI/DialogViews/ActivityDialog.vue";
 
 const calendarStore = useCalendarStore();
 const userDaysStore = useUserDaysStore();
@@ -87,9 +92,9 @@ const checkedDay = ref(0);
 
 const daysLoading = ref(false);
 
-// const checkedDate = computed(() => {
-//   return { year, month, day: checkedDay };
-// });
+const checkedDate = computed(() => {
+  return { year, month, day: checkedDay };
+});
 
 const monthStartDay = computed(() => {
   return calendarStore.monthStartDay;
@@ -132,14 +137,14 @@ const dayClass = (day: number) => {
   return checkedDay[0].group;
 };
 
-// const dayIsDone = (day: number) => {
-//   const usedDays = [];
-//   for (const item of userDaysStore.dailyInfo) {
-//     usedDays.push(Number(item.day));
-//   }
+const dayIsDone = (day: number) => {
+  const usedDays = [];
+  for (const item of userDaysStore.dailyInfo) {
+    usedDays.push(Number(item.day));
+  }
 
-//   return usedDays.includes(day);
-// };
+  return usedDays.includes(day);
+};
 
 const openDayDialog = (day: number) => {
   checkedDay.value = day;
@@ -151,15 +156,15 @@ const openMonthDialog = () => {
 const openYearDialog = () => {
   yearDialog.value = true;
 };
-// const closeDayDialog = () => {
-//   dayDialog.value = false;
-// };
+const closeDayDialog = () => {
+  dayDialog.value = false;
+};
 const closeMonthDialog = () => {
   monthDialog.value = false;
 };
-// const closeYearDialog = () => {
-//   yearDialog.value = false;
-// };
+const closeYearDialog = () => {
+  yearDialog.value = false;
+};
 
 const loadDailyInfo = async () => {
   daysLoading.value = true;
