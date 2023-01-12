@@ -6,7 +6,7 @@
         <i @click="year--" class="fa-solid fa-arrow-left"></i>
         <span @click="openYearDialog">{{ year }}</span>
         <i @click="year++" class="fa-solid fa-arrow-right"></i>
-        <year-dialog
+        <YearDialog
           title="Wybór roku"
           @close="closeYearDialog"
           v-if="yearDialog"
@@ -18,7 +18,7 @@
         <i @click="monthDecrease" class="fa-solid fa-arrow-left"></i>
         <span @click="openMonthDialog">{{ month }}</span>
         <i @click="monthIncrease" class="fa-solid fa-arrow-right"></i>
-        <month-dialog
+        <MonthDialog
           @close="closeMonthDialog"
           v-if="monthDialog"
           title="Wybór miesiąca"

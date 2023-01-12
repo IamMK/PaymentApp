@@ -1,5 +1,5 @@
 <template>
-  <base-dialog class="dialog__container--months">
+  <base-dialog>
     <section class="dialog__container dialog__container--months">
       <div class="dialog__month" v-for="n in 12" :key="n" @click="confirm(n)">
         {{ n }}

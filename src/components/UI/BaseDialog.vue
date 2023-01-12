@@ -3,9 +3,6 @@
     <div @click="tryClose" class="backdrop"></div>
     <transition name="dialog">
       <dialog class="dialog" open>
-        <!-- :class="{
-          'dialog--days': editMode || (!done && mode === 'day'),
-        }" -->
         <header class="dialog__header">
           <slot name="header">
             <h2>{{ props.title }}</h2>
@@ -17,9 +14,9 @@
             ></i>
           </menu>
         </header>
-        <section>
-          <slot class="dialog__container"></slot>
-        </section>
+        <!-- <section> -->
+        <slot class="dialog__container"></slot>
+        <!-- </section> -->
       </dialog>
     </transition>
   </teleport>

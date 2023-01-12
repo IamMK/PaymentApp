@@ -1,5 +1,5 @@
 <template>
-  <base-dialog>
+  <base-dialog @close="closeDialog">
     <section class="year">
       <i
         @click="startValueChange(Operator.decrease)"
@@ -18,6 +18,11 @@
 
 <script setup lang="ts">
 import { ref } from "vue";
+import { useCalendarStore } from "@/store/calendar";
+
+const calendarStore = useCalendarStore();
+
+const emit = defineEmits(["close"]);
 
 enum Operator {
   decrease = "-",
@@ -31,8 +36,6 @@ const props = defineProps({
   },
 });
 
-const emit = defineEmits(["confirm"]);
-
 const year = ref(props.startValue);
 
 const startValueChange = (operator: Operator) => {
@@ -40,8 +43,11 @@ const startValueChange = (operator: Operator) => {
   else year.value++;
 };
 
+const closeDialog = () => emit("close");
+
 const confirm = (start: number) => {
-  emit("confirm", start);
+  calendarStore.year = start;
+  closeDialog();
 };
 </script>
 
@@ -49,8 +55,10 @@ const confirm = (start: number) => {
 .year {
   display: flex;
   justify-content: space-between;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   width: 100%;
-  // font-size: 44px;
+  padding: 1rem;
 }
 </style>
