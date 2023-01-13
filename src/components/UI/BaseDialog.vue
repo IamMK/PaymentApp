@@ -1,18 +1,17 @@
 <template>
   <teleport to="body">
-    <div v-if="show" @click="tryClose" class="backdrop"></div>
+    <div @click="tryClose" class="backdrop"></div>
     <transition name="dialog">
       <dialog
         class="dialog"
         :class="{
-          'dialog--days': editMode || (!done && mode === 'day'),
+          'dialog--days': setDay,
         }"
         open
-        v-if="show"
       >
         <header class="dialog__header">
           <slot name="header">
-            <h2>{{ title }}</h2>
+            <h2>{{ props.title }}</h2>
           </slot>
           <menu class="dialog__menu">
             <i
@@ -21,103 +20,29 @@
             ></i>
           </menu>
         </header>
-        <section class="dialog__container" v-if="mode === 'day'">
-          <daily-data
-            v-if="done && !editMode"
-            :date="date"
-            @editMode="editDay"
-          ></daily-data>
-          <daily-info
-            @close="tryClose"
-            v-else-if="done && editMode"
-            :date="date"
-            edit
-          ></daily-info>
-          <daily-info @close="tryClose" v-else :date="date"></daily-info>
-        </section>
-        <section class="dialog__container" v-else-if="mode === 'year'">
-          <year-change :startValue="start" @confirm="confirm"></year-change>
-        </section>
-        <section
-          class="dialog__container dialog__container--months"
-          v-else-if="mode === 'month'"
-        >
-          <div
-            class="dialog__month"
-            v-for="n in 12"
-            :key="n"
-            @click="confirm(n)"
-          >
-            {{ n }}
-          </div>
-        </section>
-        <section v-else class="dialog__container"><slot></slot></section>
+        <!-- <section> -->
+        <slot class="dialog__container"></slot>
+        <!-- </section> -->
       </dialog>
     </transition>
   </teleport>
 </template>
 
 <script setup lang="ts">
-import { ref } from "vue";
-import { useCalendarStore } from "@/store/calendar";
-
-import DailyInfo from "@/components/UI/DialogViews/DailyInfo.vue";
-import DailyData from "@/components/UI/DialogViews/DailyData.vue";
-import YearChange from "./DialogViews/YearChange.vue";
-
-const calendarStore = useCalendarStore();
 const props = defineProps({
-  show: {
-    type: Boolean,
-    required: true,
-  },
-  fixed: {
-    type: Boolean,
-    required: false,
-    default: false,
-  },
-  mode: {
-    type: String,
-    required: true,
-  },
-  start: {
-    type: Number,
-    required: false,
-    default: 0,
-  },
-  date: {
-    type: Object,
-    default: () => {
-      return { day: 0, month: 0, year: 0 };
-    },
-  },
   title: {
     type: String,
     required: true,
   },
-  done: {
+  setDay: {
     type: Boolean,
-    required: true,
+    required: false,
     default: false,
   },
 });
 
-const editMode = ref(false);
-
 const emit = defineEmits(["close"]);
-
-const editDay = () => {
-  editMode.value = true;
-};
-
-const confirm = (value: number) => {
-  if (props.mode === "year") calendarStore.year = value;
-  if (props.mode === "month") calendarStore.month = value;
-  emit("close");
-};
 const tryClose = () => {
-  editMode.value = false;
-  // dayIsDone.value = !props.done;
   emit("close");
 };
 </script>
@@ -213,9 +138,10 @@ const tryClose = () => {
 /* VUE TRANSITION END */
 
 @media (min-width: 768px) {
-  dialog {
-    left: calc(50% - 20rem);
-    width: 40rem;
+  .dialog {
+    left: 50%;
+    width: auto;
+    transform: translateX(-50%);
   }
 }
 </style>

@@ -181,7 +181,7 @@ const formReset = () => {
     </transition>
 
     <base-dialog
-      :show="!!data.error"
+      v-if="!!data.error"
       title="Błąd autoryzacji"
       @close="handleError"
     >
@@ -189,8 +189,7 @@ const formReset = () => {
     </base-dialog>
     <base-dialog
       :title="data.mode === 'login' ? 'Logowanie...' : 'Rejestracja...'"
-      :show="data.isLoading"
-      fixed
+      v-if="data.isLoading"
     >
       <base-spinner></base-spinner>
     </base-dialog>

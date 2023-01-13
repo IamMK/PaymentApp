@@ -1,25 +1,28 @@
 <template>
-  <section class="daily__data">
-    <h2>
-      {{ messages.daySummaryText }} {{ date.day }}.{{ date.month }}.{{
-        date.year
-      }}:
-    </h2>
-    <h2 v-if="isHoliday">{{ isHoliday }}</h2>
-    <h3>{{ messages.dayActivityText }} {{ dayDescription }}</h3>
-    <p v-if="showHoursAtWorkField">
-      {{ messages.hoursAtWorkText }} {{ hoursAtWork }}
-    </p>
-    <p v-if="showOverhoursField">
-      {{ messages.overhoursText }} {{ overHours }}
-    </p>
-    <p>{{ messages.bruttoText }} {{ dayPayment }}</p>
+  <base-dialog>
+    <section class="dailyData">
+      <h2>
+        {{ messages.daySummaryText }} {{ date.day }}.{{ date.month }}.{{
+          date.year
+        }}:
+      </h2>
+      <h2 v-if="isHoliday">{{ isHoliday }}</h2>
+      <h3>{{ messages.dayActivityText }}</h3>
+      <h4>{{ dayDescription }}</h4>
+      <p v-if="showHoursAtWorkField">
+        {{ messages.hoursAtWorkText }} {{ hoursAtWork }}
+      </p>
+      <p v-if="showOverhoursField">
+        {{ messages.overhoursText }} {{ overHours }}
+      </p>
+      <p>{{ messages.bruttoText }} {{ dayPayment }}</p>
 
-    <base-button @click="editMode">{{ messages.changeText }}</base-button>
-    <base-button mode="flat" @click="deleteDayInfo">{{
-      messages.deleteText
-    }}</base-button>
-  </section>
+      <base-button @click="editMode">{{ messages.changeText }}</base-button>
+      <base-button mode="flat" @click="deleteDayInfo">{{
+        messages.deleteText
+      }}</base-button>
+    </section>
+  </base-dialog>
 </template>
 
 <script setup lang="ts">
@@ -146,3 +149,10 @@ const showOverhoursField = computed(() => {
   return dayInfo.value.group === Group.Overhours;
 });
 </script>
+
+<style lang="scss">
+.dailyData {
+  // text-align: justify;
+  padding: 5px 15px;
+}
+</style>

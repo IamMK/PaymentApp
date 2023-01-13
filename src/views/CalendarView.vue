@@ -6,12 +6,11 @@
         <i @click="year--" class="fa-solid fa-arrow-left"></i>
         <span @click="openYearDialog">{{ year }}</span>
         <i @click="year++" class="fa-solid fa-arrow-right"></i>
-        <base-dialog
+        <YearDialog
           title="Wybór roku"
           @close="closeYearDialog"
-          :show="yearDialog"
-          mode="year"
-          :start="year"
+          v-if="yearDialog"
+          :startValue="year"
         />
       </section>
       <p>Miesiąc:</p>
@@ -19,12 +18,10 @@
         <i @click="monthDecrease" class="fa-solid fa-arrow-left"></i>
         <span @click="openMonthDialog">{{ month }}</span>
         <i @click="monthIncrease" class="fa-solid fa-arrow-right"></i>
-        <base-dialog
-          title="Wybór miesiąca"
+        <MonthDialog
           @close="closeMonthDialog"
-          :show="monthDialog"
-          mode="month"
-          :start="month"
+          v-if="monthDialog"
+          title="Wybór miesiąca"
         />
       </section>
     </header>
@@ -54,12 +51,16 @@
         >
           {{ n }}
         </div>
-        <base-dialog
-          title="Informacja dzienna"
+        <day-summary
+          title="Podsumowanie dnia"
           @close="closeDayDialog"
-          :show="dayDialog"
-          mode="day"
-          :done="dayIsDone(checkedDate.day.value)"
+          v-if="dayDialog && dayIsDone(checkedDate.day.value)"
+          :date="checkedDate"
+        />
+        <setday-dialog
+          title="Ustawienia dnia"
+          @close="closeDayDialog"
+          v-if="dayDialog && !dayIsDone(checkedDate.day.value)"
           :date="checkedDate"
         />
       </div>
@@ -73,7 +74,10 @@ import { computed, ref, toRefs } from "@vue/reactivity";
 import { useCalendarStore } from "@/store/calendar";
 import { onMounted, watch } from "@vue/runtime-dom";
 import { useUserDaysStore } from "@/store/userDays";
-// import { userDay } from "@/types/dailyInfo";
+import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
+import YearDialog from "@/components/UI/DialogViews/YearDialog.vue";
+import SetdayDialog from "@/components/UI/DialogViews/SetdayDialog.vue";
+import DaySummary from "@/components/UI/DialogViews/DaySummary.vue";
 
 const calendarStore = useCalendarStore();
 const userDaysStore = useUserDaysStore();
