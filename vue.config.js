@@ -10,9 +10,9 @@ module.exports = defineConfig({
   },
   pwa: {
     name: "PaymentApp",
-    themeColor: "#FFFAE7",
+    themeColor: "#ECF0F1",
     manifestOptions: {
-      background_color: "#D2001A",
+      background_color: "#ECF0F1",
       relatedApplications: [
         {
           platform: "webapp",
