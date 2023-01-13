@@ -1,13 +1,18 @@
 // Light mode - default
 :root {
-    // https: //colorhunt.co/palette/867ae9fff5abffceadc449c2
-    --main-color: #D2001A;
+    // https://flatuicolors.com/palette/nl
+    --main-color: #ecf0f1;
     --sub-color: #FFD462;
-    --background-color: #FFFAE7;
-    --text-color: #EFEFEF;
+    --background-color: #ffffff;
+    --text-color: #8e44ad;
 
     --button-background: #141414;
     --button-text: #e2e2e2;
+
+    --calendar-empty: #9b59b6;
+    --calendar-presence: #2980b9;
+    --calendar-overhours: #1abc9c;
+    --calendar-vacation: #2ecc71;
     
 }
 
@@ -25,3 +30,8 @@ $text-color: var(--text-color);
 
 $button-background: var(--button-background);
 $button-text: var(--button-text);
+
+$calendar-empty: var(--calendar-empty);
+$calendar-presence: var(--calendar-presence);
+$calendar-overhours: var(--calendar-overhours);
+$calendar-vacation: var(--calendar-vacation);
