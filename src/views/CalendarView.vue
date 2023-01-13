@@ -51,7 +51,7 @@
         >
           {{ n }}
         </div>
-        <activity-dialog
+        <day-summary
           title="Podsumowanie dnia"
           @close="closeDayDialog"
           v-if="dayDialog && dayIsDone(checkedDate.day.value)"
@@ -77,7 +77,7 @@ import { useUserDaysStore } from "@/store/userDays";
 import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
 import YearDialog from "@/components/UI/DialogViews/YearDialog.vue";
 import SetdayDialog from "@/components/UI/DialogViews/SetdayDialog.vue";
-import ActivityDialog from "@/components/UI/DialogViews/ActivityDialog.vue";
+import DaySummary from "@/components/UI/DialogViews/DaySummary.vue";
 
 const calendarStore = useCalendarStore();
 const userDaysStore = useUserDaysStore();

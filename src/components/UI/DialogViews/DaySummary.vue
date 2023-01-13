@@ -1,13 +1,14 @@
 <template>
   <base-dialog>
-    <section class="daily__data">
+    <section class="dailyData">
       <h2>
         {{ messages.daySummaryText }} {{ date.day }}.{{ date.month }}.{{
           date.year
         }}:
       </h2>
       <h2 v-if="isHoliday">{{ isHoliday }}</h2>
-      <h3>{{ messages.dayActivityText }} {{ dayDescription }}</h3>
+      <h3>{{ messages.dayActivityText }}</h3>
+      <h4>{{ dayDescription }}</h4>
       <p v-if="showHoursAtWorkField">
         {{ messages.hoursAtWorkText }} {{ hoursAtWork }}
       </p>
@@ -148,3 +149,10 @@ const showOverhoursField = computed(() => {
   return dayInfo.value.group === Group.Overhours;
 });
 </script>
+
+<style lang="scss">
+.dailyData {
+  // text-align: justify;
+  padding: 5px 15px;
+}
+</style>
