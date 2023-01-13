@@ -195,7 +195,7 @@ watch(month, loadDailyInfo);
     flex-direction: column;
     font-size: 25px;
     padding: 20px;
-    box-shadow: $main-color 0 5px 10px;
+    box-shadow: rgba(0, 0, 0, 0) 0 1px 2px;
   }
   &__section {
     width: 50%;
@@ -222,36 +222,18 @@ watch(month, loadDailyInfo);
     align-items: center;
     margin: 2px;
     justify-content: center;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
-      rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px, rgba(0, 0, 0, 0.22) 0px 2px 4px;
     &--sunday {
       color: red;
     }
     &--presence {
-      background: radial-gradient(
-        circle,
-        $background-color 0%,
-        $background-color 10%,
-        #1d7b00 100%
-      );
+      background-color: #aaff3b;
     }
     &--overhours {
-      background-color: yellow;
-      background: radial-gradient(
-        circle,
-        $background-color 0%,
-        $background-color 10%,
-        #2802b1 100%
-      );
+      background-color: #00eaff;
     }
     &--vacation {
-      background-color: yellow;
-      background: radial-gradient(
-        circle,
-        $background-color 0%,
-        $background-color 10%,
-        #b10202 100%
-      );
+      background-color: #fe7f00;
     }
     &:first-child {
       grid-column-start: v-bind(monthStartDay);
@@ -263,8 +245,7 @@ watch(month, loadDailyInfo);
     padding: 5px;
     margin: 2px;
     border-radius: 12px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px,
-      rgba(0, 0, 0, 0.22) 0px 10px 10px;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px, rgba(0, 0, 0, 0.22) 0px 2px 4px;
   }
 }
 @media (min-width: $breakpoint-tablet) {
