@@ -127,9 +127,10 @@ const tryClose = () => {
 /* VUE TRANSITION END */
 
 @media (min-width: 768px) {
-  dialog {
-    left: calc(50% - 20rem);
-    width: 40rem;
+  .dialog {
+    left: 50%;
+    width: auto;
+    transform: translateX(-50%);
   }
 }
 </style>
