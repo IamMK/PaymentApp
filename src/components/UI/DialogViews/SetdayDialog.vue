@@ -1,6 +1,6 @@
 <template>
-  <base-dialog>
-    <section class="dialog__container--days">
+  <base-dialog setDay>
+    <section class="dialog__container">
       <form class="form" @submit.prevent="setDailyInfo">
         <div class="form__fields">
           <fieldset

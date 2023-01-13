@@ -2,7 +2,13 @@
   <teleport to="body">
     <div @click="tryClose" class="backdrop"></div>
     <transition name="dialog">
-      <dialog class="dialog" open>
+      <dialog
+        class="dialog"
+        :class="{
+          'dialog--days': setDay,
+        }"
+        open
+      >
         <header class="dialog__header">
           <slot name="header">
             <h2>{{ props.title }}</h2>
@@ -27,6 +33,11 @@ const props = defineProps({
   title: {
     type: String,
     required: true,
+  },
+  setDay: {
+    type: Boolean,
+    required: false,
+    default: false,
   },
 });
 
