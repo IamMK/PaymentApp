@@ -1,23 +1,8 @@
 <template>
   <section class="calendar">
     <header class="calendar__header">
-      <p>Rok:</p>
       <section class="calendar__section">
-        <i @click="year--" class="fa-solid fa-arrow-left"></i>
-        <span @click="openYearDialog">{{ year }}</span>
-        <i @click="year++" class="fa-solid fa-arrow-right"></i>
-        <YearDialog
-          title="Wybór roku"
-          @close="closeYearDialog"
-          v-if="yearDialog"
-          :startValue="year"
-        />
-      </section>
-      <p>Miesiąc:</p>
-      <section class="calendar__section">
-        <i @click="monthDecrease" class="fa-solid fa-arrow-left"></i>
-        <span @click="openMonthDialog">{{ month }}</span>
-        <i @click="monthIncrease" class="fa-solid fa-arrow-right"></i>
+        <span @click="openMonthDialog">{{ checkedMonth }}</span>
         <MonthDialog
           @close="closeMonthDialog"
           v-if="monthDialog"
@@ -75,7 +60,6 @@ import { useCalendarStore } from "@/store/calendar";
 import { onMounted, watch } from "@vue/runtime-dom";
 import { useUserDaysStore } from "@/store/userDays";
 import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
-import YearDialog from "@/components/UI/DialogViews/YearDialog.vue";
 import SetdayDialog from "@/components/UI/DialogViews/SetdayDialog.vue";
 import DaySummary from "@/components/UI/DialogViews/DaySummary.vue";
 
@@ -85,10 +69,26 @@ const userDaysStore = useUserDaysStore();
 const year = toRefs(calendarStore).year;
 const month = toRefs(calendarStore).month;
 const weekDays = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"];
-const yearDialog = ref(false);
 const monthDialog = ref(false);
 const dayDialog = ref(false);
 const checkedDay = ref(0);
+const checkedMonth = computed(() => {
+  const months = [
+    "Styczeń",
+    "Luty",
+    "Marzec",
+    "Kwiecień",
+    "Maj",
+    "Czerwiec",
+    "Lipiec",
+    "Sierpień",
+    "Wrzesień",
+    "Październik",
+    "Listopad",
+    "Grudzień",
+  ];
+  return `${months[month.value]} ${year.value}`;
+});
 
 const daysLoading = ref(false);
 
@@ -103,21 +103,6 @@ const isHoliday = (day: number) => {
   const dayOfWeek = new Date(year.value, month.value - 1, day).getDay();
   const holidays = calendarStore.holidaysAtMonth;
   if (dayOfWeek === 0 || holidays.includes(day)) return true;
-};
-
-const monthIncrease = () => {
-  month.value++;
-  if (month.value > 12) {
-    month.value = 1;
-    year.value++;
-  }
-};
-const monthDecrease = () => {
-  month.value--;
-  if (month.value <= 0) {
-    month.value = 12;
-    year.value--;
-  }
 };
 
 const dayClass = (day: number) => {
@@ -153,17 +138,11 @@ const openDayDialog = (day: number) => {
 const openMonthDialog = () => {
   monthDialog.value = true;
 };
-const openYearDialog = () => {
-  yearDialog.value = true;
-};
 const closeDayDialog = () => {
   dayDialog.value = false;
 };
 const closeMonthDialog = () => {
   monthDialog.value = false;
-};
-const closeYearDialog = () => {
-  yearDialog.value = false;
 };
 
 const loadDailyInfo = async () => {
@@ -187,27 +166,24 @@ watch(month, loadDailyInfo);
 <style lang="scss">
 .calendar {
   &__header {
-    margin: 5px;
-    background-color: $main-color;
     color: $text-color;
-    border-radius: 15px;
     display: flex;
     flex-direction: column;
-    font-size: 25px;
-    padding: 20px;
-    box-shadow: rgba(0, 0, 0, 0) 0 1px 2px;
+    font-size: 20px;
+    padding: 10px;
+    background: $main-color;
   }
   &__section {
-    width: 50%;
-    margin: auto;
+    margin: 10px auto;
     display: flex;
     justify-content: space-between;
   }
 }
 .dayCount {
   width: 100%;
-  padding: 10px;
+  padding: 40px 10px;
   font-weight: 800;
+  color: $main-color;
   &__days,
   &__names {
     width: 100%;
@@ -218,34 +194,34 @@ watch(month, loadDailyInfo);
   &__item {
     display: flex;
     height: calc(100vw / 7);
-    outline: 1px solid black;
+    background: $calendar-empty;
     align-items: center;
     margin: 2px;
     justify-content: center;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px, rgba(0, 0, 0, 0.22) 0px 2px 4px;
     &--sunday {
-      color: red;
+      color: #f1c40f !important;
     }
     &--presence {
-      background-color: #aaff3b;
+      background-color: $calendar-presence;
     }
     &--overhours {
-      background-color: #00eaff;
+      background-color: $calendar-overhours;
     }
     &--vacation {
-      background-color: #fe7f00;
+      background-color: $calendar-vacation;
     }
     &:first-child {
       grid-column-start: v-bind(monthStartDay);
     }
   }
+  &__names {
+    padding-bottom: 10px;
+  }
   &__name {
     font-weight: 800;
-    background: #00000010;
+    background: $calendar-empty;
     padding: 5px;
     margin: 2px;
-    border-radius: 12px;
-    box-shadow: rgba(0, 0, 0, 0.25) 0px 2px 4px, rgba(0, 0, 0, 0.22) 0px 2px 4px;
   }
 }
 @media (min-width: $breakpoint-tablet) {

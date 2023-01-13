@@ -4,6 +4,7 @@
   }
   @if $h !=_ {
     height: $h;
+    line-height: $h;
   }
   @if $r !=_ {
     border-radius: $r;

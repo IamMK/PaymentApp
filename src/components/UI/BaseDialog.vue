@@ -20,9 +20,7 @@
             ></i>
           </menu>
         </header>
-        <!-- <section> -->
-        <slot class="dialog__container"></slot>
-        <!-- </section> -->
+        <slot></slot>
       </dialog>
     </transition>
   </teleport>
@@ -54,7 +52,7 @@ const tryClose = () => {
   left: 10%;
   width: 80%;
   z-index: 100;
-  border-radius: 12px;
+  // border-radius: 12px;
   border: none;
   box-shadow: 0 2px 8px #ffffff;
   padding: 0;
@@ -65,21 +63,6 @@ const tryClose = () => {
   max-height: 80%;
   &--days {
     height: 80%;
-  }
-  &__container {
-    padding: 1rem;
-    max-height: 70%;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    &--months {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-  &__month {
-    padding: 2rem;
-    justify-self: center;
   }
   &__header {
     background-color: $main-color;
