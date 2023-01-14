@@ -1,6 +1,6 @@
 <template>
   <base-dialog setDay>
-    <section class="dialog__container">
+    <section class="wrapper">
       <form class="form" @submit.prevent="setDailyInfo">
         <div class="form__fields">
           <fieldset
@@ -24,7 +24,7 @@
               />
               {{ item.description }}
             </label>
-            <label v-if="field.numberfield">
+            <label class="form__numberDesc" v-if="field.numberfield">
               {{ messages.hoursCountText }}
               <input
                 type="number"
@@ -151,23 +151,33 @@ onMounted(() => {
 </script>
 
 <style lang="scss">
+.wrapper {
+  color: $text-color;
+  font-weight: bold;
+  padding: 1rem;
+  max-height: 70%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
 .form {
   width: 100%;
   max-height: 100%;
   &__info {
     display: flex;
     flex-direction: column;
-    background-color: #00000020;
+    background-color: $main-color;
     border: none;
     width: 100%;
-    border-radius: 12px;
+    // border-radius: 12px;
     padding: 1rem;
   }
   &__desc {
     color: $text-color;
-    background-color: #d2001a80;
-    box-shadow: 0 5px 10px $main-color;
-    border-radius: 12px;
+    font-weight: bold;
+    background-color: $main-color;
+    // box-shadow: 0 5px 10px $text-color;
+    // border-radius: 12px;
     padding: 3px;
     margin-bottom: 1rem;
     width: 100%;
@@ -179,21 +189,23 @@ onMounted(() => {
     display: flex;
     align-items: center;
     cursor: pointer;
-    // justify-content: ;
   }
   &__fields {
     max-height: 100%;
     overflow-y: auto;
     border-radius: 12px;
   }
+  &__numberDesc {
+    margin: 5px;
+    font-weight: bold;
+  }
   &__textfield {
-    background-color: #ffde0080;
+    color: $text-color;
     padding: 5px;
     font-size: medium;
     width: 100%;
     text-align: center;
-    border: 2px solid #121212;
-    border-radius: 12px;
+    border: 1px solid $text-color;
   }
   &__radio {
     appearance: none;
@@ -208,10 +220,8 @@ onMounted(() => {
     transition: all 0.3s ease;
 
     &:checked {
-      // color: blue;
-      background-color: #d2001a80;
+      background-color: $text-color;
       outline: max(1px, 0.15em) solid currentColor;
-      // outline-offset: max(2px, 0.15em);
     }
   }
 }
