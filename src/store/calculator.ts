@@ -52,10 +52,12 @@ export const useCalculatorStore = defineStore("calculator", {
         if (el.month === month) return true;
         return false;
       });
-      holidaysAtMonth[0].days.forEach((el) => {
-        if (![0, 6].includes(new Date(year, month - 1, el.day).getDay()))
-          holidaysAtWorkWeek++;
-      });
+      if (holidaysAtMonth[0]) {
+        holidaysAtMonth[0].days.forEach((el) => {
+          if (![0, 6].includes(new Date(year, month - 1, el.day).getDay()))
+            holidaysAtWorkWeek++;
+        });
+      }
 
       const workDays = monthEnd - weekDays - holidaysAtWorkWeek;
       return workDays;
