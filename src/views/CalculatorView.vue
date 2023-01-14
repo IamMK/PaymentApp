@@ -4,23 +4,44 @@ import TopBar from "@/components/TopBar.vue";
 import BaseButton from "@/components/UI/BaseButton.vue";
 import { useCalculatorStore } from "@/store/calculator";
 import { useUserInfo } from "@/store/userInfo";
-import { computed, onBeforeMount, ref } from "vue";
+import { computed, onBeforeMount, ref, toRefs } from "vue";
+import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
 
 const calculatorStore = useCalculatorStore();
 const currency = useUserInfo().userInfo.currency.value;
 
-const year = ref(new Date().getFullYear());
-const month = ref(new Date().getMonth() + 1);
 const daysAtWork = ref(0);
+const year = toRefs(calculatorStore).year;
+const month = toRefs(calculatorStore).month;
 
-const years = computed(() => {
-  const yearsArr = [];
-  const presentYear = new Date().getFullYear();
-  for (let i = presentYear; i >= 2000; i--) {
-    yearsArr.push(i);
-  }
-  return yearsArr;
+const monthDialog = ref(false);
+
+const checkedMonth = computed(() => {
+  const months = [
+    "",
+    "Styczeń",
+    "Luty",
+    "Marzec",
+    "Kwiecień",
+    "Maj",
+    "Czerwiec",
+    "Lipiec",
+    "Sierpień",
+    "Wrzesień",
+    "Październik",
+    "Listopad",
+    "Grudzień",
+  ];
+  return `${months[month.value]} ${year.value}`;
 });
+
+const openMonthDialog = () => {
+  monthDialog.value = true;
+};
+
+const closeMonthDialog = () => {
+  monthDialog.value = false;
+};
 
 const brutto = computed(() => {
   return calculatorStore.baseBrutto;
@@ -45,39 +66,18 @@ onBeforeMount(() => {
       <h1>Kalkulator</h1>
     </top-bar>
     <base-notecard>
-      <h1>Kalkulator</h1>
-      <form @submit.prevent="calc" class="calendar__form">
-        <div class="calendar__wrapper">
-          <div class="calendar__dateField">
-            <label for="year">Rok:</label>
-            <select
-              v-model="year"
-              class="calendar__input"
-              name="year"
-              id="year"
-            >
-              <option v-for="n in years" :key="n" :value="n">
-                {{ n }}
-              </option>
-            </select>
-          </div>
-          <div class="calendar__dateField">
-            <label for="month">Miesiąc:</label>
-            <select
-              v-model="month"
-              class="calendar__input"
-              name="month"
-              id="month"
-            >
-              <option v-for="n in 12" :key="n" :value="n">{{ n }}</option>
-            </select>
-          </div>
-        </div>
-        <!-- TO CHANGE INTO MONTH INPUT FIELD:
-          MOBILE - ONLY THAT, PC - TWO FIELDS AS A BASEDIALOG COMPONENT
-        -->
-        <base-button>Sprawdź</base-button>
-      </form>
+      <section class="settings">
+        <h1 class="setting__date" @click="openMonthDialog">
+          {{ checkedMonth }}
+        </h1>
+        <MonthDialog
+          @close="closeMonthDialog"
+          v-if="monthDialog"
+          title="Wybór miesiąca"
+          calculator
+        />
+      </section>
+      <base-button @click="calc">Sprawdź</base-button>
     </base-notecard>
     <base-notecard>
       <h2>Twoje wynagrodzenie</h2>
@@ -140,6 +140,12 @@ onBeforeMount(() => {
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+  }
+}
+
+.setting {
+  &__date {
+    font-size: 20px;
   }
 }
 </style>

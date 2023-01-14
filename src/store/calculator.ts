@@ -9,6 +9,8 @@ import { insurance } from "@/utils/calculator";
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
     baseBrutto: 0,
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
   }),
   getters: {
     pensionInsurance(state) {
@@ -77,13 +79,16 @@ export const useCalculatorStore = defineStore("calculator", {
     },
     async getDaysAtWork(year: number, month: number) {
       const daysToCalc = await this.getDaysFromMonth(year, month);
-      const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
-        if (item && item.value === Presence.atwork) {
-          return true;
-        }
-        return false;
-      });
-      return daysAtWork.length;
+      if (daysToCalc) {
+        const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
+          if (item && item.value === Presence.atwork) {
+            return true;
+          }
+          return false;
+        });
+        return daysAtWork.length;
+      }
+      return 0;
     },
     async getBaseBrutto(year: number, month: number) {
       const daysAtWork = await this.getDaysAtWork(year, month);
