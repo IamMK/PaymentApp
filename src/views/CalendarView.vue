@@ -75,6 +75,7 @@ const dayDialog = ref(false);
 const checkedDay = ref(0);
 const checkedMonth = computed(() => {
   const months = [
+    "",
     "Styczeń",
     "Luty",
     "Marzec",

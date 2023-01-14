@@ -9,6 +9,8 @@ import { insurance } from "@/utils/calculator";
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
     baseBrutto: 0,
+    month: new Date().getMonth() + 1,
+    year: new Date().getFullYear(),
   }),
   getters: {
     pensionInsurance(state) {
@@ -52,10 +54,12 @@ export const useCalculatorStore = defineStore("calculator", {
         if (el.month === month) return true;
         return false;
       });
-      holidaysAtMonth[0].days.forEach((el) => {
-        if (![0, 6].includes(new Date(year, month - 1, el.day).getDay()))
-          holidaysAtWorkWeek++;
-      });
+      if (holidaysAtMonth[0]) {
+        holidaysAtMonth[0].days.forEach((el) => {
+          if (![0, 6].includes(new Date(year, month - 1, el.day).getDay()))
+            holidaysAtWorkWeek++;
+        });
+      }
 
       const workDays = monthEnd - weekDays - holidaysAtWorkWeek;
       return workDays;
@@ -75,17 +79,19 @@ export const useCalculatorStore = defineStore("calculator", {
     },
     async getDaysAtWork(year: number, month: number) {
       const daysToCalc = await this.getDaysFromMonth(year, month);
-      const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
-        if (item && item.value === Presence.atwork) {
-          return true;
-        }
-        return false;
-      });
-      return daysAtWork.length;
+      if (daysToCalc) {
+        const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
+          if (item && item.value === Presence.atwork) {
+            return true;
+          }
+          return false;
+        });
+        return daysAtWork.length;
+      }
+      return 0;
     },
     async getBaseBrutto(year: number, month: number) {
       const daysAtWork = await this.getDaysAtWork(year, month);
-      console.log(this.getDaysToWork(year, month));
 
       const dailyPayment =
         (useUserInfo().userInfo.salaryAmount.value as number) /

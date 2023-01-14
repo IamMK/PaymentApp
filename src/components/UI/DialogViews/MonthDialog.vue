@@ -1,10 +1,10 @@
 <template>
-  <base-dialog>
+  <base-dialog @close="closeDialog">
     <section class="dateSet">
       <section class="year">
-        <i @click="year--" class="fa-solid fa-arrow-left"></i>
+        <i @click="yearDecrease" class="fa-solid fa-arrow-left"></i>
         <span>{{ year }}</span>
-        <i @click="year++" class="fa-solid fa-arrow-right"></i>
+        <i @click="yearIncrease" class="fa-solid fa-arrow-right"></i>
       </section>
       <section class="month">
         <div
@@ -21,15 +21,45 @@
 </template>
 
 <script setup lang="ts">
+import { useCalculatorStore } from "@/store/calculator";
 import { useCalendarStore } from "@/store/calendar";
 import { reactive, toRefs } from "vue";
 
 const calendarStore = useCalendarStore();
+const calculatorStore = useCalculatorStore();
 
-const year = toRefs(calendarStore).year;
+const emit = defineEmits(["close"]);
+
+const props = defineProps({
+  calculator: {
+    type: Boolean,
+    required: false,
+    default: false,
+  },
+});
+
+const year = props.calculator
+  ? toRefs(calculatorStore).year
+  : toRefs(calendarStore).year;
 
 const confirm = (value: number) => {
-  calendarStore.month = value;
+  if (props.calculator) calculatorStore.month = value;
+  else calendarStore.month = value;
+  closeDialog();
+};
+
+const closeDialog = () => {
+  emit("close");
+};
+
+const yearDecrease = () => {
+  if (props.calculator) calculatorStore.year = calculatorStore.year - 1;
+  else calendarStore.year = calculatorStore.year - 1;
+};
+
+const yearIncrease = () => {
+  if (props.calculator) calculatorStore.year = calculatorStore.year + 1;
+  else calendarStore.year = calculatorStore.year + 1;
 };
 
 const months = reactive({
@@ -58,17 +88,12 @@ const months = reactive({
   align-items: center;
   padding: 10px 0;
   & .month {
-    // width: auto;
-    // max-width: 100%;
     color: $main-color;
     display: inline-grid;
     grid-template-columns: repeat(3, 1fr);
     &__item {
       @include shape(calc(100vw / 7), calc(100vw / 7));
       text-align: center;
-      // height: calc(100vw / 7);
-      // line-height: calc(100vw / 7);
-      // width: calc(100vw / 7);
       margin: 5px;
       background-color: $calendar-empty;
       justify-self: center;
@@ -80,6 +105,17 @@ const months = reactive({
     justify-content: space-around;
     color: $calendar-empty;
     padding-bottom: 10px;
+  }
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .dateSet {
+    & .month {
+      width: 50%;
+      &__item {
+        @include shape(100px, 100px);
+      }
+    }
   }
 }
 </style>
