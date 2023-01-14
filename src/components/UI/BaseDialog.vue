@@ -66,7 +66,7 @@ const tryClose = () => {
   }
   &__header {
     background-color: $main-color;
-    color: $text-color;
+    color: $calendar-empty;
     width: 100%;
     padding: 1rem;
     display: flex;

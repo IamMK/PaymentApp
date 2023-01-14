@@ -10,9 +10,10 @@
 .notecard {
   width: 90%;
   margin: 5%;
+  color: $text-color;
   &__wrapper {
-    background-color: $sub-color;
-    box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 1);
+    background-color: $main-color;
+    // box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 1);
     padding: 1em;
   }
 }

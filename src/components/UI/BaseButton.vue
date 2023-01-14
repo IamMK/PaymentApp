@@ -38,7 +38,7 @@ const modeClass = props.mode != null ? "button--" + props.mode : "";
   border: 1px solid $button-text;
   color: $button-text;
   cursor: pointer;
-  border-radius: 30px;
+  // border-radius: 30px;
   margin: 0.5rem;
   margin-top: 20px;
   display: inline-block;

@@ -185,7 +185,7 @@ const formReset = () => {
       title="Błąd autoryzacji"
       @close="handleError"
     >
-      <p>{{ data.error }}</p>
+      <p class="auth__error">{{ data.error }}</p>
     </base-dialog>
     <base-dialog
       :title="data.mode === 'login' ? 'Logowanie...' : 'Rejestracja...'"
@@ -203,6 +203,10 @@ const formReset = () => {
     background-color: $main-color;
     color: $text-color;
     padding: 20px;
+  }
+  &__error {
+    padding: 20px;
+    color: $text-color;
   }
 }
 .card {
@@ -222,8 +226,8 @@ const formReset = () => {
 
 form {
   margin: auto;
-  background-color: $background-color;
-  box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 1);
+  // background-color: $background-color;
+  // box-shadow: 8px 8px 24px 0px rgba(0, 0, 0, 1);
   padding: 20px;
 }
 
@@ -243,6 +247,7 @@ label {
   width: auto;
   margin-bottom: 0.5rem;
   padding: 10px;
+  color: $text-color;
 
   & i {
     height: 24px;
@@ -254,28 +259,30 @@ label {
 input,
 textarea {
   display: block;
-  border: 1px solid #ccc;
+  border: none;
   padding: 0.15rem;
-  border-radius: 10px;
+  // border-radius: 10px;
   font-size: large;
   font-weight: 400;
   width: 100%;
+  color: $text-color;
+  background-color: $main-color;
 }
 
 input:focus,
 textarea:focus {
-  border-color: $text-color;
-  background-color: $sub-color;
+  background-color: $text-color;
+  color: $main-color;
   outline: none;
 }
 
 .rules {
   transition: all 0.2s ease-in-out;
   &--ok {
-    color: green;
+    color: $calendar-overhours;
   }
   &--ng {
-    color: red;
+    color: $calendar-presence;
   }
 }
 

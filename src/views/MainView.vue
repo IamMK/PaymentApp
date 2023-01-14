@@ -7,7 +7,6 @@
       <base-notecard>
         <h2>{{ messages.hello }}</h2>
         <article>
-          <h3>{{ messages.introduce }}</h3>
           <p>
             {{ messages.desc1 }}
           </p>
