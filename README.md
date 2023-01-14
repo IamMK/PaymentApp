@@ -9,10 +9,6 @@ Try it on mobile: https://paymentapp-e4f92.web.app/
 ![Calendar View of the app. You can see each days of calendar marked with colors](./src/assets/screen1.png)
 ![Prevuew of day summary. You can see data of work day - activity, hours at work and daily payment](./src/assets/screen2.png)
 
-## Set your profile for payment info calculating
-
-![Profile Info](./src/assets/screen3.png)
-
 ## Project setup
 
 ```
