@@ -152,7 +152,7 @@ const showOverhoursField = computed(() => {
 
 <style lang="scss">
 .dailyData {
-  // text-align: justify;
+  color: $text-color;
   padding: 5px 15px;
 }
 </style>
