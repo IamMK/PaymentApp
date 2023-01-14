@@ -169,15 +169,12 @@ onMounted(() => {
     background-color: $main-color;
     border: none;
     width: 100%;
-    // border-radius: 12px;
     padding: 1rem;
   }
   &__desc {
     color: $text-color;
     font-weight: bold;
     background-color: $main-color;
-    // box-shadow: 0 5px 10px $text-color;
-    // border-radius: 12px;
     padding: 3px;
     margin-bottom: 1rem;
     width: 100%;
@@ -193,7 +190,6 @@ onMounted(() => {
   &__fields {
     max-height: 100%;
     overflow-y: auto;
-    border-radius: 12px;
   }
   &__numberDesc {
     margin: 5px;

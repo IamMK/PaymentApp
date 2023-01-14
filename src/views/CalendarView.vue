@@ -1,6 +1,6 @@
 <template>
   <section class="calendar">
-    <header class="calendar__header">
+    <top-bar class="calendar__header">
       <section class="calendar__section">
         <span @click="openMonthDialog">{{ checkedMonth }}</span>
         <MonthDialog
@@ -9,7 +9,7 @@
           title="Wybór miesiąca"
         />
       </section>
-    </header>
+    </top-bar>
     <main class="dayCount">
       <div class="dayCount__names">
         <div
@@ -62,6 +62,7 @@ import { useUserDaysStore } from "@/store/userDays";
 import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
 import SetdayDialog from "@/components/UI/DialogViews/SetdayDialog.vue";
 import DaySummary from "@/components/UI/DialogViews/DaySummary.vue";
+import TopBar from "@/components/TopBar.vue";
 
 const calendarStore = useCalendarStore();
 const userDaysStore = useUserDaysStore();
