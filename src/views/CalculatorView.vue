@@ -93,6 +93,10 @@ onBeforeMount(() => {
 
 <style lang="scss">
 .calendar {
+  & h4,
+  & h3 {
+    margin-top: 5px;
+  }
   &__form {
     display: flex;
     flex-direction: column;
@@ -104,7 +108,6 @@ onBeforeMount(() => {
     display: block;
     border: 1px solid #ccc;
     padding: 0.15rem;
-    border-radius: 10px;
     font-size: large;
     font-weight: 400;
     width: 100%;
