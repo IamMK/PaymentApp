@@ -54,12 +54,12 @@ const closeDialog = () => {
 
 const yearDecrease = () => {
   if (props.calculator) calculatorStore.year = calculatorStore.year - 1;
-  else calendarStore.year = calculatorStore.year - 1;
+  else calendarStore.year = calendarStore.year - 1;
 };
 
 const yearIncrease = () => {
   if (props.calculator) calculatorStore.year = calculatorStore.year + 1;
-  else calendarStore.year = calculatorStore.year + 1;
+  else calendarStore.year = calendarStore.year + 1;
 };
 
 const months = reactive({
