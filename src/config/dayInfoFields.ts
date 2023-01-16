@@ -10,6 +10,14 @@ export const presence = [
     value: Presence.notfullday,
     description: "Inna ilość godzin",
   },
+  {
+    value: Presence.nightfullday,
+    description: "8 godzin nocnych",
+  },
+  {
+    value: Presence.nightnotfullday,
+    description: "Inna ilość godzin nocnych",
+  },
 ] as dayField[];
 
 export const overhours = [

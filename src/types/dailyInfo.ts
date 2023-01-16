@@ -2,6 +2,8 @@ export enum Presence {
   atwork = "atwork",
   notfullday = "notfullday",
   hundertday = "hundertday",
+  nightfullday = "nightfullday",
+  nightnotfullday = "nightnotfullday",
 }
 
 export enum Overhours {
