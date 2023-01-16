@@ -33,7 +33,7 @@ import { useLangStore } from "@/store/lang";
 import { useUserInfo } from "@/store/userInfo";
 
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
-import { Group, Overhours, Presence } from "@/types/dailyInfo";
+import { Group, Overhours, Presence, Vacation } from "@/types/dailyInfo";
 
 const userDays = useUserDaysStore();
 const userInfo = useUserInfo();
@@ -85,6 +85,8 @@ const dayPayment = computed(() => {
     payment = payment + (payment / 8) * dayInfo.value.hours * 2;
 
   if (dayInfo.value.value === Presence.hundertday) payment = payment * 2;
+
+  if (dayInfo.value.value === Vacation.nonpaid) payment = 0;
 
   return payment.toFixed(2);
 });
