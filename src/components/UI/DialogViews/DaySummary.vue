@@ -26,11 +26,12 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from "vue";
+import { computed, onBeforeMount } from "vue";
 import { useUserDaysStore } from "@/store/userDays";
 import { useCalendarStore } from "@/store/calendar";
 import { useLangStore } from "@/store/lang";
 import { useUserInfo } from "@/store/userInfo";
+import { useCalculatorStore } from "@/store/calculator";
 
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence, Vacation } from "@/types/dailyInfo";
@@ -39,6 +40,7 @@ const userDays = useUserDaysStore();
 const userInfo = useUserInfo();
 const calendarStore = useCalendarStore();
 const langStore = useLangStore();
+const calculatorStore = useCalculatorStore();
 
 const messages = computed(() => {
   return langStore.messages.dailyData;
@@ -77,6 +79,21 @@ const dayPayment = computed(() => {
 
   if (dayInfo.value.value === Presence.notfullday)
     payment = (payment / 8) * dayInfo.value.hours;
+
+  if (dayInfo.value.value === Presence.nightfullday) {
+    const nightAllowance = Number(
+      (
+        calculatorStore.nightAllowance /
+        calculatorStore.getDaysToWork(
+          props.date.year.value,
+          props.date.month.value
+        ) /
+        8
+      ).toFixed(2)
+    );
+
+    payment = payment + nightAllowance;
+  }
 
   if (dayInfo.value.value === Overhours.fifty)
     payment = payment + (payment / 8) * dayInfo.value.hours * 1.5;
@@ -149,6 +166,10 @@ const showHoursAtWorkField = computed(() => {
 });
 const showOverhoursField = computed(() => {
   return dayInfo.value.group === Group.Overhours;
+});
+
+onBeforeMount(() => {
+  calculatorStore.getMinimumWage(2023, 1, 1);
 });
 </script>
 

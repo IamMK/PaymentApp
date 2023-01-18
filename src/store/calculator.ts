@@ -11,6 +11,8 @@ export const useCalculatorStore = defineStore("calculator", {
     baseBrutto: 0,
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
+    minimumWages: null,
+    minimumWage: null as number | null,
   }),
   getters: {
     pensionInsurance(state) {
@@ -38,6 +40,10 @@ export const useCalculatorStore = defineStore("calculator", {
         useCalculatorStore().sickInsurance -
         useCalculatorStore().healthInsurance;
       return nettoPayment.toFixed(2);
+    },
+    nightAllowance(state) {
+      const minimumWage = state.minimumWage || 0;
+      return minimumWage * 0.2;
     },
   },
   actions: {
@@ -98,6 +104,27 @@ export const useCalculatorStore = defineStore("calculator", {
         this.getDaysToWork(year, month);
 
       this.baseBrutto = Number((daysAtWork * dailyPayment).toFixed(2));
+    },
+    async getMinimumWage(year: number, month: number, day: number) {
+      const unixDate = Number(new Date(year, month, day)) / 1000;
+
+      if (!this.minimumWages) {
+        const response = await fetch(`${appConfig.database}/minimumwage.json`);
+        if (!response.ok) {
+          const error = new Error("Failed to get MinimumWage");
+          throw error;
+        }
+
+        this.minimumWages = await response.json();
+      }
+
+      const minimumwage = Object.entries(this.minimumWages || {}).filter(
+        ([key]) => {
+          return Number(key) <= unixDate;
+        }
+      );
+
+      this.minimumWage = Number(minimumwage[minimumwage.length - 1][1]);
     },
   },
 });
