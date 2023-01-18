@@ -32,6 +32,7 @@ import { useCalendarStore } from "@/store/calendar";
 import { useLangStore } from "@/store/lang";
 import { useUserInfo } from "@/store/userInfo";
 import { useCalculatorStore } from "@/store/calculator";
+import { nightAllowance } from "@/utils/calculator";
 
 import { presence, vacation, overhours } from "@/config/dayInfoFields";
 import { Group, Overhours, Presence, Vacation } from "@/types/dailyInfo";
@@ -79,20 +80,10 @@ const dayPayment = computed(() => {
 
   if (dayInfo.value.value === Presence.notfullday)
     payment = (payment / 8) * dayInfo.value.hours;
-
   if (dayInfo.value.value === Presence.nightfullday) {
-    const nightAllowance = Number(
-      (
-        calculatorStore.nightAllowance /
-        calculatorStore.getDaysToWork(
-          props.date.year.value,
-          props.date.month.value
-        ) /
-        8
-      ).toFixed(2)
-    );
-
-    payment = payment + nightAllowance;
+    payment =
+      payment +
+      nightAllowance(props.date.year.value, props.date.month.value) * 8;
   }
 
   if (dayInfo.value.value === Overhours.fifty)
@@ -145,7 +136,6 @@ const isHoliday = computed(() => {
         )
       );
   });
-  console.log(holiday);
 
   if (holiday[0] && holiday[0][1]) return holiday[0][1].name;
   return false;

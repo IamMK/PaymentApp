@@ -42,6 +42,7 @@ export const useCalculatorStore = defineStore("calculator", {
       return nettoPayment.toFixed(2);
     },
     nightAllowance(state) {
+      // MONTHLY
       const minimumWage = state.minimumWage || 0;
       return minimumWage * 0.2;
     },
