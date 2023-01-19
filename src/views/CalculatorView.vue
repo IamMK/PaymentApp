@@ -6,6 +6,7 @@ import { useCalculatorStore } from "@/store/calculator";
 import { useUserInfo } from "@/store/userInfo";
 import { computed, onBeforeMount, ref, toRefs } from "vue";
 import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
+import { Presence } from "@/types/dailyInfo";
 
 const calculatorStore = useCalculatorStore();
 const currency = useUserInfo().userInfo.currency.value;
@@ -50,8 +51,10 @@ const brutto = computed(() => {
 const calc = async () => {
   daysAtWork.value = await calculatorStore.getDaysAtWork(
     year.value,
-    month.value
+    month.value,
+    Presence.atwork
   );
+  calculatorStore.getNightAllowance(year.value, month.value);
   calculatorStore.getBaseBrutto(year.value, month.value);
 };
 
@@ -96,6 +99,8 @@ onBeforeMount(() => {
           <p>{{ daysAtWork }}</p>
           <h4>Podstawa</h4>
           <p>{{ calculatorStore.baseBrutto }} {{ currency }}</p>
+          <h4>Wynagrodzenie za godziny nocne</h4>
+          <p>{{ calculatorStore.getNightAllowance }}</p>
           <h4>Ubezpieczenie emerytalne (9,76%)</h4>
           <p>{{ calculatorStore.pensionInsurance }} {{ currency }}</p>
           <h4>Ubezpieczenie rentowe (1,5%)</h4>

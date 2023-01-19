@@ -5,11 +5,12 @@ export const insurance = (salary: number, tax: number) => {
   return Number(insurance.toFixed(2));
 };
 
-export const nightAllowance = (year: number, month: number) =>
-  Number(
+export const nightAllowance = (year: number, month: number) => {
+  return Number(
     (
-      useCalculatorStore().nightAllowance /
+      useCalculatorStore().monthlyNightAllowance /
       useCalculatorStore().getDaysToWork(year, month) /
       8
     ).toFixed(2)
   );
+};

@@ -4,11 +4,12 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { useUserInfo } from "./userInfo";
 import { holidays } from "@/config/dayInfoFields";
-import { insurance } from "@/utils/calculator";
+import { insurance, nightAllowance } from "@/utils/calculator";
 
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
     baseBrutto: 0,
+    nightAllowance: 0,
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
     minimumWages: null,
@@ -41,8 +42,8 @@ export const useCalculatorStore = defineStore("calculator", {
         useCalculatorStore().healthInsurance;
       return nettoPayment.toFixed(2);
     },
-    nightAllowance(state) {
-      // MONTHLY
+    monthlyNightAllowance(state) {
+      // MNTHLY
       const minimumWage = state.minimumWage || 0;
       return minimumWage * 0.2;
     },
@@ -84,11 +85,13 @@ export const useCalculatorStore = defineStore("calculator", {
       const daysToCalc = await response.json();
       return daysToCalc;
     },
-    async getDaysAtWork(year: number, month: number) {
+    async getDaysAtWork(year: number, month: number, presenceType: Presence) {
       const daysToCalc = await this.getDaysFromMonth(year, month);
       if (daysToCalc) {
+        console.log(daysToCalc);
+
         const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
-          if (item && item.value === Presence.atwork) {
+          if (item && item.value === presenceType) {
             return true;
           }
           return false;
@@ -97,14 +100,29 @@ export const useCalculatorStore = defineStore("calculator", {
       }
       return 0;
     },
-    async getBaseBrutto(year: number, month: number) {
-      const daysAtWork = await this.getDaysAtWork(year, month);
-
+    getDailyPayment(year: number, month: number) {
       const dailyPayment =
         (useUserInfo().userInfo.salaryAmount.value as number) /
         this.getDaysToWork(year, month);
+      return dailyPayment;
+    },
+    async getBaseBrutto(year: number, month: number) {
+      const daysAtWork = await this.getDaysAtWork(year, month, Presence.atwork);
 
+      const dailyPayment = this.getDailyPayment(year, month);
       this.baseBrutto = Number((daysAtWork * dailyPayment).toFixed(2));
+    },
+    async getNightAllowance(year: number, month: number) {
+      const nightShiftDays = await this.getDaysAtWork(
+        year,
+        month,
+        Presence.atwork
+      );
+
+      const dailyPayment = this.getDailyPayment(year, month);
+      const currentAllowance = nightAllowance(year, month) * nightShiftDays;
+
+      this.nightAllowance = currentAllowance + dailyPayment;
     },
     async getMinimumWage(year: number, month: number, day: number) {
       const unixDate = Number(new Date(year, month, day)) / 1000;
