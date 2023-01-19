@@ -76,7 +76,11 @@ const dayPayment = computed(() => {
     return messages.value.functions;
 
   let payment =
-    Number(userInfo.userInfo.salaryAmount.value) / calendarStore.daysAtWork;
+    Number(userInfo.userInfo.salaryAmount.value) /
+    calculatorStore.getDaysToWork(
+      props.date.year.value,
+      props.date.month.value
+    );
 
   if (dayInfo.value.value === Presence.notfullday)
     payment = (payment / 8) * dayInfo.value.hours;
