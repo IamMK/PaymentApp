@@ -44,9 +44,9 @@ const closeMonthDialog = () => {
   monthDialog.value = false;
 };
 
-const brutto = computed(() => {
-  return calculatorStore.baseBrutto;
-});
+// const brutto = computed(() => {
+//   return calculatorStore.brutto;
+// });
 
 const calc = async () => {
   daysAtWork.value = await calculatorStore.getDaysAtWork(
@@ -86,7 +86,7 @@ onBeforeMount(() => {
       <h2>Twoje wynagrodzenie</h2>
       <article>
         <h3>Brutto</h3>
-        <p>{{ brutto }} {{ currency }}</p>
+        <p>{{ calculatorStore.brutto }} {{ currency }}</p>
       </article>
       <article>
         <h3>Netto</h3>
@@ -100,7 +100,7 @@ onBeforeMount(() => {
           <h4>Podstawa</h4>
           <p>{{ calculatorStore.baseBrutto }} {{ currency }}</p>
           <h4>Wynagrodzenie za godziny nocne</h4>
-          <p>{{ calculatorStore.getNightAllowance }}</p>
+          <p>{{ calculatorStore.nightAllowance }}</p>
           <h4>Ubezpieczenie emerytalne (9,76%)</h4>
           <p>{{ calculatorStore.pensionInsurance }} {{ currency }}</p>
           <h4>Ubezpieczenie rentowe (1,5%)</h4>

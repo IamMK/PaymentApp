@@ -8,6 +8,7 @@ import { insurance, nightAllowance } from "@/utils/calculator";
 
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
+    // brutto: 0,
     baseBrutto: 0,
     nightAllowance: 0,
     month: new Date().getMonth() + 1,
@@ -47,6 +48,9 @@ export const useCalculatorStore = defineStore("calculator", {
       const minimumWage = state.minimumWage || 0;
       return minimumWage * 0.2;
     },
+    brutto(state) {
+      return Number((state.baseBrutto + state.nightAllowance).toFixed(2));
+    },
   },
   actions: {
     getDaysToWork(year: number, month: number) {
@@ -83,13 +87,12 @@ export const useCalculatorStore = defineStore("calculator", {
         throw error;
       }
       const daysToCalc = await response.json();
+
       return daysToCalc;
     },
     async getDaysAtWork(year: number, month: number, presenceType: Presence) {
       const daysToCalc = await this.getDaysFromMonth(year, month);
       if (daysToCalc) {
-        console.log(daysToCalc);
-
         const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
           if (item && item.value === presenceType) {
             return true;
@@ -122,7 +125,9 @@ export const useCalculatorStore = defineStore("calculator", {
       const dailyPayment = this.getDailyPayment(year, month);
       const currentAllowance = nightAllowance(year, month) * nightShiftDays;
 
-      this.nightAllowance = currentAllowance + dailyPayment;
+      this.nightAllowance = Number(
+        (currentAllowance + dailyPayment).toFixed(2)
+      );
     },
     async getMinimumWage(year: number, month: number, day: number) {
       const unixDate = Number(new Date(year, month, day)) / 1000;
