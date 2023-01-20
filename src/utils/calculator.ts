@@ -14,3 +14,12 @@ export const nightAllowance = (year: number, month: number) => {
     ).toFixed(2)
   );
 };
+
+export const isIncomeTax = (
+  birthdate: string,
+  dateOfPayment: number,
+  year: number,
+  month: number
+) => {
+  return new Date(year, month, dateOfPayment, 0, 0, 0) > new Date(birthdate);
+};

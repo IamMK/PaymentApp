@@ -101,6 +101,9 @@ onBeforeMount(() => {
           <p>{{ calculatorStore.baseBrutto }} {{ currency }}</p>
           <h4>Wynagrodzenie za godziny nocne</h4>
           <p>{{ calculatorStore.nightAllowance }}</p>
+        </article>
+        <h3>Podatki</h3>
+        <article>
           <h4>Ubezpieczenie emerytalne (9,76%)</h4>
           <p>{{ calculatorStore.pensionInsurance }} {{ currency }}</p>
           <h4>Ubezpieczenie rentowe (1,5%)</h4>
@@ -109,6 +112,8 @@ onBeforeMount(() => {
           <p>{{ calculatorStore.sickInsurance }} {{ currency }}</p>
           <h4>Ubezpieczenie zdrowotne (9%)</h4>
           <p>{{ calculatorStore.healthInsurance }} {{ currency }}</p>
+          <h4>Zaliczka na podatek</h4>
+          <p>{{ calculatorStore.incomeTax }}</p>
         </article>
       </article>
     </base-notecard>

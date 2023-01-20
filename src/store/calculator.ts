@@ -4,7 +4,7 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { useUserInfo } from "./userInfo";
 import { holidays } from "@/config/dayInfoFields";
-import { insurance, nightAllowance } from "@/utils/calculator";
+import { insurance, isIncomeTax, nightAllowance } from "@/utils/calculator";
 
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
@@ -17,30 +17,54 @@ export const useCalculatorStore = defineStore("calculator", {
     minimumWage: null as number | null,
   }),
   getters: {
-    pensionInsurance(state) {
-      return insurance(state.baseBrutto, 9.76);
+    pensionInsurance() {
+      const brutto: number = this.brutto;
+      return insurance(brutto, 9.76);
     },
-    disabilityInsurance(state) {
-      return insurance(state.baseBrutto, 1.5);
+    disabilityInsurance() {
+      const brutto: number = this.brutto;
+      return insurance(brutto, 1.5);
     },
-    sickInsurance(state) {
-      return insurance(state.baseBrutto, 2.45);
+    sickInsurance() {
+      const brutto: number = this.brutto;
+      return insurance(brutto, 2.45);
     },
-    healthInsurance(state) {
+    healthInsurance() {
       const taxBase: number =
-        state.baseBrutto -
+        this.brutto -
         useCalculatorStore().pensionInsurance -
         useCalculatorStore().disabilityInsurance -
         useCalculatorStore().sickInsurance;
       return insurance(taxBase, 9);
     },
+    incomeTax() {
+      const taxBase: number =
+        this.brutto -
+        300 - //profil - czy pracujesz w miejscu zamieszkania
+        this.pensionInsurance -
+        this.disabilityInsurance -
+        this.sickInsurance;
+
+      const incomeTax = Math.round(Math.round(taxBase) * 0.12 - 300);
+      if (incomeTax > 0) return Number(incomeTax.toFixed(2));
+      else return 0;
+    },
     nettoPayment(state) {
-      const nettoPayment: number =
-        state.baseBrutto -
-        useCalculatorStore().pensionInsurance -
-        useCalculatorStore().disabilityInsurance -
-        useCalculatorStore().sickInsurance -
-        useCalculatorStore().healthInsurance;
+      let nettoPayment: number =
+        this.brutto -
+        this.pensionInsurance -
+        this.disabilityInsurance -
+        this.sickInsurance -
+        this.healthInsurance;
+      if (
+        isIncomeTax(
+          useUserInfo().userInfo.birthdate.value as string,
+          10,
+          state.year,
+          state.month
+        )
+      )
+        nettoPayment = nettoPayment - this.incomeTax;
       return nettoPayment.toFixed(2);
     },
     monthlyNightAllowance(state) {
@@ -119,15 +143,17 @@ export const useCalculatorStore = defineStore("calculator", {
       const nightShiftDays = await this.getDaysAtWork(
         year,
         month,
-        Presence.atwork
+        Presence.nightfullday
       );
 
-      const dailyPayment = this.getDailyPayment(year, month);
-      const currentAllowance = nightAllowance(year, month) * nightShiftDays;
+      if (nightShiftDays > 0) {
+        const dailyPayment = this.getDailyPayment(year, month);
+        const currentAllowance = nightAllowance(year, month) * nightShiftDays;
 
-      this.nightAllowance = Number(
-        (currentAllowance + dailyPayment).toFixed(2)
-      );
+        this.nightAllowance = Number(
+          (currentAllowance + dailyPayment).toFixed(2)
+        );
+      } else this.nightAllowance = 0;
     },
     async getMinimumWage(year: number, month: number, day: number) {
       const unixDate = Number(new Date(year, month, day)) / 1000;
