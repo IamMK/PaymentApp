@@ -4,47 +4,76 @@ import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { useUserInfo } from "./userInfo";
 import { holidays } from "@/config/dayInfoFields";
-import { insurance } from "@/utils/calculator";
+import { insurance, isIncomeTax, nightAllowance } from "@/utils/calculator";
 
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
+    // brutto: 0,
     baseBrutto: 0,
+    nightAllowance: 0,
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
     minimumWages: null,
     minimumWage: null as number | null,
   }),
   getters: {
-    pensionInsurance(state) {
-      return insurance(state.baseBrutto, 9.76);
+    pensionInsurance() {
+      const brutto: number = this.brutto;
+      return insurance(brutto, 9.76);
     },
-    disabilityInsurance(state) {
-      return insurance(state.baseBrutto, 1.5);
+    disabilityInsurance() {
+      const brutto: number = this.brutto;
+      return insurance(brutto, 1.5);
     },
-    sickInsurance(state) {
-      return insurance(state.baseBrutto, 2.45);
+    sickInsurance() {
+      const brutto: number = this.brutto;
+      return insurance(brutto, 2.45);
     },
-    healthInsurance(state) {
+    healthInsurance() {
       const taxBase: number =
-        state.baseBrutto -
+        this.brutto -
         useCalculatorStore().pensionInsurance -
         useCalculatorStore().disabilityInsurance -
         useCalculatorStore().sickInsurance;
       return insurance(taxBase, 9);
     },
+    incomeTax() {
+      const taxBase: number =
+        this.brutto -
+        300 - //profil - czy pracujesz w miejscu zamieszkania
+        this.pensionInsurance -
+        this.disabilityInsurance -
+        this.sickInsurance;
+
+      const incomeTax = Math.round(Math.round(taxBase) * 0.12 - 300);
+      if (incomeTax > 0) return Number(incomeTax.toFixed(2));
+      else return 0;
+    },
     nettoPayment(state) {
-      const nettoPayment: number =
-        state.baseBrutto -
-        useCalculatorStore().pensionInsurance -
-        useCalculatorStore().disabilityInsurance -
-        useCalculatorStore().sickInsurance -
-        useCalculatorStore().healthInsurance;
+      let nettoPayment: number =
+        this.brutto -
+        this.pensionInsurance -
+        this.disabilityInsurance -
+        this.sickInsurance -
+        this.healthInsurance;
+      if (
+        isIncomeTax(
+          useUserInfo().userInfo.birthdate.value as string,
+          10,
+          state.year,
+          state.month
+        )
+      )
+        nettoPayment = nettoPayment - this.incomeTax;
       return nettoPayment.toFixed(2);
     },
-    nightAllowance(state) {
-      // MONTHLY
+    monthlyNightAllowance(state) {
+      // MNTHLY
       const minimumWage = state.minimumWage || 0;
       return minimumWage * 0.2;
+    },
+    brutto(state) {
+      return Number((state.baseBrutto + state.nightAllowance).toFixed(2));
     },
   },
   actions: {
@@ -82,13 +111,14 @@ export const useCalculatorStore = defineStore("calculator", {
         throw error;
       }
       const daysToCalc = await response.json();
+
       return daysToCalc;
     },
-    async getDaysAtWork(year: number, month: number) {
+    async getDaysAtWork(year: number, month: number, presenceType: Presence) {
       const daysToCalc = await this.getDaysFromMonth(year, month);
       if (daysToCalc) {
         const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
-          if (item && item.value === Presence.atwork) {
+          if (item && item.value === presenceType) {
             return true;
           }
           return false;
@@ -97,14 +127,33 @@ export const useCalculatorStore = defineStore("calculator", {
       }
       return 0;
     },
-    async getBaseBrutto(year: number, month: number) {
-      const daysAtWork = await this.getDaysAtWork(year, month);
-
+    getDailyPayment(year: number, month: number) {
       const dailyPayment =
         (useUserInfo().userInfo.salaryAmount.value as number) /
         this.getDaysToWork(year, month);
+      return dailyPayment;
+    },
+    async getBaseBrutto(year: number, month: number) {
+      const daysAtWork = await this.getDaysAtWork(year, month, Presence.atwork);
 
+      const dailyPayment = this.getDailyPayment(year, month);
       this.baseBrutto = Number((daysAtWork * dailyPayment).toFixed(2));
+    },
+    async getNightAllowance(year: number, month: number) {
+      const nightShiftDays = await this.getDaysAtWork(
+        year,
+        month,
+        Presence.nightfullday
+      );
+
+      if (nightShiftDays > 0) {
+        const dailyPayment = this.getDailyPayment(year, month);
+        const currentAllowance = nightAllowance(year, month) * nightShiftDays;
+
+        this.nightAllowance = Number(
+          (currentAllowance + dailyPayment).toFixed(2)
+        );
+      } else this.nightAllowance = 0;
     },
     async getMinimumWage(year: number, month: number, day: number) {
       const unixDate = Number(new Date(year, month, day)) / 1000;

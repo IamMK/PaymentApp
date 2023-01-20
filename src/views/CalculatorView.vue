@@ -6,6 +6,7 @@ import { useCalculatorStore } from "@/store/calculator";
 import { useUserInfo } from "@/store/userInfo";
 import { computed, onBeforeMount, ref, toRefs } from "vue";
 import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
+import { Presence } from "@/types/dailyInfo";
 
 const calculatorStore = useCalculatorStore();
 const currency = useUserInfo().userInfo.currency.value;
@@ -43,15 +44,17 @@ const closeMonthDialog = () => {
   monthDialog.value = false;
 };
 
-const brutto = computed(() => {
-  return calculatorStore.baseBrutto;
-});
+// const brutto = computed(() => {
+//   return calculatorStore.brutto;
+// });
 
 const calc = async () => {
   daysAtWork.value = await calculatorStore.getDaysAtWork(
     year.value,
-    month.value
+    month.value,
+    Presence.atwork
   );
+  calculatorStore.getNightAllowance(year.value, month.value);
   calculatorStore.getBaseBrutto(year.value, month.value);
 };
 
@@ -83,7 +86,7 @@ onBeforeMount(() => {
       <h2>Twoje wynagrodzenie</h2>
       <article>
         <h3>Brutto</h3>
-        <p>{{ brutto }} {{ currency }}</p>
+        <p>{{ calculatorStore.brutto }} {{ currency }}</p>
       </article>
       <article>
         <h3>Netto</h3>
@@ -96,6 +99,11 @@ onBeforeMount(() => {
           <p>{{ daysAtWork }}</p>
           <h4>Podstawa</h4>
           <p>{{ calculatorStore.baseBrutto }} {{ currency }}</p>
+          <h4>Wynagrodzenie za godziny nocne</h4>
+          <p>{{ calculatorStore.nightAllowance }}</p>
+        </article>
+        <h3>Podatki</h3>
+        <article>
           <h4>Ubezpieczenie emerytalne (9,76%)</h4>
           <p>{{ calculatorStore.pensionInsurance }} {{ currency }}</p>
           <h4>Ubezpieczenie rentowe (1,5%)</h4>
@@ -104,6 +112,8 @@ onBeforeMount(() => {
           <p>{{ calculatorStore.sickInsurance }} {{ currency }}</p>
           <h4>Ubezpieczenie zdrowotne (9%)</h4>
           <p>{{ calculatorStore.healthInsurance }} {{ currency }}</p>
+          <h4>Zaliczka na podatek</h4>
+          <p>{{ calculatorStore.incomeTax }}</p>
         </article>
       </article>
     </base-notecard>
