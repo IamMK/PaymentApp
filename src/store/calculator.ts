@@ -65,10 +65,12 @@ export const useCalculatorStore = defineStore("calculator", {
         )
       )
         nettoPayment = nettoPayment - this.incomeTax;
+
+      // Odczyt daty do poprawy
       return nettoPayment.toFixed(2);
     },
     monthlyNightAllowance(state) {
-      // MNTHLY
+      // MONTHLY
       const minimumWage = state.minimumWage || 0;
       return minimumWage * 0.2;
     },
