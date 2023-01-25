@@ -31,6 +31,10 @@
         </p>
       </article>
       <article>
+        <h4>Wykonywana praca</h4>
+        <p>{{ isSameCity }}znajduje się w miejscu zamieszkania</p>
+      </article>
+      <article>
         <h4>Język, jakiego używasz to:</h4>
         <p>{{ langStore.getLangName }}</p>
       </article>
@@ -44,7 +48,7 @@
 import TopBar from "@/components/TopBar.vue";
 import { useUserInfo } from "@/store/userInfo";
 import BaseNotecard from "@/components/UI/BaseNotecard.vue";
-import { ProfileField, SalaryType } from "@/types/userInfo";
+import { IsSameCity, ProfileField, SalaryType } from "@/types/userInfo";
 import { computed } from "vue";
 import ProfileSet from "@/components/ProfileSet.vue";
 import { useLangStore } from "@/store/lang";
@@ -67,6 +71,15 @@ const salaryType = computed(() => {
         .value as string;
   }
   return salaryTypeText;
+});
+
+const isSameCity = computed(() => {
+  let sameCityText = "";
+
+  if (userInfoStore.userInfo.issamecity.value === IsSameCity.NO) {
+    sameCityText = "nie ";
+  }
+  return sameCityText;
 });
 </script>
 

@@ -90,7 +90,11 @@ export type lang = {
     saveText: string;
   };
   salaryType: {
-    hourly: "Godzinowe";
+    hourly: string;
     monthly: string;
+  };
+  isSameCity: {
+    yes: string;
+    no: string;
   };
 };

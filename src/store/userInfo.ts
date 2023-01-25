@@ -1,5 +1,11 @@
 import { defineStore } from "pinia";
-import { userInfo, ProfileField, SalaryType, Currency } from "@/types/userInfo";
+import {
+  userInfo,
+  ProfileField,
+  SalaryType,
+  Currency,
+  IsSameCity,
+} from "@/types/userInfo";
 import { useAuthStore } from "./auth";
 import { appConfig } from "@/config/appconfig";
 
@@ -32,6 +38,12 @@ export const useUserInfo = defineStore("userinfo", {
         name: "Data urodzenia",
         value: null,
         type: "date",
+      },
+      [ProfileField.ISSAMECITY]: {
+        name: "Miejsce zamieszkania w tej samej miejscowości co praca",
+        value: null,
+        type: "select",
+        allowed: Object.keys(IsSameCity),
       },
     } as userInfo,
   }),
@@ -71,6 +83,7 @@ export const useUserInfo = defineStore("userinfo", {
         salaryAmount: data.salaryAmount || this.userInfo.salaryAmount.value,
         currency: data.currency || this.userInfo.currency.value,
         birthdate: data.birthdate || this.userInfo.birthdate.value,
+        issamecity: data.issamecity || this.userInfo.issamecity.value,
       };
       const response = await fetch(
         `${appConfig.database}/profiles/${userId}.json`,
@@ -113,6 +126,8 @@ export const useUserInfo = defineStore("userinfo", {
           userData.salaryType || this.userInfo[ProfileField.SALARYTYPE].value;
         this.userInfo[ProfileField.BIRTHDATE].value =
           userData.birthdate || this.userInfo[ProfileField.BIRTHDATE].value;
+        this.userInfo[ProfileField.ISSAMECITY].value =
+          userData.issamecity || this.userInfo[ProfileField.ISSAMECITY].value;
       }
     },
   },

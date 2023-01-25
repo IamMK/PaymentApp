@@ -33,7 +33,6 @@
           class="profile__input"
           v-model="item.value"
         />
-        <!-- <input v-else-if="item.type === ''" :type="item.type"> -->
       </div>
       <base-button class="profile__button" @click="setProfileInfo">
         {{ messages.saveText }}
@@ -46,7 +45,7 @@
 import BaseNotecard from "./UI/BaseNotecard.vue";
 import { useUserInfo } from "@/store/userInfo";
 import { useLangStore } from "@/store/lang";
-import { SalaryType, userInfo } from "@/types/userInfo";
+import { IsSameCity, SalaryType, userInfo } from "@/types/userInfo";
 import { computed } from "vue";
 
 const userInfoStore = useUserInfo();
@@ -60,6 +59,8 @@ const emptyFields = computed((): userInfo => {
   const empty = JSON.parse(JSON.stringify(userInfoStore.getEmpty));
   if (empty.salaryType)
     empty.salaryType.allowed = langStore.messages.salaryType;
+  if (empty.issamecity)
+    empty.issamecity.allowed = langStore.messages.isSameCity;
   return empty;
 });
 
@@ -77,6 +78,7 @@ const setProfileInfo = () => {
       return [key, item.value];
     })
   );
+  console.log(emptyFields.value);
 
   if (info.salaryType) {
     switch (info.salaryType) {
@@ -86,6 +88,16 @@ const setProfileInfo = () => {
       case langStore.messages.salaryType.hourly:
         info.salaryType = SalaryType.HOURLY;
         break;
+    }
+  }
+
+  if (info.issamecity) {
+    switch (info.issamecity) {
+      case langStore.messages.isSameCity.yes:
+        info.issamecity = IsSameCity.YES;
+        break;
+      case langStore.messages.isSameCity.no:
+        info.issamecity = IsSameCity.NO;
     }
   }
 

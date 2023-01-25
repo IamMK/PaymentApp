@@ -97,4 +97,8 @@ export default {
     hourly: "Godzinowe",
     monthly: "Miesięczne",
   },
+  isSameCity: {
+    yes: "Tak",
+    no: "Nie",
+  },
 } as lang;

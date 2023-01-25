@@ -10,12 +10,18 @@ export enum SalaryType {
   MONTHLY = "MONTHLY",
 }
 
+export enum IsSameCity {
+  YES = "YES",
+  NO = "NO",
+}
+
 export enum ProfileField {
   NICKNAME = "nickname",
   SALARYTYPE = "salaryType",
   SALARYAMOUNT = "salaryAmount",
   CURRENCY = "currency",
   BIRTHDATE = "birthdate",
+  ISSAMECITY = "issamecity",
 }
 
 export type userInfo = {
