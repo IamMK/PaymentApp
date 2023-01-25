@@ -5,6 +5,7 @@ import { useAuthStore } from "./auth";
 import { useUserInfo } from "./userInfo";
 import { holidays } from "@/config/dayInfoFields";
 import { insurance, isIncomeTax, nightAllowance } from "@/utils/calculator";
+import { IsSameCity } from "@/types/userInfo";
 
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
@@ -38,9 +39,13 @@ export const useCalculatorStore = defineStore("calculator", {
       return insurance(taxBase, 9);
     },
     incomeTax() {
+      let costOfRevenue = 0;
+      if (useUserInfo().userInfo.issamecity.value === IsSameCity.YES)
+        costOfRevenue = 250;
+      else costOfRevenue = 300;
       const taxBase: number =
         this.brutto -
-        300 - //profil - czy pracujesz w miejscu zamieszkania
+        costOfRevenue -
         this.pensionInsurance -
         this.disabilityInsurance -
         this.sickInsurance;
