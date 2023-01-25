@@ -121,10 +121,15 @@ const hoursAtWork = computed(() => {
     (dayInfo.value.group === Group.Overhours &&
       dayInfo.value.value === Overhours.fifty) ||
     dayInfo.value.value === Presence.atwork ||
-    dayInfo.value.value === Presence.hundertday
+    dayInfo.value.value === Presence.hundertday ||
+    dayInfo.value.value === Presence.nightfullday
   )
     hours += 8;
-  if (dayInfo.value.value === Presence.notfullday) hours += dayInfo.value.hours;
+  if (
+    dayInfo.value.value === Presence.notfullday ||
+    dayInfo.value.value === Presence.nightnotfullday
+  )
+    hours += dayInfo.value.hours;
   return hours;
 });
 
@@ -153,10 +158,7 @@ const overHours = computed(() => {
 });
 
 const showHoursAtWorkField = computed(() => {
-  return (
-    dayInfo.value.group != Group.Vacation &&
-    dayInfo.value.group != Group.Overhours
-  );
+  return dayInfo.value.group != Group.Vacation;
 });
 const showOverhoursField = computed(() => {
   return dayInfo.value.group === Group.Overhours;
