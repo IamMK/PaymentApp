@@ -3,21 +3,24 @@
     <top-bar>
       <h1>Profil</h1>
     </top-bar>
-    <base-notecard class="profile" v-if="userInfoStore.isProfileFinished">
-      <h2>
-        Hej,
-        {{ userInfoStore.userInfo[ProfileField.NICKNAME].value }}
-      </h2>
-      <h3>Podsumujmy informacje, jakie o Tobie posiadam:</h3>
-      <article>
+    <section class="profile__logo">
+      <figure>
+        <img src="@/assets/emotka.png" />
+        <h1>{{ userInfoStore.userInfo[ProfileField.NICKNAME].value }}</h1>
+      </figure>
+    </section>
+    <section class="profile" v-if="userInfoStore.isProfileFinished">
+      <article class="profile__data">
         <h4>Data urodzenia:</h4>
         <p>{{ userInfoStore.userBirthDate }}</p>
+      </article>
+      <article class="profile__data">
         <h4>Typ wynagrodzenia:</h4>
         <p>
           {{ salaryType }}
         </p>
       </article>
-      <article>
+      <article class="profile__data">
         <h4>Wynagrodzenie na umowie:</h4>
         <p>
           {{ userInfoStore.userInfo[ProfileField.SALARYAMOUNT].value }}
@@ -30,16 +33,15 @@
           }}
         </p>
       </article>
-      <article>
+      <article class="profile__data">
         <h4>Wykonywana praca</h4>
         <p>{{ isSameCity }}znajduje się w miejscu zamieszkania</p>
       </article>
-      <article>
+      <article class="profile__data">
         <h4>Język, jakiego używasz to:</h4>
         <p>{{ langStore.getLangName }}</p>
       </article>
-      <h3>Jeżeli będę czegoś jeszcze potrzebować, odezwę się do Ciebie</h3>
-    </base-notecard>
+    </section>
     <profile-set v-else></profile-set>
   </section>
 </template>
@@ -47,7 +49,7 @@
 <script setup lang="ts">
 import TopBar from "@/components/TopBar.vue";
 import { useUserInfo } from "@/store/userInfo";
-import BaseNotecard from "@/components/UI/BaseNotecard.vue";
+// import BaseNotecard from "@/components/UI/BaseNotecard.vue";
 import { IsSameCity, ProfileField, SalaryType } from "@/types/userInfo";
 import { computed } from "vue";
 import ProfileSet from "@/components/ProfileSet.vue";
@@ -85,8 +87,37 @@ const isSameCity = computed(() => {
 
 <style lang="scss">
 .profile {
+  margin-top: 10px;
   & h3 {
+    padding: 25px;
+  }
+  &__data {
+    border-bottom: 1px solid $calendar-vacation;
+    width: 80%;
+    margin: auto;
+    padding: 5px;
+    & h4 {
+      color: $calendar-presence;
+    }
+    & p {
+      color: $calendar-overhours;
+    }
+  }
+  &__logo {
+    background-color: $main-color;
+    color: $calendar-presence;
     padding: 10px;
+    border-bottom-left-radius: 25px;
+    border-bottom-right-radius: 25px;
+    & figure {
+      & h1 {
+        margin: auto;
+      }
+      & img {
+        width: 100px;
+        height: 100px;
+      }
+    }
   }
 }
 </style>
