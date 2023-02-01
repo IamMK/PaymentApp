@@ -44,10 +44,6 @@ const closeMonthDialog = () => {
   monthDialog.value = false;
 };
 
-// const brutto = computed(() => {
-//   return calculatorStore.brutto;
-// });
-
 const calc = async () => {
   daysAtWork.value = await calculatorStore.getDaysAtWork(
     year.value,
@@ -82,45 +78,66 @@ onBeforeMount(() => {
       </section>
       <base-button @click="calc">Sprawdź</base-button>
     </base-notecard>
-    <base-notecard>
+    <section class="calculator">
       <h2>Twoje wynagrodzenie</h2>
-      <article>
+      <section class="calculator__section">
         <h3>Brutto</h3>
         <p>{{ calculatorStore.brutto }} {{ currency }}</p>
-      </article>
-      <article>
         <h3>Netto</h3>
         <p>{{ calculatorStore.nettoPayment }}</p>
-      </article>
-      <article>
-        <h3>Składniki wynagrodzenia</h3>
+      </section>
+      <section class="calculator__section">
+        <h2>Składniki wynagrodzenia</h2>
         <article>
-          <h4>Dni w pracy</h4>
+          <h3>Dni w pracy</h3>
           <p>{{ daysAtWork }}</p>
-          <h4>Podstawa</h4>
+          <h3>Podstawa</h3>
           <p>{{ calculatorStore.baseBrutto }} {{ currency }}</p>
-          <h4>Wynagrodzenie za godziny nocne</h4>
+          <h3>Wynagrodzenie za godziny nocne</h3>
           <p>{{ calculatorStore.nightAllowance }}</p>
         </article>
-        <h3>Podatki</h3>
-        <article>
-          <h4>Ubezpieczenie emerytalne (9,76%)</h4>
+        <h2>Podatki zdrowotne</h2>
+        <section class="calculator__section">
+          <h3>Ubezpieczenie emerytalne (9,76%)</h3>
           <p>{{ calculatorStore.pensionInsurance }} {{ currency }}</p>
-          <h4>Ubezpieczenie rentowe (1,5%)</h4>
+          <h3>Ubezpieczenie rentowe (1,5%)</h3>
           <p>{{ calculatorStore.disabilityInsurance }} {{ currency }}</p>
-          <h4>Ubezpieczenie chorobowe (2,45%)</h4>
+          <h3>Ubezpieczenie chorobowe (2,45%)</h3>
           <p>{{ calculatorStore.sickInsurance }} {{ currency }}</p>
-          <h4>Ubezpieczenie zdrowotne (9%)</h4>
+          <h3>Ubezpieczenie zdrowotne (9%)</h3>
           <p>{{ calculatorStore.healthInsurance }} {{ currency }}</p>
-          <h4>Zaliczka na podatek</h4>
+        </section>
+        <h2>Podatki PIT</h2>
+        <section class="calculator__section">
+          <h3>Zaliczka na podatek</h3>
           <p>{{ calculatorStore.incomeTax }}</p>
-        </article>
-      </article>
-    </base-notecard>
+        </section>
+      </section>
+    </section>
   </section>
 </template>
 
 <style lang="scss">
+.calculator {
+  & h2 {
+    color: $calendar-vacation;
+    font-size: larger;
+  }
+  &__section {
+    border-bottom: 1px solid $calendar-vacation;
+    width: 80%;
+    margin: auto;
+    padding: 5px;
+    & h3 {
+      color: $calendar-presence;
+      font-size: medium;
+    }
+    & p {
+      color: $calendar-overhours;
+    }
+  }
+}
+
 .calendar {
   & h4,
   & h3 {
@@ -156,6 +173,12 @@ onBeforeMount(() => {
 .setting {
   &__date {
     font-size: 20px;
+  }
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .calculator {
+    padding-left: 78px;
   }
 }
 </style>

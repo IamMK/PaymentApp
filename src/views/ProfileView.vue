@@ -1,26 +1,26 @@
 <template>
-  <section>
+  <section class="profile">
     <top-bar>
       <h1>Profil</h1>
     </top-bar>
     <section class="profile__logo">
-      <figure>
+      <figure class="profile__nick">
         <img src="@/assets/emotka.png" />
         <h1>{{ userInfoStore.userInfo[ProfileField.NICKNAME].value }}</h1>
       </figure>
     </section>
-    <section class="profile" v-if="userInfoStore.isProfileFinished">
-      <article class="profile__data">
+    <section class="profile__data" v-if="userInfoStore.isProfileFinished">
+      <article class="profile__item">
         <h4>Data urodzenia:</h4>
         <p>{{ userInfoStore.userBirthDate }}</p>
       </article>
-      <article class="profile__data">
+      <article class="profile__item">
         <h4>Typ wynagrodzenia:</h4>
         <p>
           {{ salaryType }}
         </p>
       </article>
-      <article class="profile__data">
+      <article class="profile__item">
         <h4>Wynagrodzenie na umowie:</h4>
         <p>
           {{ userInfoStore.userInfo[ProfileField.SALARYAMOUNT].value }}
@@ -33,11 +33,11 @@
           }}
         </p>
       </article>
-      <article class="profile__data">
+      <article class="profile__item">
         <h4>Wykonywana praca</h4>
         <p>{{ isSameCity }}znajduje się w miejscu zamieszkania</p>
       </article>
-      <article class="profile__data">
+      <article class="profile__item">
         <h4>Język, jakiego używasz to:</h4>
         <p>{{ langStore.getLangName }}</p>
       </article>
@@ -87,11 +87,13 @@ const isSameCity = computed(() => {
 
 <style lang="scss">
 .profile {
-  margin-top: 10px;
-  & h3 {
-    padding: 25px;
-  }
   &__data {
+    margin-top: 10px;
+    & h3 {
+      padding: 25px;
+    }
+  }
+  &__item {
     border-bottom: 1px solid $calendar-vacation;
     width: 80%;
     margin: auto;
@@ -117,6 +119,15 @@ const isSameCity = computed(() => {
         width: 100px;
         height: 100px;
       }
+    }
+  }
+}
+
+@media (min-width: $breakpoint-tablet) {
+  .profile {
+    &__data,
+    &__nick {
+      padding-left: 78px;
     }
   }
 }
