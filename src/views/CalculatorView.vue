@@ -52,6 +52,7 @@ const calc = async () => {
   );
   calculatorStore.getNightAllowance(year.value, month.value);
   calculatorStore.getBaseBrutto(year.value, month.value);
+  calculatorStore.getOverhoursPayment(daysAtWork.value);
 };
 
 onBeforeMount(() => {
@@ -96,6 +97,11 @@ onBeforeMount(() => {
           <h3>Wynagrodzenie za godziny nocne</h3>
           <p>{{ calculatorStore.nightAllowance }}</p>
         </article>
+        <h2>Premie</h2>
+        <section class="calculator__section">
+          <h3>Nadgodziny 100%</h3>
+          <!-- <p>{{ calculatorStore.overhoursWage.hundert }}</p> -->
+        </section>
         <h2>Podatki zdrowotne</h2>
         <section class="calculator__section">
           <h3>Ubezpieczenie emerytalne (9,76%)</h3>

@@ -1,21 +1,29 @@
 import { appConfig } from "@/config/appconfig";
-import { Presence } from "@/types/dailyInfo";
+import { Overhours, Presence } from "@/types/dailyInfo";
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
 import { useUserInfo } from "./userInfo";
 import { holidays } from "@/config/dayInfoFields";
-import { insurance, isIncomeTax, nightAllowance } from "@/utils/calculator";
+import {
+  insurance,
+  isIncomeTax,
+  nightAllowance,
+  overhoursPayment,
+} from "@/utils/calculator";
 import { IsSameCity } from "@/types/userInfo";
 
 export const useCalculatorStore = defineStore("calculator", {
   state: () => ({
-    // brutto: 0,
     baseBrutto: 0,
     nightAllowance: 0,
     month: new Date().getMonth() + 1,
     year: new Date().getFullYear(),
     minimumWages: null,
     minimumWage: null as number | null,
+    overhoursWage: {
+      fifty: 0,
+      hundert: 0,
+    },
   }),
   getters: {
     pensionInsurance() {
@@ -121,15 +129,21 @@ export const useCalculatorStore = defineStore("calculator", {
 
       return daysToCalc;
     },
-    async getDaysAtWork(year: number, month: number, presenceType: Presence) {
+    async getDaysAtWork(
+      year: number,
+      month: number,
+      presenceType: Presence | Overhours
+    ) {
       const daysToCalc = await this.getDaysFromMonth(year, month);
       if (daysToCalc) {
-        const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
-          if (item && item.value === presenceType) {
-            return true;
+        const daysAtWork = daysToCalc.filter(
+          (item: { value: Presence | Overhours }) => {
+            if (item && item.value === presenceType) {
+              return true;
+            }
+            return false;
           }
-          return false;
-        });
+        );
         return daysAtWork.length;
       }
       return 0;
@@ -182,6 +196,28 @@ export const useCalculatorStore = defineStore("calculator", {
       );
 
       this.minimumWage = Number(minimumwage[minimumwage.length - 1][1]);
+    },
+    async getOverhoursPayment(hoursAtWork: number) {
+      this.overhoursWage.fifty = overhoursPayment(
+        this.baseBrutto,
+        hoursAtWork,
+        await this.getDaysAtWork(this.year, this.month, Overhours.fifty), // do zmiany żeby liczylo liczbę godzin a nie dni
+        Overhours.fifty
+      );
+
+      this.overhoursWage.hundert =
+        overhoursPayment(
+          this.baseBrutto,
+          hoursAtWork,
+          await this.getDaysAtWork(this.year, this.month, Overhours.hundert),
+          Overhours.hundert
+        ) +
+        overhoursPayment(
+          this.baseBrutto,
+          hoursAtWork,
+          await this.getDaysAtWork(this.year, this.month, Presence.hundertday),
+          Presence.hundertday
+        );
     },
   },
 });
