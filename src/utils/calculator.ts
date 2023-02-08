@@ -35,14 +35,24 @@ export const overhoursPayment = (
   overhoursType: Overhours | Presence.hundertday
 ) => {
   let overhoursMultiplier = 0;
-  console.log(baseSalary, hoursAtWork, overhours, overhoursType);
   switch (overhoursType) {
     case Overhours.hundert:
+      overhoursMultiplier = 2;
+      break;
+    case Presence.hundertday:
       overhoursMultiplier = 2;
       break;
     case Overhours.fifty:
       overhoursMultiplier = 1.5;
       break;
   }
+  console.log(
+    baseSalary,
+    hoursAtWork,
+    overhoursMultiplier,
+    overhours,
+    overhoursType
+  );
+
   return (baseSalary / hoursAtWork) * overhoursMultiplier * overhours;
 };

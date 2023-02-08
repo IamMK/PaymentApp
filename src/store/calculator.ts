@@ -129,21 +129,15 @@ export const useCalculatorStore = defineStore("calculator", {
 
       return daysToCalc;
     },
-    async getDaysAtWork(
-      year: number,
-      month: number,
-      presenceType: Presence | Overhours
-    ) {
+    async getDaysAtWork(year: number, month: number, presenceType: Presence) {
       const daysToCalc = await this.getDaysFromMonth(year, month);
       if (daysToCalc) {
-        const daysAtWork = daysToCalc.filter(
-          (item: { value: Presence | Overhours }) => {
-            if (item && item.value === presenceType) {
-              return true;
-            }
-            return false;
+        const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
+          if (item && item.value === presenceType) {
+            return true;
           }
-        );
+          return false;
+        });
         return daysAtWork.length;
       }
       return 0;
@@ -153,6 +147,27 @@ export const useCalculatorStore = defineStore("calculator", {
         (useUserInfo().userInfo.salaryAmount.value as number) /
         this.getDaysToWork(year, month);
       return dailyPayment;
+    },
+    async getHoursAtWork(
+      year: number,
+      month: number,
+      presenceType: Presence | Overhours
+    ) {
+      const daysToCalc = await this.getDaysFromMonth(year, month);
+      let hoursToReturn = 0;
+      if (daysToCalc) {
+        daysToCalc.forEach(
+          (el: { value: Presence | Overhours; hours: number }) => {
+            if (el && el.value === presenceType) {
+              let hoursToAdd = 0;
+              if (el.value === Presence.hundertday) hoursToAdd = 8;
+              else hoursToAdd = el.hours;
+              hoursToReturn = hoursToReturn + hoursToAdd;
+            }
+          }
+        );
+      }
+      return hoursToReturn;
     },
     async getBaseBrutto(year: number, month: number) {
       const daysAtWork = await this.getDaysAtWork(year, month, Presence.atwork);
@@ -201,7 +216,7 @@ export const useCalculatorStore = defineStore("calculator", {
       this.overhoursWage.fifty = overhoursPayment(
         this.baseBrutto,
         hoursAtWork,
-        await this.getDaysAtWork(this.year, this.month, Overhours.fifty), // do zmiany żeby liczylo liczbę godzin a nie dni
+        await this.getHoursAtWork(this.year, this.month, Overhours.fifty), // do zmiany żeby liczylo liczbę godzin a nie dni
         Overhours.fifty
       );
 
@@ -209,13 +224,13 @@ export const useCalculatorStore = defineStore("calculator", {
         overhoursPayment(
           this.baseBrutto,
           hoursAtWork,
-          await this.getDaysAtWork(this.year, this.month, Overhours.hundert),
+          await this.getHoursAtWork(this.year, this.month, Overhours.hundert),
           Overhours.hundert
         ) +
         overhoursPayment(
           this.baseBrutto,
           hoursAtWork,
-          await this.getDaysAtWork(this.year, this.month, Presence.hundertday),
+          await this.getHoursAtWork(this.year, this.month, Presence.hundertday),
           Presence.hundertday
         );
     },
