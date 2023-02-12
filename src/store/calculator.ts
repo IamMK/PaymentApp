@@ -189,10 +189,15 @@ export const useCalculatorStore = defineStore("calculator", {
         month,
         Overhours.fifty
       );
+      const nightDays = await this.getDaysAtWork(
+        year,
+        month,
+        Presence.nightfullday
+      );
 
       const dailyPayment = this.getDailyPayment(year, month);
       this.baseBrutto = Number(
-        ((daysAtWork + daysWithOverhours) * dailyPayment).toFixed(2)
+        ((daysAtWork + daysWithOverhours + nightDays) * dailyPayment).toFixed(2)
       );
     },
     async getNightAllowance(year: number, month: number) {

@@ -25,6 +25,8 @@ export const isIncomeTax = (
   const birthDate = new Date(birthdate).getTime();
   const now = new Date(year, month, dateOfPayment, 0, 0, 0).getTime();
   const age = new Date(now - birthDate).getUTCFullYear();
+  console.log(Math.abs(age - 1970) >= 26);
+
   return Math.abs(age - 1970) >= 26;
 };
 
