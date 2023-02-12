@@ -29,8 +29,7 @@ export const isIncomeTax = (
 };
 
 export const overhoursPayment = (
-  baseSalary: number,
-  hoursAtWork: number,
+  dailyPayment: number,
   overhours: number,
   overhoursType: Overhours | Presence.hundertday
 ) => {
@@ -46,13 +45,9 @@ export const overhoursPayment = (
       overhoursMultiplier = 1.5;
       break;
   }
-  console.log(
-    baseSalary,
-    hoursAtWork,
-    overhoursMultiplier,
-    overhours,
-    overhoursType
-  );
+  console.log(dailyPayment, overhoursMultiplier, overhours, overhoursType);
 
-  return (baseSalary / hoursAtWork) * overhoursMultiplier * overhours;
+  return Number(
+    ((dailyPayment / 8) * overhoursMultiplier * overhours).toFixed(2)
+  );
 };

@@ -88,7 +88,14 @@ export const useCalculatorStore = defineStore("calculator", {
       return minimumWage * 0.2;
     },
     brutto(state) {
-      return Number((state.baseBrutto + state.nightAllowance).toFixed(2));
+      return Number(
+        (
+          state.baseBrutto +
+          state.nightAllowance +
+          state.overhoursWage.fifty +
+          state.overhoursWage.hundert
+        ).toFixed(2)
+      );
     },
   },
   actions: {
@@ -129,15 +136,21 @@ export const useCalculatorStore = defineStore("calculator", {
 
       return daysToCalc;
     },
-    async getDaysAtWork(year: number, month: number, presenceType: Presence) {
+    async getDaysAtWork(
+      year: number,
+      month: number,
+      presenceType: Presence | Overhours
+    ) {
       const daysToCalc = await this.getDaysFromMonth(year, month);
       if (daysToCalc) {
-        const daysAtWork = daysToCalc.filter((item: { value: Presence }) => {
-          if (item && item.value === presenceType) {
-            return true;
+        const daysAtWork = daysToCalc.filter(
+          (item: { value: Presence | Overhours }) => {
+            if (item && item.value === presenceType) {
+              return true;
+            }
+            return false;
           }
-          return false;
-        });
+        );
         return daysAtWork.length;
       }
       return 0;
@@ -171,9 +184,16 @@ export const useCalculatorStore = defineStore("calculator", {
     },
     async getBaseBrutto(year: number, month: number) {
       const daysAtWork = await this.getDaysAtWork(year, month, Presence.atwork);
+      const daysWithOverhours = await this.getDaysAtWork(
+        year,
+        month,
+        Overhours.fifty
+      );
 
       const dailyPayment = this.getDailyPayment(year, month);
-      this.baseBrutto = Number((daysAtWork * dailyPayment).toFixed(2));
+      this.baseBrutto = Number(
+        ((daysAtWork + daysWithOverhours) * dailyPayment).toFixed(2)
+      );
     },
     async getNightAllowance(year: number, month: number) {
       const nightShiftDays = await this.getDaysAtWork(
@@ -212,26 +232,25 @@ export const useCalculatorStore = defineStore("calculator", {
 
       this.minimumWage = Number(minimumwage[minimumwage.length - 1][1]);
     },
-    async getOverhoursPayment(hoursAtWork: number) {
+    async getOverhoursPayment(year: number, month: number) {
+      const dailyPayment = this.getDailyPayment(year, month);
+
       this.overhoursWage.fifty = overhoursPayment(
-        this.baseBrutto,
-        hoursAtWork,
-        await this.getHoursAtWork(this.year, this.month, Overhours.fifty), // do zmiany żeby liczylo liczbę godzin a nie dni
+        dailyPayment,
+        await this.getHoursAtWork(year, month, Overhours.fifty),
         Overhours.fifty
       );
 
       this.overhoursWage.hundert =
         overhoursPayment(
-          this.baseBrutto,
-          hoursAtWork,
-          await this.getHoursAtWork(this.year, this.month, Overhours.hundert),
-          Overhours.hundert
+          dailyPayment,
+          await this.getHoursAtWork(year, month, Presence.hundertday),
+          Presence.hundertday
         ) +
         overhoursPayment(
-          this.baseBrutto,
-          hoursAtWork,
-          await this.getHoursAtWork(this.year, this.month, Presence.hundertday),
-          Presence.hundertday
+          dailyPayment,
+          await this.getHoursAtWork(year, month, Overhours.hundert),
+          Overhours.hundert
         );
     },
   },
