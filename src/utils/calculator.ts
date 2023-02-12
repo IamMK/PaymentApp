@@ -1,4 +1,5 @@
 import { useCalculatorStore } from "@/store/calculator";
+import { Overhours, Presence } from "@/types/dailyInfo";
 
 export const insurance = (salary: number, tax: number) => {
   const insurance = salary * (tax / 100);
@@ -25,4 +26,28 @@ export const isIncomeTax = (
   const now = new Date(year, month, dateOfPayment, 0, 0, 0).getTime();
   const age = new Date(now - birthDate).getUTCFullYear();
   return Math.abs(age - 1970) >= 26;
+};
+
+export const overhoursPayment = (
+  dailyPayment: number,
+  overhours: number,
+  overhoursType: Overhours | Presence.hundertday
+) => {
+  let overhoursMultiplier = 0;
+  switch (overhoursType) {
+    case Overhours.hundert:
+      overhoursMultiplier = 2;
+      break;
+    case Presence.hundertday:
+      overhoursMultiplier = 2;
+      break;
+    case Overhours.fifty:
+      overhoursMultiplier = 1.5;
+      break;
+  }
+  console.log(dailyPayment, overhoursMultiplier, overhours, overhoursType);
+
+  return Number(
+    ((dailyPayment / 8) * overhoursMultiplier * overhours).toFixed(2)
+  );
 };
