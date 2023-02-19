@@ -39,6 +39,7 @@
         <day-summary
           title="Podsumowanie dnia"
           @close="closeDayDialog"
+          @close-day-summary="closeDayDialog"
           @edit-mode="openSetDay"
           v-if="dayDialog && dayIsDone(checkedDate.day.value)"
           :date="checkedDate"
@@ -46,6 +47,7 @@
         <setday-dialog
           title="Ustawienia dnia"
           @close="closeSetDay"
+          @close-set-day-dialog="closeSetDay"
           v-if="
             setDayDialog || (dayDialog && !dayIsDone(checkedDate.day.value))
           "
@@ -145,7 +147,6 @@ const openMonthDialog = () => {
   monthDialog.value = true;
 };
 const openSetDay = () => {
-  closeDayDialog();
   setDayDialog.value = true;
 };
 const closeDayDialog = () => {
@@ -155,6 +156,7 @@ const closeMonthDialog = () => {
   monthDialog.value = false;
 };
 const closeSetDay = () => {
+  closeDayDialog();
   setDayDialog.value = false;
 };
 

@@ -68,6 +68,8 @@ const messages = computed(() => {
   return langStore.messages.dailyInfo;
 });
 
+const emits = defineEmits(["closeSetDayDialog"]);
+
 const props = defineProps({
   date: {
     type: Object,
@@ -136,6 +138,8 @@ const setDailyInfo = () => {
     hours: fieldsFiltered[0].hours,
   } as userDay;
   userDaysStore.addInfo(dailyData);
+
+  emits("closeSetDayDialog");
 };
 
 const uncheck = (val: string) => {
