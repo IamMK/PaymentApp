@@ -47,7 +47,7 @@ const messages = computed(() => {
   return langStore.messages.dailyData;
 });
 
-const emits = defineEmits(["editMode"]);
+const emits = defineEmits(["editMode", "closeDaySummary"]);
 
 const props = defineProps({
   date: {
@@ -109,10 +109,12 @@ const deleteDayInfo = () => {
     month: props.date.month.value,
     day: props.date.day.value,
   });
+  emits("closeDaySummary");
 };
 
 const editMode = () => {
   emits("editMode");
+  emits("closeDaySummary");
 };
 
 const hoursAtWork = computed(() => {
