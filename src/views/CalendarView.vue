@@ -39,13 +39,16 @@
         <day-summary
           title="Podsumowanie dnia"
           @close="closeDayDialog"
+          @edit-mode="openSetDay"
           v-if="dayDialog && dayIsDone(checkedDate.day.value)"
           :date="checkedDate"
         />
         <setday-dialog
           title="Ustawienia dnia"
-          @close="closeDayDialog"
-          v-if="dayDialog && !dayIsDone(checkedDate.day.value)"
+          @close="closeSetDay"
+          v-if="
+            setDayDialog || (dayDialog && !dayIsDone(checkedDate.day.value))
+          "
           :date="checkedDate"
         />
       </div>
@@ -72,6 +75,7 @@ const month = toRefs(calendarStore).month;
 const weekDays = ["Pon", "Wt", "Śr", "Czw", "Pt", "Sob", "Nd"];
 const monthDialog = ref(false);
 const dayDialog = ref(false);
+const setDayDialog = ref(false);
 const checkedDay = ref(0);
 const checkedMonth = computed(() => {
   const months = [
@@ -140,11 +144,18 @@ const openDayDialog = (day: number) => {
 const openMonthDialog = () => {
   monthDialog.value = true;
 };
+const openSetDay = () => {
+  closeDayDialog();
+  setDayDialog.value = true;
+};
 const closeDayDialog = () => {
   dayDialog.value = false;
 };
 const closeMonthDialog = () => {
   monthDialog.value = false;
+};
+const closeSetDay = () => {
+  setDayDialog.value = false;
 };
 
 const loadDailyInfo = async () => {
