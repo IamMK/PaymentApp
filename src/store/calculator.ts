@@ -175,6 +175,8 @@ export const useCalculatorStore = defineStore("calculator", {
               let hoursToAdd = 0;
               if (el.value === Presence.hundertday) hoursToAdd = 8;
               else hoursToAdd = el.hours;
+              console.log("hours to add", hoursToAdd);
+
               hoursToReturn = hoursToReturn + hoursToAdd;
             }
           }
@@ -194,10 +196,20 @@ export const useCalculatorStore = defineStore("calculator", {
         month,
         Presence.nightfullday
       );
+      const notFullDays = await this.getHoursAtWork(
+        year,
+        month,
+        Presence.notfullday
+      );
 
       const dailyPayment = this.getDailyPayment(year, month);
+      const notFullDaysPayment = notFullDays * (dailyPayment / 8);
+
       this.baseBrutto = Number(
-        ((daysAtWork + daysWithOverhours + nightDays) * dailyPayment).toFixed(2)
+        (
+          (daysAtWork + daysWithOverhours + nightDays) * dailyPayment +
+          notFullDaysPayment
+        ).toFixed(2)
       );
     },
     async getNightAllowance(year: number, month: number) {
