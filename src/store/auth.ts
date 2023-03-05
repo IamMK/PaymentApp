@@ -2,7 +2,7 @@ import { defineStore } from "pinia";
 import { auth, userData } from "@/types/authTypes";
 import { appConfig } from "@/config/appconfig";
 import { useLangStore } from "./lang";
-import { useUserInfo } from "./userInfo";
+import { useUserInfo } from "./profile/userInfo";
 
 let TIMER = null as number | null;
 

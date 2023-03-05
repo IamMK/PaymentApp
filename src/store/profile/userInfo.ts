@@ -6,7 +6,7 @@ import {
   Currency,
   IsSameCity,
 } from "@/types/userInfo";
-import { useAuthStore } from "./auth";
+import { useAuthStore } from "../auth";
 import { appConfig } from "@/config/appconfig";
 
 export const useUserInfo = defineStore("userinfo", {

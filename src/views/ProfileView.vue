@@ -48,7 +48,7 @@
 
 <script setup lang="ts">
 import TopBar from "@/components/TopBar.vue";
-import { useUserInfo } from "@/store/userInfo";
+import { useUserInfo } from "@/store/profile/userInfo";
 // import BaseNotecard from "@/components/UI/BaseNotecard.vue";
 import { IsSameCity, ProfileField, SalaryType } from "@/types/userInfo";
 import { computed } from "vue";

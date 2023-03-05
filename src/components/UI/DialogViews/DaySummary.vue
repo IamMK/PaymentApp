@@ -30,7 +30,7 @@ import { computed, onBeforeMount } from "vue";
 import { useUserDaysStore } from "@/store/userDays";
 import { useCalendarStore } from "@/store/calendar";
 import { useLangStore } from "@/store/lang";
-import { useUserInfo } from "@/store/userInfo";
+import { useUserInfo } from "@/store/profile/userInfo";
 import { useCalculatorStore } from "@/store/calculator";
 import { nightAllowance } from "@/utils/calculator";
 

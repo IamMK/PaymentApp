@@ -21,6 +21,12 @@ export const useMenuStore = defineStore("menu", {
           visible: ItemVisibility.auth,
         },
         {
+          name: "Bilans",
+          icon: "fa-solid fa-money-bill",
+          href: "costsbalance",
+          visible: ItemVisibility.auth,
+        },
+        {
           name: useLangStore().messages.menu.calendar,
           icon: "fa-regular fa-calendar-days",
           href: "calendar",

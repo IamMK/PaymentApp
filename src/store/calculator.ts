@@ -2,7 +2,7 @@ import { appConfig } from "@/config/appconfig";
 import { Overhours, Presence } from "@/types/dailyInfo";
 import { defineStore } from "pinia";
 import { useAuthStore } from "./auth";
-import { useUserInfo } from "./userInfo";
+import { useUserInfo } from "./profile/userInfo";
 import { holidays } from "@/config/dayInfoFields";
 import {
   insurance,

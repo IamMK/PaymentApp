@@ -3,6 +3,7 @@ import CalendarView from "@/views/CalendarView.vue";
 import MainView from "@/views/MainView.vue";
 import ProfileView from "@/views/ProfileView.vue";
 import CalculatorView from "@/views/CalculatorView.vue";
+import CostsBalance from "@/views/CostsBalance.vue";
 import { useAuthStore } from "@/store/auth";
 import { useAppStore } from "@/store/app";
 
@@ -40,6 +41,12 @@ const routes: Array<RouteRecordRaw> = [
     name: "profile",
     meta: { requiresAuth: true },
     component: ProfileView,
+  },
+  {
+    path: "/costsbalance",
+    name: "costsbalance",
+    meta: { requiresAuth: true },
+    component: CostsBalance,
   },
   {
     path: "/logout",

@@ -43,7 +43,7 @@
 
 <script setup lang="ts">
 import BaseNotecard from "./UI/BaseNotecard.vue";
-import { useUserInfo } from "@/store/userInfo";
+import { useUserInfo } from "@/store/profile/userInfo";
 import { useLangStore } from "@/store/lang";
 import { IsSameCity, SalaryType, userInfo } from "@/types/userInfo";
 import { computed } from "vue";

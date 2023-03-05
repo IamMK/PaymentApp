@@ -3,7 +3,7 @@ import BaseNotecard from "@/components/UI/BaseNotecard.vue";
 import TopBar from "@/components/TopBar.vue";
 import BaseButton from "@/components/UI/BaseButton.vue";
 import { useCalculatorStore } from "@/store/calculator";
-import { useUserInfo } from "@/store/userInfo";
+import { useUserInfo } from "@/store/profile/userInfo";
 import { computed, onBeforeMount, ref, toRefs } from "vue";
 import MonthDialog from "@/components/UI/DialogViews/MonthDialog.vue";
 import { Presence } from "@/types/dailyInfo";
